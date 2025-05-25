@@ -1,0 +1,34 @@
+{
+  "name": "@dexwox/a2a-node",
+  "version": "0.1.0",
+  "description": "A2A Node SDK - TypeScript Implementation of Agent-to-Agent Protocol",
+  "private": false,
+  "packageManager": "pnpm@10.9.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "pnpm run build:core && pnpm run build:client && pnpm run build:server",
+    "build:core": "cd packages/core && pnpm run clean && pnpm run build",
+    "build:client": "cd packages/client && pnpm run clean && pnpm run build",
+    "build:server": "cd packages/server && pnpm run clean && pnpm run build",
+    "build:all": "pnpm -r run build",
+    "lint": "pnpm -r run lint"
+  },
+  "workspaces": [
+    "packages/*"
+  ],
+  "keywords": [
+    "a2a",
+    "google",
+    "sdk",
+    "typescript"
+  ],
+  "author": "",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.18",
+    "typescript": "^5.8.3"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "name": "a2a-basic-client-example",
+  "version": "1.0.0",
+  "description": "Basic example of using the A2A client",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@dexwox/a2a-node": "0.1.0"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.0"
+  },
+  "license": "Apache-2.0"
+}

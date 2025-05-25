@@ -1,0 +1,19 @@
+{
+  "name": "a2a-weather-agent-example",
+  "version": "1.0.0",
+  "description": "Example implementation of a weather agent using A2A",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@dexwox/a2a-node": "0.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.0"
+  },
+  "license": "Apache-2.0"
+}

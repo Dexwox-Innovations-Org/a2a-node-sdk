@@ -1,0 +1,23 @@
+{
+  "name": "@dexwox/a2a-node",
+  "version": "0.1.0",
+  "description": "A2A Node SDK - Unified Package for Agent-to-Agent Protocol",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@dexwox/a2a-client": "0.1.0",
+    "@dexwox/a2a-core": "0.1.0",
+    "@dexwox/a2a-server": "0.1.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "files": [
+    "dist"
+  ],
+  "license": "Apache-2.0"
+}

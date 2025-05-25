@@ -1,0 +1,18 @@
+{
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@dexwox/a2a-*": ["../packages/*/src"]
+    }
+  },
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../packages/core" },
+    { "path": "../packages/client" },
+    { "path": "../packages/server" }
+  ]
+}

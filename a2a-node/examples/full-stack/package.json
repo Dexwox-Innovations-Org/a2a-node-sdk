@@ -1,0 +1,22 @@
+{
+  "name": "a2a-full-stack-example",
+  "version": "1.0.0",
+  "description": "Full stack example of A2A with client, server, and agent integration",
+  "main": "index.js",
+  "scripts": {
+    "start:server": "ts-node server.ts",
+    "start:client": "ts-node client.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@dexwox/a2a-node": "0.1.0",
+    "axios": "^1.6.0",
+    "readline": "^1.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.0"
+  },
+  "license": "Apache-2.0"
+}

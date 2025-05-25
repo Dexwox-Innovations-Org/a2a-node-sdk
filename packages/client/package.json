@@ -1,0 +1,30 @@
+{
+  "name": "@dexwox/a2a-client",
+  "version": "0.1.0",
+  "description": "A2A Node SDK - HTTP Client for Agent-to-Agent Protocol",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "bench": "vitest bench",
+    "lint": "eslint . --ext .ts,.tsx --fix",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@dexwox/a2a-core": "workspace:*",
+    "eventsource": "^4.0.0",
+    "reflect-metadata": "^0.2.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.46",
+    "typescript": "^5.3.0",
+    "vite": "^6.3.5",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.1.3"
+  },
+  "license": "Apache-2.0"
+}

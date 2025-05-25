@@ -1,0 +1,21 @@
+{
+  "name": "a2a-basic-server-example",
+  "version": "1.0.0",
+  "description": "Basic example of setting up an A2A server",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node index.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@dexwox/a2a-node": "0.1.0",
+    "express": "^4.18.2",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.0"
+  },
+  "license": "Apache-2.0"
+}
