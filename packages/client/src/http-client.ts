@@ -1,3 +1,8 @@
+/**
+ * @module HttpClient
+ * @description Low-level HTTP client for communicating with A2A protocol servers
+ */
+
 import {
   type AgentCard,
   type Task,
@@ -10,42 +15,89 @@ import {
   A2AError,
   validateArtifact,
   TraceClass,
-  TraceMethod
+  Trace
 } from '@dexwox/a2a-core';
 
+/**
+ * Request interface for agent discovery
+ * @internal
+ */
 interface DiscoverRequest extends JsonRpcRequest {
   method: 'discover';
   params: { capability?: string };
 }
 
+/**
+ * Response interface for agent discovery
+ * @internal
+ */
 interface DiscoverResponse extends JsonRpcResponse<{ agents: AgentCard[] }> {}
 import { CircuitBreaker } from './utils/circuit-breaker';
 import { AgentCardResolver } from './agent-card-resolver';
 
+/**
+ * Options for streaming operations
+ * 
+ * @internal
+ */
 interface StreamOptions {
+  /** Callback function for received messages */
   onMessage: (data: JsonRpcStreamResponse) => void;
+  /** Optional callback function for stream errors */
   onError?: (error: Error) => void;
+  /** Optional callback function when stream completes */
   onComplete?: () => void;
 }
 
 /**
- * Configuration options for HTTP client
+ * Configuration options for the HTTP client
+ * 
+ * These options control how the HTTP client connects to and communicates with
+ * A2A protocol servers, including timeouts, headers, and authentication.
+ * 
+ * @example
+ * ```typescript
+ * const options: HttpClientOptions = {
+ *   baseUrl: 'https://a2a-server.example.com',
+ *   timeout: 10000, // 10 seconds
+ *   headers: {
+ *     'X-API-Key': 'your-api-key'
+ *   },
+ *   agentCard: {
+ *     cacheTtl: 600000 // 10 minutes
+ *   },
+ *   pushAuth: {
+ *     token: 'initial-auth-token',
+ *     refresh: async () => {
+ *       // Get a new token from your auth service
+ *       return 'new-auth-token';
+ *     }
+ *   }
+ * };
+ * ```
  */
 export interface HttpClientOptions {
   /** 
    * Base URL for API endpoints (e.g. 'https://api.example.com/v1')
+   * This is the root URL where all A2A protocol requests will be sent
    */
   baseUrl: string;
+  
   /**
    * Request timeout in milliseconds (default: 5000)
+   * After this duration, requests will be aborted and an error thrown
    */
   timeout?: number;
+  
   /** 
-   * Additional HTTP headers to include
+   * Additional HTTP headers to include with every request
+   * Useful for authentication, tracking, and other custom headers
    */
   headers?: Record<string, string>;
+  
   /**
-   * Options for agent card resolution
+   * Options for agent card resolution and caching
+   * Controls how the client discovers and caches agent information
    */
   agentCard?: {
     /** Path to agent card (default: '/.well-known/agent.json') */
@@ -53,32 +105,88 @@ export interface HttpClientOptions {
     /** Cache TTL in milliseconds (default: 300000 - 5 minutes) */
     cacheTtl?: number;
   };
+  
   /**
    * Push notification authentication configuration
+   * Used for authenticating with push notification endpoints
    */
   pushAuth?: {
     /** Auth token for push notifications */
     token?: string;
-    /** Auth token refresh callback */
+    /** Auth token refresh callback that returns a new token when needed */
     refresh?: () => Promise<string>;
   };
 }
 
+/**
+ * Low-level HTTP client for communicating with A2A protocol servers
+ * 
+ * This class provides the core HTTP communication layer for the A2A SDK,
+ * handling JSON-RPC requests, streaming, circuit breaking for reliability,
+ * and agent card resolution. It's used internally by the higher-level client
+ * classes but can also be used directly for advanced use cases.
+ * 
+ * @example
+ * ```typescript
+ * const httpClient = new A2AHttpClient({
+ *   baseUrl: 'https://a2a-server.example.com'
+ * });
+ * 
+ * // Discover available agents
+ * const agents = await httpClient.discover();
+ * console.log('Available agents:', agents);
+ * 
+ * // Send a message to an agent
+ * const messageId = await httpClient.sendMessage([
+ *   { type: 'text', content: 'Hello, agent!' }
+ * ], 'assistant-agent');
+ * ```
+ */
 @TraceClass('A2AHttpClient')
 export class A2AHttpClient {
+  /** Configuration options for the client */
   private readonly options: HttpClientOptions;
+  /** Circuit breaker for handling failures and preventing cascading failures */
   private readonly circuitBreaker: CircuitBreaker;
+  /** Resolver for agent card information */
   private readonly agentCardResolver: AgentCardResolver;
 
+  /** Default circuit breaker configuration */
   private static readonly DEFAULT_CIRCUIT_BREAKER_OPTIONS = {
-    failureThreshold: 3,
-    successThreshold: 2,
-    timeout: 10000
+    failureThreshold: 3,   // Number of failures before opening the circuit
+    successThreshold: 2,   // Number of successes needed to close the circuit
+    timeout: 10000         // Time in ms before attempting to close the circuit
   };
 
   /**
    * Creates a new A2A HTTP client instance
-   * @param options Configuration options
+   * 
+   * Initializes the HTTP client with the provided options, setting up the circuit breaker
+   * and agent card resolver. Default values are applied for any missing options.
+   * 
+   * @param options - Configuration options for the client
+   * 
+   * @example
+   * ```typescript
+   * // Basic configuration
+   * const client = new A2AHttpClient({
+   *   baseUrl: 'https://a2a-server.example.com'
+   * });
+   * 
+   * // Advanced configuration
+   * const advancedClient = new A2AHttpClient({
+   *   baseUrl: 'https://a2a-server.example.com',
+   *   timeout: 10000,
+   *   headers: {
+   *     'Authorization': 'Bearer token123',
+   *     'X-Custom-Header': 'custom-value'
+   *   },
+   *   agentCard: {
+   *     path: '/custom-agent-path.json',
+   *     cacheTtl: 600000 // 10 minutes
+   *   }
+   * });
+   * ```
    */
   constructor(options: HttpClientOptions) {
     this.options = {
@@ -96,7 +204,21 @@ export class A2AHttpClient {
   }
 
   /**
-   * Gets the resolved agent card
+   * Gets the resolved agent card for the connected server
+   * 
+   * Retrieves the agent card from the server, which contains metadata about
+   * the agent's capabilities, name, and other information. Results are cached
+   * according to the configured TTL.
+   * 
+   * @returns Promise resolving to the agent card
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * 
+   * @example
+   * ```typescript
+   * const agentCard = await httpClient.getAgentCard();
+   * console.log(`Connected to agent: ${agentCard.name}`);
+   * console.log(`Agent capabilities: ${agentCard.capabilities.join(', ')}`);
+   * ```
    */
   async getAgentCard(): Promise<AgentCard> {
     return this.agentCardResolver.resolve();
@@ -104,16 +226,45 @@ export class A2AHttpClient {
 
   /**
    * Refreshes the agent card cache
+   * 
+   * Forces a refresh of the cached agent card information, bypassing the TTL.
+   * This is useful when you know the agent's capabilities may have changed.
+   * 
+   * @returns Promise resolving to the refreshed agent card
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * 
+   * @example
+   * ```typescript
+   * // Force a refresh of the agent card
+   * const refreshedCard = await httpClient.refreshAgentCard();
+   * console.log('Updated capabilities:', refreshedCard.capabilities);
+   * ```
    */
   async refreshAgentCard(): Promise<AgentCard> {
     return this.agentCardResolver.refresh();
   }
 
   /**
-   * Discovers available agents matching optional capability filter
-   * @param capability Optional capability filter (e.g. 'text-generation')
-   * @returns Promise resolving to array of AgentCards
-   * @throws A2AError if discovery fails
+   * Discovers available agents matching an optional capability filter
+   * 
+   * This method queries the A2A network for available agents. If a capability
+   * is specified, only agents that support that capability will be returned.
+   * 
+   * @param capability - Optional capability filter (e.g., 'text-generation', 'image-generation')
+   * @returns Promise resolving to an array of matching agent cards
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * @throws {A2AValidationError} If the capability filter is invalid
+   * 
+   * @example
+   * ```typescript
+   * // Get all available agents
+   * const allAgents = await httpClient.discover();
+   * console.log(`Found ${allAgents.length} agents`);
+   * 
+   * // Get only agents with text generation capability
+   * const textAgents = await httpClient.discover('text-generation');
+   * console.log(`Found ${textAgents.length} text generation agents`);
+   * ```
    */
   async discover(capability?: string): Promise<AgentCard[]> {
     const request: DiscoverRequest = {
@@ -128,9 +279,31 @@ export class A2AHttpClient {
 
   /**
    * Gets task details by ID
-   * @param taskId Task ID to retrieve
-   * @returns Promise resolving to Task
-   * @throws A2AError if task not found
+   * 
+   * Retrieves the current state and details of a task by its ID. This method
+   * fetches the complete task object including status, input, output, and any
+   * error information.
+   * 
+   * @param taskId - The ID of the task to retrieve
+   * @returns Promise resolving to the complete task object
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * @throws {A2AValidationError} If the task ID is invalid or not found
+   * 
+   * @example
+   * ```typescript
+   * try {
+   *   const task = await httpClient.getTask('task-123');
+   *   console.log(`Task status: ${task.status}`);
+   *   
+   *   if (task.status === 'completed') {
+   *     console.log('Task output:', task.output);
+   *   } else if (task.status === 'failed') {
+   *     console.error('Task failed:', task.error);
+   *   }
+   * } catch (error) {
+   *   console.error('Error retrieving task:', error.message);
+   * }
+   * ```
    */
   async getTask(taskId: string): Promise<Task> {
     const request: JsonRpcRequest = {
@@ -145,9 +318,32 @@ export class A2AHttpClient {
 
   /**
    * Sends a task for execution
-   * @param task Task to execute
-   * @returns Promise resolving to updated Task
-   * @throws A2AError if task submission fails
+   * 
+   * Submits a task to the A2A server for execution. The task can contain
+   * input data, target agent information, and other parameters needed for
+   * execution.
+   * 
+   * @param task - The task object to execute
+   * @returns Promise resolving to the updated task with initial status
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * @throws {A2AValidationError} If the task is invalid
+   * 
+   * @example
+   * ```typescript
+   * const task = {
+   *   id: 'task-' + Date.now(),
+   *   name: 'Weather Analysis',
+   *   agentId: 'weather-agent',
+   *   status: 'submitted',
+   *   input: { location: 'New York', days: 5 },
+   *   createdAt: new Date().toISOString(),
+   *   updatedAt: new Date().toISOString()
+   * };
+   * 
+   * const submittedTask = await httpClient.sendTask(task);
+   * console.log(`Task submitted with ID: ${submittedTask.id}`);
+   * console.log(`Initial status: ${submittedTask.status}`);
+   * ```
    */
   async sendTask(task: Task): Promise<Task> {
     const request: JsonRpcRequest = {
@@ -469,10 +665,33 @@ export class A2AHttpClient {
 
   /**
    * Sends a message to an agent
-   * @param parts Array of message parts (text/file/data)
-   * @param agentId Target agent ID
-   * @returns Promise resolving to message ID
-   * @throws A2AError if message fails to send
+   * 
+   * This method sends a message composed of one or more message parts to a
+   * specified agent. Message parts can be text, files, or structured data.
+   * 
+   * @param parts - Array of message parts to send (text, file, data, etc.)
+   * @param agentId - ID of the target agent to receive the message
+   * @returns Promise resolving to the message ID assigned by the server
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * @throws {A2AValidationError} If the message parts or agent ID are invalid
+   * 
+   * @example
+   * ```typescript
+   * // Send a simple text message
+   * const textMessageId = await httpClient.sendMessage([
+   *   { type: 'text', content: 'Hello, agent!' }
+   * ], 'assistant-agent');
+   * 
+   * // Send a message with multiple parts
+   * const multipartMessageId = await httpClient.sendMessage([
+   *   { type: 'text', content: 'Here is the data you requested' },
+   *   { 
+   *     type: 'data', 
+   *     content: { temperature: 72, humidity: 65 },
+   *     schema: 'weather-data'
+   *   }
+   * ], 'weather-agent');
+   * ```
    */
   async sendMessage(parts: MessagePart[], agentId: string): Promise<string> {
     const request: JsonRpcRequest = {
@@ -505,11 +724,17 @@ export class A2AHttpClient {
   }
 
   /**
-   * Sends a JSON-RPC request
-   * @param request JSON-RPC request object
-   * @returns Promise resolving to JSON-RPC response
-   * @throws Error if HTTP request fails
-   * @template T Expected response result type
+   * Sends a JSON-RPC request to the A2A server
+   * 
+   * This is the core method that handles all communication with the A2A server.
+   * It uses the circuit breaker pattern to prevent cascading failures and
+   * implements timeout handling.
+   * 
+   * @param request - JSON-RPC request object to send
+   * @returns Promise resolving to the JSON-RPC response
+   * @throws Error if the HTTP request fails or times out
+   * @template T - Expected response result type
+   * @internal
    */
   private async sendRequest<T = unknown>(request: JsonRpcRequest): Promise<JsonRpcResponse<T>> {
     return this.circuitBreaker.execute(async () => {

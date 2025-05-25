@@ -1,3 +1,8 @@
+/**
+ * @module MessageClient
+ * @description Client for sending and receiving messages between A2A agents
+ */
+
 import { EventEmitter } from 'events';
 import {
   MessagePart,
@@ -14,12 +19,45 @@ import { sendRequest } from './utils/http-utils';
 import { TaskClient } from './task-client';
 import { AgentClient } from './agent-client';
 
+/**
+ * Client for sending and receiving messages between A2A agents
+ * 
+ * The MessageClient provides methods for sending messages to agents and
+ * streaming real-time communication. It also provides access to related
+ * TaskClient and AgentClient instances for convenience.
+ * 
+ * @example
+ * ```typescript
+ * const messageClient = new MessageClient({ baseUrl: 'https://a2a-server.example.com' });
+ * 
+ * // Send a simple text message to an agent
+ * const messageId = await messageClient.sendMessage([
+ *   { type: 'text', content: 'What is the weather in New York?' }
+ * ], 'weather-agent');
+ * 
+ * // Stream messages with real-time updates
+ * await messageClient.streamMessage([
+ *   { type: 'text', content: 'Generate a story about space travel' }
+ * ], 'story-agent', {
+ *   onMessage: (data) => console.log('Received:', data),
+ *   onError: (error) => console.error('Stream error:', error),
+ *   onComplete: () => console.log('Stream completed')
+ * });
+ * ```
+ */
 @TraceClass()
 export class MessageClient extends EventEmitter {
+  /** Configuration options for the client */
   private readonly options: MessageClientOptions;
+  /** Task client for managing tasks */
   public readonly tasks: TaskClient;
+  /** Agent client for discovering and interacting with agents */
   public readonly agents: AgentClient;
 
+  /**
+   * Creates a new MessageClient instance
+   * @param options - Configuration options for the client
+   */
   constructor(options: MessageClientOptions) {
     super();
     this.options = {
@@ -32,10 +70,34 @@ export class MessageClient extends EventEmitter {
 
   /**
    * Sends a message synchronously to an agent
-   * @param parts Message parts to send
-   * @param agentId Target agent ID
-   * @returns Promise resolving to message ID
-   * @throws A2AError if message fails to send
+   * 
+   * This method sends a message to a specified agent and waits for the server to
+   * acknowledge receipt. It validates the message parts before sending and handles
+   * network errors appropriately.
+   * 
+   * @param parts - Array of message parts to send (text, file, data, etc.)
+   * @param agentId - ID of the target agent to receive the message
+   * @returns Promise resolving to the message ID assigned by the server
+   * @throws {A2ANetworkError} If there's a network issue contacting the server
+   * @throws {A2AValidationError} If the message parts are invalid
+   * 
+   * @example
+   * ```typescript
+   * // Send a text message
+   * const textMessageId = await messageClient.sendMessage([
+   *   { type: 'text', content: 'Hello, agent!' }
+   * ], 'assistant-agent');
+   * 
+   * // Send a message with multiple parts
+   * const multipartMessageId = await messageClient.sendMessage([
+   *   { type: 'text', content: 'Here is the data you requested' },
+   *   { 
+   *     type: 'data', 
+   *     content: { temperature: 72, humidity: 65 },
+   *     schema: 'weather-data'
+   *   }
+   * ], 'weather-agent');
+   * ```
    */
   async sendMessage(parts: MessagePart[], agentId: string): Promise<string> {
     validateMessageParts(parts);
@@ -61,12 +123,58 @@ export class MessageClient extends EventEmitter {
   }
 
   /**
-   * Streams messages to an agent using Server-Sent Events with robust error handling
-   * @param parts Initial message parts
-   * @param agentId Target agent ID
-   * @param options Stream event handlers and configuration
-   * @returns Promise that resolves when stream completes
-   * @throws A2AError if streaming fails to start
+   * Streams messages to and from an agent using Server-Sent Events
+   * 
+   * This method establishes a real-time streaming connection with an agent,
+   * allowing for continuous message exchange. It includes robust error handling
+   * with automatic retries, exponential backoff, and heartbeat monitoring to
+   * ensure connection reliability.
+   * 
+   * @param parts - Initial message parts to send to the agent
+   * @param agentId - ID of the target agent to stream with
+   * @param options - Configuration options and event handlers for the stream
+   * @param options.onMessage - Callback function for received messages
+   * @param options.onError - Optional callback function for stream errors
+   * @param options.onComplete - Optional callback function when stream completes
+   * @param options.maxRetries - Maximum number of reconnection attempts (default: 5)
+   * @param options.retryDelay - Initial delay between retries in ms (default: 1000)
+   * @param options.backoffFactor - Exponential backoff multiplier (default: 2)
+   * @param options.maxRetryDelay - Maximum delay between retries in ms (default: 30000)
+   * @param options.heartbeatInterval - Interval for checking heartbeats in ms (default: 10000)
+   * @param options.heartbeatTimeout - Time to wait before considering connection dead in ms (default: 30000)
+   * @returns Promise that resolves when the stream completes
+   * @throws {A2ANetworkError} If there's a network issue establishing the stream
+   * @throws {A2AValidationError} If the message parts are invalid
+   * 
+   * @example
+   * ```typescript
+   * // Stream with basic configuration
+   * await messageClient.streamMessage(
+   *   [{ type: 'text', content: 'Tell me a story about dragons' }],
+   *   'storyteller-agent',
+   *   {
+   *     onMessage: (data) => {
+   *       if (data.type === 'text') {
+   *         console.log('Story part:', data.content);
+   *       }
+   *     },
+   *     onError: (error) => console.error('Stream error:', error),
+   *     onComplete: () => console.log('Story complete!')
+   *   }
+   * );
+   * 
+   * // Stream with custom retry configuration
+   * await messageClient.streamMessage(
+   *   [{ type: 'text', content: 'Generate a long report' }],
+   *   'report-agent',
+   *   {
+   *     onMessage: (data) => console.log('Report chunk:', data),
+   *     maxRetries: 10,
+   *     retryDelay: 2000,
+   *     backoffFactor: 1.5
+   *   }
+   * );
+   * ```
    */
   async streamMessage(
     parts: MessagePart[],

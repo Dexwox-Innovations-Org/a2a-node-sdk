@@ -1,16 +1,55 @@
+/**
+ * @module Telemetry
+ * @description Decorators for instrumenting code with OpenTelemetry
+ */
+
 import { context, trace, type Context, type Span } from '@opentelemetry/api';
 import { TelemetryService } from './service';
 
+/** Type definition for any function */
 type AnyFunction = (...args: any[]) => any;
 
+/**
+ * Configuration options for the Trace decorator
+ */
 type TraceOptions = {
+  /** Custom name for the span (defaults to ClassName.methodName) */
   name?: string;
+  /** Parent context for the span (for manual context propagation) */
   parentContext?: Context;
 };
 
 /**
- * Decorator that automatically creates a span for the decorated method
- * @param nameOrOptions Optional span name or configuration object
+ * Method decorator that automatically creates a span for the decorated method
+ * 
+ * This decorator instruments methods with OpenTelemetry tracing, creating spans
+ * that track method execution, timing, and errors. It supports both synchronous
+ * and asynchronous methods.
+ * 
+ * @param nameOrOptions - Optional span name or configuration object
+ * 
+ * @example
+ * ```typescript
+ * class UserService {
+ *   // Basic usage
+ *   @Trace()
+ *   async getUser(id: string) {
+ *     // Method implementation
+ *   }
+ * 
+ *   // With custom span name
+ *   @Trace('FetchUserDetails')
+ *   async getUserDetails(id: string) {
+ *     // Method implementation
+ *   }
+ * 
+ *   // With options object
+ *   @Trace({ name: 'UserAuthentication' })
+ *   async authenticateUser(username: string, password: string) {
+ *     // Method implementation
+ *   }
+ * }
+ * ```
  */
 export function Trace(nameOrOptions?: string | TraceOptions): any {
   // This function can be used as @Trace or @Trace(options)
@@ -122,11 +161,38 @@ export function Trace(nameOrOptions?: string | TraceOptions): any {
 }
 
 /**
- * Decorator factory for recording metrics when a method is called
- * @param name The name of the metric to record
- * @param value Optional value to record (default: 1)
- * @param attributes Optional attributes to include with the metric
+ * Method decorator for recording metrics when a method is called
+ * 
+ * This decorator records metrics each time the decorated method is called,
+ * allowing for monitoring method usage, performance, and other custom metrics.
+ * 
+ * @param name - The name of the metric to record
+ * @param value - Optional value to record (default: 1)
+ * @param attributes - Optional attributes to include with the metric
  * @returns A method decorator
+ * 
+ * @example
+ * ```typescript
+ * class MessageService {
+ *   // Count message sends
+ *   @Metric('messages.sent')
+ *   async sendMessage(message: Message) {
+ *     // Implementation
+ *   }
+ * 
+ *   // Record message size with custom value
+ *   @Metric('message.size', message.content.length)
+ *   async processMessage(message: Message) {
+ *     // Implementation
+ *   }
+ * 
+ *   // Include additional attributes
+ *   @Metric('api.call', 1, { endpoint: '/messages' })
+ *   async fetchMessages() {
+ *     // Implementation
+ *   }
+ * }
+ * ```
  */
 export function Metric(name: string, value: number = 1, attributes?: Record<string, unknown>): any {
   // This is a decorator factory, it returns the actual decorator function
@@ -165,6 +231,11 @@ export function Metric(name: string, value: number = 1, attributes?: Record<stri
 
 /**
  * Helper function to apply the metric decorator logic
+ * 
+ * This is an internal utility function used by the Metric decorator to
+ * apply consistent metric recording logic.
+ * 
+ * @internal
  */
 function applyMetricDecorator(
   target: any, 
@@ -199,7 +270,37 @@ function applyMetricDecorator(
 }
 
 /**
- * Class decorator to trace all methods in a class
+ * Class decorator to automatically trace all methods in a class
+ * 
+ * This decorator applies the Trace decorator to all methods in a class,
+ * making it easy to instrument an entire class without decorating each
+ * method individually.
+ * 
+ * @param name - Optional custom name prefix for the spans (defaults to class name)
+ * @returns A class decorator
+ * 
+ * @example
+ * ```typescript
+ * // Basic usage - traces all methods with ClassName.methodName
+ * @TraceClass()
+ * class UserService {
+ *   async getUser(id: string) { 
+ *     // Method implementation
+ *   }
+ *   async updateUser(id: string, data: any) { 
+ *     // Method implementation
+ *   }
+ * }
+ * 
+ * // With custom name prefix
+ * @TraceClass('Users')
+ * class UserService {
+ *   // Will be traced as 'Users.getUser'
+ *   async getUser(id: string) { 
+ *     // Method implementation
+ *   }
+ * }
+ * ```
  */
 export function TraceClass(name?: string): ClassDecorator {
   return function(constructor: Function) {

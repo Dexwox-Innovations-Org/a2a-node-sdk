@@ -1,0 +1,944 @@
+[A2A Node SDK - v0.1.0](../README.md) / [Modules](../modules.md) / [Core](../modules/Core.md) / [z](../modules/Core.z.md) / ZodPipeline
+
+# Class: ZodPipeline\<A, B\>
+
+[Core](../modules/Core.md).[z](../modules/Core.z.md).ZodPipeline
+
+## Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `A` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+| `B` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+## Hierarchy
+
+- [`ZodType`](Core.z.ZodType.md)\<`B`[``"_output"``], [`ZodPipelineDef`](../interfaces/Core.z.ZodPipelineDef.md)\<`A`, `B`\>, `A`[``"_input"``]\>
+
+  ↳ **`ZodPipeline`**
+
+## Table of contents
+
+### Constructors
+
+- [constructor](Core.z.ZodPipeline.md#constructor)
+
+### Properties
+
+- [\_def](Core.z.ZodPipeline.md#_def)
+- [\_input](Core.z.ZodPipeline.md#_input)
+- [\_output](Core.z.ZodPipeline.md#_output)
+- [\_type](Core.z.ZodPipeline.md#_type)
+- [spa](Core.z.ZodPipeline.md#spa)
+- [~standard](Core.z.ZodPipeline.md#~standard)
+
+### Accessors
+
+- [description](Core.z.ZodPipeline.md#description)
+
+### Methods
+
+- [\_getOrReturnCtx](Core.z.ZodPipeline.md#_getorreturnctx)
+- [\_getType](Core.z.ZodPipeline.md#_gettype)
+- [\_parse](Core.z.ZodPipeline.md#_parse)
+- [\_parseAsync](Core.z.ZodPipeline.md#_parseasync)
+- [\_parseSync](Core.z.ZodPipeline.md#_parsesync)
+- [\_processInputParams](Core.z.ZodPipeline.md#_processinputparams)
+- [\_refinement](Core.z.ZodPipeline.md#_refinement)
+- [and](Core.z.ZodPipeline.md#and)
+- [array](Core.z.ZodPipeline.md#array)
+- [brand](Core.z.ZodPipeline.md#brand)
+- [catch](Core.z.ZodPipeline.md#catch)
+- [create](Core.z.ZodPipeline.md#create)
+- [default](Core.z.ZodPipeline.md#default)
+- [describe](Core.z.ZodPipeline.md#describe)
+- [isNullable](Core.z.ZodPipeline.md#isnullable)
+- [isOptional](Core.z.ZodPipeline.md#isoptional)
+- [nullable](Core.z.ZodPipeline.md#nullable)
+- [nullish](Core.z.ZodPipeline.md#nullish)
+- [optional](Core.z.ZodPipeline.md#optional)
+- [or](Core.z.ZodPipeline.md#or)
+- [parse](Core.z.ZodPipeline.md#parse)
+- [parseAsync](Core.z.ZodPipeline.md#parseasync)
+- [pipe](Core.z.ZodPipeline.md#pipe)
+- [promise](Core.z.ZodPipeline.md#promise)
+- [readonly](Core.z.ZodPipeline.md#readonly)
+- [refine](Core.z.ZodPipeline.md#refine)
+- [refinement](Core.z.ZodPipeline.md#refinement)
+- [safeParse](Core.z.ZodPipeline.md#safeparse)
+- [safeParseAsync](Core.z.ZodPipeline.md#safeparseasync)
+- [superRefine](Core.z.ZodPipeline.md#superrefine)
+- [transform](Core.z.ZodPipeline.md#transform)
+- [~validate](Core.z.ZodPipeline.md#~validate)
+
+## Constructors
+
+### constructor
+
+• **new ZodPipeline**\<`A`, `B`\>(`def`): [`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `A` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+| `B` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | [`ZodPipelineDef`](../interfaces/Core.z.ZodPipelineDef.md)\<`A`, `B`\> |
+
+#### Returns
+
+[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[constructor](Core.z.ZodType.md#constructor)
+
+## Properties
+
+### \_def
+
+• `Readonly` **\_def**: [`ZodPipelineDef`](../interfaces/Core.z.ZodPipelineDef.md)\<`A`, `B`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_def](Core.z.ZodType.md#_def)
+
+___
+
+### \_input
+
+• `Readonly` **\_input**: `A`[``"_input"``]
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_input](Core.z.ZodType.md#_input)
+
+___
+
+### \_output
+
+• `Readonly` **\_output**: `B`[``"_output"``]
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_output](Core.z.ZodType.md#_output)
+
+___
+
+### \_type
+
+• `Readonly` **\_type**: `B`[``"_output"``]
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_type](Core.z.ZodType.md#_type)
+
+___
+
+### spa
+
+• **spa**: (`data`: `unknown`, `params?`: `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\>) => `Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>\>
+
+Alias of safeParseAsync
+
+#### Type declaration
+
+▸ (`data`, `params?`): `Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+##### Returns
+
+`Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[spa](Core.z.ZodType.md#spa)
+
+___
+
+### ~standard
+
+• **~standard**: `Props`\<`A`[``"_input"``], `B`[``"_output"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[~standard](Core.z.ZodType.md#~standard)
+
+## Accessors
+
+### description
+
+• `get` **description**(): `undefined` \| `string`
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Inherited from
+
+ZodType.description
+
+## Methods
+
+### \_getOrReturnCtx
+
+▸ **_getOrReturnCtx**(`input`, `ctx?`): [`ParseContext`](../interfaces/Core.z.ParseContext.md)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+| `ctx?` | [`ParseContext`](../interfaces/Core.z.ParseContext.md) |
+
+#### Returns
+
+[`ParseContext`](../interfaces/Core.z.ParseContext.md)
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_getOrReturnCtx](Core.z.ZodType.md#_getorreturnctx)
+
+___
+
+### \_getType
+
+▸ **_getType**(`input`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+`string`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_getType](Core.z.ZodType.md#_gettype)
+
+___
+
+### \_parse
+
+▸ **_parse**(`input`): [`ParseReturnType`](../modules/Core.z.md#parsereturntype)\<`any`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+[`ParseReturnType`](../modules/Core.z.md#parsereturntype)\<`any`\>
+
+#### Overrides
+
+[ZodType](Core.z.ZodType.md).[_parse](Core.z.ZodType.md#_parse)
+
+___
+
+### \_parseAsync
+
+▸ **_parseAsync**(`input`): [`AsyncParseReturnType`](../modules/Core.z.md#asyncparsereturntype)\<`B`[``"_output"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+[`AsyncParseReturnType`](../modules/Core.z.md#asyncparsereturntype)\<`B`[``"_output"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_parseAsync](Core.z.ZodType.md#_parseasync)
+
+___
+
+### \_parseSync
+
+▸ **_parseSync**(`input`): [`SyncParseReturnType`](../modules/Core.z.md#syncparsereturntype)\<`B`[``"_output"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+[`SyncParseReturnType`](../modules/Core.z.md#syncparsereturntype)\<`B`[``"_output"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_parseSync](Core.z.ZodType.md#_parsesync)
+
+___
+
+### \_processInputParams
+
+▸ **_processInputParams**(`input`): `Object`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+`Object`
+
+| Name | Type |
+| :------ | :------ |
+| `ctx` | [`ParseContext`](../interfaces/Core.z.ParseContext.md) |
+| `status` | [`ParseStatus`](Core.z.ParseStatus.md) |
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_processInputParams](Core.z.ZodType.md#_processinputparams)
+
+___
+
+### \_refinement
+
+▸ **_refinement**(`refinement`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => `any` |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[_refinement](Core.z.ZodType.md#_refinement)
+
+___
+
+### and
+
+▸ **and**\<`T`\>(`incoming`): [`ZodIntersection`](Core.z.ZodIntersection.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `T`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `incoming` | `T` |
+
+#### Returns
+
+[`ZodIntersection`](Core.z.ZodIntersection.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `T`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[and](Core.z.ZodType.md#and)
+
+___
+
+### array
+
+▸ **array**(): [`ZodArray`](Core.z.ZodArray.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, ``"many"``\>
+
+#### Returns
+
+[`ZodArray`](Core.z.ZodArray.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, ``"many"``\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[array](Core.z.ZodType.md#array)
+
+___
+
+### brand
+
+▸ **brand**\<`B`\>(`brand?`): [`ZodBranded`](Core.z.ZodBranded.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `B` | extends `string` \| `number` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `brand?` | `B` |
+
+#### Returns
+
+[`ZodBranded`](Core.z.ZodBranded.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[brand](Core.z.ZodType.md#brand)
+
+___
+
+### catch
+
+▸ **catch**(`def`): [`ZodCatch`](Core.z.ZodCatch.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | `B`[``"_output"``] |
+
+#### Returns
+
+[`ZodCatch`](Core.z.ZodCatch.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[catch](Core.z.ZodType.md#catch)
+
+▸ **catch**(`def`): [`ZodCatch`](Core.z.ZodCatch.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | (`ctx`: \{ `error`: [`ZodError`](Core.z.ZodError.md)\<`any`\> ; `input`: `A`[``"_input"``]  }) => `B`[``"_output"``] |
+
+#### Returns
+
+[`ZodCatch`](Core.z.ZodCatch.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[catch](Core.z.ZodType.md#catch)
+
+___
+
+### create
+
+▸ **create**\<`A`, `B`\>(`a`, `b`): [`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `A` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+| `B` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `a` | `A` |
+| `b` | `B` |
+
+#### Returns
+
+[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>
+
+___
+
+### default
+
+▸ **default**(`def`): [`ZodDefault`](Core.z.ZodDefault.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | [`noUndefined`](../modules/Core.z.util.md#noundefined)\<`A`[``"_input"``]\> |
+
+#### Returns
+
+[`ZodDefault`](Core.z.ZodDefault.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[default](Core.z.ZodType.md#default)
+
+▸ **default**(`def`): [`ZodDefault`](Core.z.ZodDefault.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | () => [`noUndefined`](../modules/Core.z.util.md#noundefined)\<`A`[``"_input"``]\> |
+
+#### Returns
+
+[`ZodDefault`](Core.z.ZodDefault.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[default](Core.z.ZodType.md#default)
+
+___
+
+### describe
+
+▸ **describe**(`description`): `this`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `description` | `string` |
+
+#### Returns
+
+`this`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[describe](Core.z.ZodType.md#describe)
+
+___
+
+### isNullable
+
+▸ **isNullable**(): `boolean`
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[isNullable](Core.z.ZodType.md#isnullable)
+
+___
+
+### isOptional
+
+▸ **isOptional**(): `boolean`
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[isOptional](Core.z.ZodType.md#isoptional)
+
+___
+
+### nullable
+
+▸ **nullable**(): [`ZodNullable`](Core.z.ZodNullable.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Returns
+
+[`ZodNullable`](Core.z.ZodNullable.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[nullable](Core.z.ZodType.md#nullable)
+
+___
+
+### nullish
+
+▸ **nullish**(): [`ZodOptional`](Core.z.ZodOptional.md)\<[`ZodNullable`](Core.z.ZodNullable.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>\>
+
+#### Returns
+
+[`ZodOptional`](Core.z.ZodOptional.md)\<[`ZodNullable`](Core.z.ZodNullable.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[nullish](Core.z.ZodType.md#nullish)
+
+___
+
+### optional
+
+▸ **optional**(): [`ZodOptional`](Core.z.ZodOptional.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Returns
+
+[`ZodOptional`](Core.z.ZodOptional.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[optional](Core.z.ZodType.md#optional)
+
+___
+
+### or
+
+▸ **or**\<`T`\>(`option`): [`ZodUnion`](Core.z.ZodUnion.md)\<[[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `T`]\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `option` | `T` |
+
+#### Returns
+
+[`ZodUnion`](Core.z.ZodUnion.md)\<[[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `T`]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[or](Core.z.ZodType.md#or)
+
+___
+
+### parse
+
+▸ **parse**(`data`, `params?`): `B`[``"_output"``]
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+`B`[``"_output"``]
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[parse](Core.z.ZodType.md#parse)
+
+___
+
+### parseAsync
+
+▸ **parseAsync**(`data`, `params?`): `Promise`\<`B`[``"_output"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+`Promise`\<`B`[``"_output"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[parseAsync](Core.z.ZodType.md#parseasync)
+
+___
+
+### pipe
+
+▸ **pipe**\<`T`\>(`target`): [`ZodPipeline`](Core.z.ZodPipeline.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `T`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `target` | `T` |
+
+#### Returns
+
+[`ZodPipeline`](Core.z.ZodPipeline.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `T`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[pipe](Core.z.ZodType.md#pipe)
+
+___
+
+### promise
+
+▸ **promise**(): [`ZodPromise`](Core.z.ZodPromise.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Returns
+
+[`ZodPromise`](Core.z.ZodPromise.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[promise](Core.z.ZodType.md#promise)
+
+___
+
+### readonly
+
+▸ **readonly**(): [`ZodReadonly`](Core.z.ZodReadonly.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Returns
+
+[`ZodReadonly`](Core.z.ZodReadonly.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[readonly](Core.z.ZodType.md#readonly)
+
+___
+
+### refine
+
+▸ **refine**\<`RefinedOutput`\>(`check`, `message?`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `RefinedOutput`, `A`[``"_input"``]\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `RefinedOutput` | extends `any` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `B`[``"_output"``]) => arg is RefinedOutput |
+| `message?` | `string` \| `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](../interfaces/Core.z.ZodCustomIssue.md), ``"code"``\>\> \| (`arg`: `B`[``"_output"``]) => `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](../interfaces/Core.z.ZodCustomIssue.md), ``"code"``\>\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `RefinedOutput`, `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[refine](Core.z.ZodType.md#refine)
+
+▸ **refine**(`check`, `message?`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `B`[``"_output"``]) => `unknown` |
+| `message?` | `string` \| `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](../interfaces/Core.z.ZodCustomIssue.md), ``"code"``\>\> \| (`arg`: `B`[``"_output"``]) => `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](../interfaces/Core.z.ZodCustomIssue.md), ``"code"``\>\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[refine](Core.z.ZodType.md#refine)
+
+___
+
+### refinement
+
+▸ **refinement**\<`RefinedOutput`\>(`check`, `refinementData`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `RefinedOutput`, `A`[``"_input"``]\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `RefinedOutput` | extends `any` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `B`[``"_output"``]) => arg is RefinedOutput |
+| `refinementData` | [`IssueData`](../modules/Core.z.md#issuedata) \| (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => [`IssueData`](../modules/Core.z.md#issuedata) |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `RefinedOutput`, `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[refinement](Core.z.ZodType.md#refinement)
+
+▸ **refinement**(`check`, `refinementData`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `B`[``"_output"``]) => `boolean` |
+| `refinementData` | [`IssueData`](../modules/Core.z.md#issuedata) \| (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => [`IssueData`](../modules/Core.z.md#issuedata) |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[refinement](Core.z.ZodType.md#refinement)
+
+___
+
+### safeParse
+
+▸ **safeParse**(`data`, `params?`): [`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[safeParse](Core.z.ZodType.md#safeparse)
+
+___
+
+### safeParseAsync
+
+▸ **safeParseAsync**(`data`, `params?`): `Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+`Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`A`[``"_input"``], `B`[``"_output"``]\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[safeParseAsync](Core.z.ZodType.md#safeparseasync)
+
+___
+
+### superRefine
+
+▸ **superRefine**\<`RefinedOutput`\>(`refinement`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `RefinedOutput`, `A`[``"_input"``]\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `RefinedOutput` | extends `any` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => arg is RefinedOutput |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `RefinedOutput`, `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[superRefine](Core.z.ZodType.md#superrefine)
+
+▸ **superRefine**(`refinement`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => `void` |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[superRefine](Core.z.ZodType.md#superrefine)
+
+▸ **superRefine**(`refinement`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => `Promise`\<`void`\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `B`[``"_output"``], `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[superRefine](Core.z.ZodType.md#superrefine)
+
+___
+
+### transform
+
+▸ **transform**\<`NewOut`\>(`transform`): [`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `NewOut`, `A`[``"_input"``]\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `NewOut` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transform` | (`arg`: `B`[``"_output"``], `ctx`: [`RefinementCtx`](../interfaces/Core.z.RefinementCtx.md)) => `NewOut` \| `Promise`\<`NewOut`\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects.md)\<[`ZodPipeline`](Core.z.ZodPipeline.md)\<`A`, `B`\>, `NewOut`, `A`[``"_input"``]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[transform](Core.z.ZodType.md#transform)
+
+___
+
+### ~validate
+
+▸ **~validate**(`data`): `Result`\<`B`[``"_output"``]\> \| `Promise`\<`Result`\<`B`[``"_output"``]\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+
+#### Returns
+
+`Result`\<`B`[``"_output"``]\> \| `Promise`\<`Result`\<`B`[``"_output"``]\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType.md).[~validate](Core.z.ZodType.md#~validate)

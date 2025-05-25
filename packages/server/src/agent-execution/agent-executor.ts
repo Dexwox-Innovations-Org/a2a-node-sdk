@@ -1,6 +1,43 @@
+/**
+ * @module AgentExecutor
+ * @description Interfaces and implementations for executing agent tasks
+ * 
+ * This module provides the interfaces and implementations for executing tasks
+ * on behalf of agents in the A2A protocol. It handles task lifecycle management,
+ * status updates, and event publishing.
+ */
+
 import { EventQueue } from './event-queue';
 import { RequestContext } from './request-context';
 
+/**
+ * Interface for executing agent tasks
+ * 
+ * This interface defines the contract for executing tasks on behalf of agents.
+ * Implementations are responsible for handling task execution, cancellation,
+ * and lifecycle management.
+ * 
+ * @example
+ * ```typescript
+ * class CustomAgentExecutor implements AgentExecutor {
+ *   async execute(context: RequestContext, eventQueue: EventQueue): Promise<void> {
+ *     // Custom execution logic
+ *     console.log(`Executing task ${context.task.id}`);
+ *     
+ *     // Publish events
+ *     eventQueue.publish({
+ *       type: 'task.updated',
+ *       payload: { taskId: context.task.id, status: 'working' }
+ *     });
+ *   }
+ *   
+ *   async cancel(context: RequestContext, eventQueue: EventQueue): Promise<void> {
+ *     // Custom cancellation logic
+ *     console.log(`Canceling task ${context.task.id}`);
+ *   }
+ * }
+ * ```
+ */
 export interface AgentExecutor {
   /**
    * Execute a task with the given context
@@ -28,12 +65,55 @@ import {
   TaskFailedError
 } from '@dexwox/a2a-core';
 
+/**
+ * Default implementation of the AgentExecutor interface
+ * 
+ * This class provides a basic implementation of the AgentExecutor interface
+ * that manages task lifecycle, publishes events, and handles errors. It uses
+ * a TaskManager for task persistence and a TaskEventManager for event publishing.
+ * 
+ * @example
+ * ```typescript
+ * // Create dependencies
+ * const taskStore = new InMemoryTaskStore();
+ * const taskManager = new TaskManager(taskStore);
+ * const taskEventManager = new TaskEventManager();
+ * 
+ * // Create the executor
+ * const executor = new DefaultAgentExecutor(taskManager, taskEventManager);
+ * 
+ * // Execute a task
+ * await executor.execute(
+ *   createRequestContext(task, 'agent-123'),
+ *   new EventQueue()
+ * );
+ * ```
+ */
+
 export class DefaultAgentExecutor implements AgentExecutor {
+  /**
+   * Creates a new DefaultAgentExecutor
+   * 
+   * @param taskManager - The task manager for task persistence
+   * @param taskEventManager - The task event manager for event publishing
+   */
   constructor(
     private taskManager: TaskManager,
     private taskEventManager: TaskEventManager
   ) {}
 
+  /**
+   * Executes a task on behalf of an agent
+   * 
+   * This method handles the execution of a task, including updating its status,
+   * publishing events, and handling errors. It transitions the task from its
+   * current state to 'working' and then to 'completed' if successful.
+   * 
+   * @param context - The request context containing task and agent information
+   * @param eventQueue - The event queue for publishing events
+   * @returns Promise that resolves when execution is complete
+   * @throws Various task-related errors if execution fails
+   */
   async execute(context: RequestContext, eventQueue: EventQueue): Promise<void> {
     const task = await this.taskManager.getTask(context.task.id);
     

@@ -1,0 +1,262 @@
+[A2A Node SDK - v0.1.0](../README.md) / [Modules](../modules.md) / [Core](../modules/Core.md) / [z](../modules/Core.z.md) / ZodFirstPartyTypeKind
+
+# Enumeration: ZodFirstPartyTypeKind
+
+[Core](../modules/Core.md).[z](../modules/Core.z.md).ZodFirstPartyTypeKind
+
+## Table of contents
+
+### Enumeration Members
+
+- [ZodAny](Core.z.ZodFirstPartyTypeKind.md#zodany)
+- [ZodArray](Core.z.ZodFirstPartyTypeKind.md#zodarray)
+- [ZodBigInt](Core.z.ZodFirstPartyTypeKind.md#zodbigint)
+- [ZodBoolean](Core.z.ZodFirstPartyTypeKind.md#zodboolean)
+- [ZodBranded](Core.z.ZodFirstPartyTypeKind.md#zodbranded)
+- [ZodCatch](Core.z.ZodFirstPartyTypeKind.md#zodcatch)
+- [ZodDate](Core.z.ZodFirstPartyTypeKind.md#zoddate)
+- [ZodDefault](Core.z.ZodFirstPartyTypeKind.md#zoddefault)
+- [ZodDiscriminatedUnion](Core.z.ZodFirstPartyTypeKind.md#zoddiscriminatedunion)
+- [ZodEffects](Core.z.ZodFirstPartyTypeKind.md#zodeffects)
+- [ZodEnum](Core.z.ZodFirstPartyTypeKind.md#zodenum)
+- [ZodFunction](Core.z.ZodFirstPartyTypeKind.md#zodfunction)
+- [ZodIntersection](Core.z.ZodFirstPartyTypeKind.md#zodintersection)
+- [ZodLazy](Core.z.ZodFirstPartyTypeKind.md#zodlazy)
+- [ZodLiteral](Core.z.ZodFirstPartyTypeKind.md#zodliteral)
+- [ZodMap](Core.z.ZodFirstPartyTypeKind.md#zodmap)
+- [ZodNaN](Core.z.ZodFirstPartyTypeKind.md#zodnan)
+- [ZodNativeEnum](Core.z.ZodFirstPartyTypeKind.md#zodnativeenum)
+- [ZodNever](Core.z.ZodFirstPartyTypeKind.md#zodnever)
+- [ZodNull](Core.z.ZodFirstPartyTypeKind.md#zodnull)
+- [ZodNullable](Core.z.ZodFirstPartyTypeKind.md#zodnullable)
+- [ZodNumber](Core.z.ZodFirstPartyTypeKind.md#zodnumber)
+- [ZodObject](Core.z.ZodFirstPartyTypeKind.md#zodobject)
+- [ZodOptional](Core.z.ZodFirstPartyTypeKind.md#zodoptional)
+- [ZodPipeline](Core.z.ZodFirstPartyTypeKind.md#zodpipeline)
+- [ZodPromise](Core.z.ZodFirstPartyTypeKind.md#zodpromise)
+- [ZodReadonly](Core.z.ZodFirstPartyTypeKind.md#zodreadonly)
+- [ZodRecord](Core.z.ZodFirstPartyTypeKind.md#zodrecord)
+- [ZodSet](Core.z.ZodFirstPartyTypeKind.md#zodset)
+- [ZodString](Core.z.ZodFirstPartyTypeKind.md#zodstring)
+- [ZodSymbol](Core.z.ZodFirstPartyTypeKind.md#zodsymbol)
+- [ZodTuple](Core.z.ZodFirstPartyTypeKind.md#zodtuple)
+- [ZodUndefined](Core.z.ZodFirstPartyTypeKind.md#zodundefined)
+- [ZodUnion](Core.z.ZodFirstPartyTypeKind.md#zodunion)
+- [ZodUnknown](Core.z.ZodFirstPartyTypeKind.md#zodunknown)
+- [ZodVoid](Core.z.ZodFirstPartyTypeKind.md#zodvoid)
+
+## Enumeration Members
+
+### ZodAny
+
+• **ZodAny** = ``"ZodAny"``
+
+___
+
+### ZodArray
+
+• **ZodArray** = ``"ZodArray"``
+
+___
+
+### ZodBigInt
+
+• **ZodBigInt** = ``"ZodBigInt"``
+
+___
+
+### ZodBoolean
+
+• **ZodBoolean** = ``"ZodBoolean"``
+
+___
+
+### ZodBranded
+
+• **ZodBranded** = ``"ZodBranded"``
+
+___
+
+### ZodCatch
+
+• **ZodCatch** = ``"ZodCatch"``
+
+___
+
+### ZodDate
+
+• **ZodDate** = ``"ZodDate"``
+
+___
+
+### ZodDefault
+
+• **ZodDefault** = ``"ZodDefault"``
+
+___
+
+### ZodDiscriminatedUnion
+
+• **ZodDiscriminatedUnion** = ``"ZodDiscriminatedUnion"``
+
+___
+
+### ZodEffects
+
+• **ZodEffects** = ``"ZodEffects"``
+
+___
+
+### ZodEnum
+
+• **ZodEnum** = ``"ZodEnum"``
+
+___
+
+### ZodFunction
+
+• **ZodFunction** = ``"ZodFunction"``
+
+___
+
+### ZodIntersection
+
+• **ZodIntersection** = ``"ZodIntersection"``
+
+___
+
+### ZodLazy
+
+• **ZodLazy** = ``"ZodLazy"``
+
+___
+
+### ZodLiteral
+
+• **ZodLiteral** = ``"ZodLiteral"``
+
+___
+
+### ZodMap
+
+• **ZodMap** = ``"ZodMap"``
+
+___
+
+### ZodNaN
+
+• **ZodNaN** = ``"ZodNaN"``
+
+___
+
+### ZodNativeEnum
+
+• **ZodNativeEnum** = ``"ZodNativeEnum"``
+
+___
+
+### ZodNever
+
+• **ZodNever** = ``"ZodNever"``
+
+___
+
+### ZodNull
+
+• **ZodNull** = ``"ZodNull"``
+
+___
+
+### ZodNullable
+
+• **ZodNullable** = ``"ZodNullable"``
+
+___
+
+### ZodNumber
+
+• **ZodNumber** = ``"ZodNumber"``
+
+___
+
+### ZodObject
+
+• **ZodObject** = ``"ZodObject"``
+
+___
+
+### ZodOptional
+
+• **ZodOptional** = ``"ZodOptional"``
+
+___
+
+### ZodPipeline
+
+• **ZodPipeline** = ``"ZodPipeline"``
+
+___
+
+### ZodPromise
+
+• **ZodPromise** = ``"ZodPromise"``
+
+___
+
+### ZodReadonly
+
+• **ZodReadonly** = ``"ZodReadonly"``
+
+___
+
+### ZodRecord
+
+• **ZodRecord** = ``"ZodRecord"``
+
+___
+
+### ZodSet
+
+• **ZodSet** = ``"ZodSet"``
+
+___
+
+### ZodString
+
+• **ZodString** = ``"ZodString"``
+
+___
+
+### ZodSymbol
+
+• **ZodSymbol** = ``"ZodSymbol"``
+
+___
+
+### ZodTuple
+
+• **ZodTuple** = ``"ZodTuple"``
+
+___
+
+### ZodUndefined
+
+• **ZodUndefined** = ``"ZodUndefined"``
+
+___
+
+### ZodUnion
+
+• **ZodUnion** = ``"ZodUnion"``
+
+___
+
+### ZodUnknown
+
+• **ZodUnknown** = ``"ZodUnknown"``
+
+___
+
+### ZodVoid
+
+• **ZodVoid** = ``"ZodVoid"``

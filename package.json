@@ -11,7 +11,9 @@
     "build:client": "cd packages/client && pnpm run clean && pnpm run build",
     "build:server": "cd packages/server && pnpm run clean && pnpm run build",
     "build:all": "pnpm -r run build",
-    "lint": "pnpm -r run lint"
+    "lint": "pnpm -r run lint",
+    "docs:typedoc": "typedoc --options typedoc.json",
+    "docs:build": "pnpm run docs:typedoc"
   },
   "workspaces": [
     "packages/*"
@@ -29,6 +31,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.15.18",
+    "typedoc": "^0.25.12",
+    "typedoc-plugin-markdown": "^3.17.1",
     "typescript": "^5.8.3"
   }
 }

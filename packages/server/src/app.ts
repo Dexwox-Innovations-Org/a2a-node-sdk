@@ -1,3 +1,8 @@
+/**
+ * @module A2AServer
+ * @description Server implementation for hosting A2A protocol agents
+ */
+
 import express from 'express';
 import { json } from 'body-parser';
 import cors from 'cors';
@@ -12,12 +17,51 @@ import type {
 import { A2AError, AgentCard } from '@dexwox/a2a-core';
 import { RequestHandler } from './request-handler';
 
+/**
+ * Server implementation for hosting A2A protocol agents
+ * 
+ * The A2AServer class provides a complete HTTP and WebSocket server implementation
+ * for hosting agents that implement the A2A protocol. It handles request routing,
+ * error handling, and WebSocket connections for streaming.
+ * 
+ * @example
+ * ```typescript
+ * import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+ * 
+ * // Define an agent
+ * const agent = {
+ *   id: 'weather-agent',
+ *   name: 'Weather Agent',
+ *   description: 'Provides weather information',
+ *   capabilities: ['weather-forecasting'],
+ *   endpoint: 'http://localhost:3000'
+ * };
+ * 
+ * // Create a request handler
+ * const requestHandler = new DefaultRequestHandler([agent]);
+ * 
+ * // Create and start the server
+ * const server = new A2AServer(agent, requestHandler);
+ * server.start(3000);
+ * ```
+ */
 export class A2AServer {
+  /** Express application instance */
   private readonly app: ReturnType<typeof express>;
+  /** WebSocket server instance */
   private wss: WebSocketServer | null = null;
+  /** Agent card for this server */
   private readonly agentCard: AgentCard;
+  /** Handler for processing incoming requests */
   private readonly requestHandler: RequestHandler;
 
+  /**
+   * Creates a new A2AServer instance
+   * 
+   * @param agentCard - The agent card describing this server's capabilities
+   * @param requestHandler - Handler for processing incoming requests
+   * @param contextMiddleware - Optional custom middleware for request context
+   */
   constructor(
     agentCard: AgentCard, 
     requestHandler: RequestHandler,
@@ -32,6 +76,12 @@ export class A2AServer {
     this.configureErrorHandling();
   }
 
+  /**
+   * Configures Express middleware for the server
+   * 
+   * Sets up JSON parsing, CORS, and request context middleware.
+   * @private
+   */
   private configureMiddleware(): void {
     this.app.use(json() as express.RequestHandler);
     this.app.use(cors({
@@ -48,6 +98,12 @@ export class A2AServer {
     }
   }
 
+  /**
+   * Configures HTTP routes for the server
+   * 
+   * Sets up the agent card endpoint and API routes.
+   * @private
+   */
   private configureRoutes(): void {
     // Agent card endpoint
     this.app.get('/.well-known/agent.json', (_: Request, res: Response) => {
@@ -58,6 +114,12 @@ export class A2AServer {
     this.app.use('/api/v1', this.requestHandler.router);
   }
 
+  /**
+   * Configures global error handling for the server
+   * 
+   * Sets up middleware to catch and format errors according to the A2A protocol.
+   * @private
+   */
   private configureErrorHandling(): void {
     const errorHandler: ErrorRequestHandler = (
       err: unknown,
@@ -88,6 +150,23 @@ export class A2AServer {
     this.app.use(errorHandler);
   }
 
+  /**
+   * Starts the A2A server on the specified port
+   * 
+   * This method starts both the HTTP server and WebSocket server for handling
+   * A2A protocol requests. The WebSocket server is used for streaming messages.
+   * 
+   * @param port - The port to listen on (default: 3000)
+   * 
+   * @example
+   * ```typescript
+   * // Start on the default port (3000)
+   * server.start();
+   * 
+   * // Start on a specific port
+   * server.start(8080);
+   * ```
+   */
   public start(port: number = 3000): void {
     const server = this.app.listen(port, () => {
       console.log(`Server running on port ${port}`);

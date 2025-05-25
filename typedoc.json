@@ -1,0 +1,37 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "entryPoints": [
+    "./packages/core/src/index.ts",
+    "./packages/client/src/index.ts",
+    "./packages/server/src/index.ts"
+  ],
+  "entryPointStrategy": "expand",
+  "out": "docs-api",
+  "name": "A2A Node SDK",
+  "includeVersion": true,
+  "readme": "./README.md",
+  "plugin": ["typedoc-plugin-markdown"],
+  "theme": "markdown",
+  "excludePrivate": true,
+  "excludeInternal": true,
+  "skipErrorChecking": true,
+  "tsconfig": "./tsconfig.json",
+  "disableSources": true,
+  "categorizeByGroup": true,
+  "categoryOrder": [
+    "Core",
+    "Client",
+    "Server",
+    "Types",
+    "Utilities",
+    "*"
+  ],
+  "sort": [
+    "alphabetical",
+    "visibility",
+    "kind"
+  ],
+  "gitRevision": "main",
+  "githubPages": false,
+  "cleanOutputDir": true
+}

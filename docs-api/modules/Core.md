@@ -1,0 +1,1662 @@
+[A2A Node SDK - v0.1.0](../README.md) / [Modules](../modules.md) / Core
+
+# Module: Core
+
+**`Description`**
+
+Core types, utilities, and validation for the A2A protocol
+
+This package provides the foundational types and utilities for working with the
+Agent-to-Agent (A2A) protocol. It includes JSON-RPC implementations, protocol-specific
+types, validation utilities, and error handling.
+
+## Table of contents
+
+### References
+
+- [A2AErrorType](Core.md#a2aerrortype)
+
+### Namespaces
+
+- [z](Core.z.md)
+
+### Enumerations
+
+- [ArtifactErrorCode](../enums/Core.ArtifactErrorCode.md)
+- [MessageErrorCode](../enums/Core.MessageErrorCode.md)
+- [TaskErrorCode](../enums/Core.TaskErrorCode.md)
+
+### Classes
+
+- [A2AError](../classes/Core.A2AError.md)
+- [InvalidTaskStateError](../classes/Core.InvalidTaskStateError.md)
+- [TaskAlreadyCompletedError](../classes/Core.TaskAlreadyCompletedError.md)
+- [TaskCanceledError](../classes/Core.TaskCanceledError.md)
+- [TaskFailedError](../classes/Core.TaskFailedError.md)
+- [TaskNotFoundError](../classes/Core.TaskNotFoundError.md)
+
+### Interfaces
+
+- [AgentCard](../interfaces/Core.AgentCard.md)
+- [DiscoverRequest](../interfaces/Core.DiscoverRequest.md)
+- [DiscoverResponse](../interfaces/Core.DiscoverResponse.md)
+- [JsonRpcResponseBase](../interfaces/Core.JsonRpcResponseBase.md)
+- [Message](../interfaces/Core.Message.md)
+- [MessageSendConfiguration](../interfaces/Core.MessageSendConfiguration.md)
+- [PushNotificationConfig](../interfaces/Core.PushNotificationConfig.md)
+- [Task](../interfaces/Core.Task.md)
+- [TaskTransition](../interfaces/Core.TaskTransition.md)
+
+### Type Aliases
+
+- [Artifact](Core.md#artifact)
+- [JsonRpcMessage](Core.md#jsonrpcmessage)
+- [JsonRpcRequest](Core.md#jsonrpcrequest)
+- [JsonRpcResponse](Core.md#jsonrpcresponse)
+- [JsonRpcStreamResponse](Core.md#jsonrpcstreamresponse)
+- [MessagePart](Core.md#messagepart)
+- [TaskState](Core.md#taskstate)
+
+### Variables
+
+- [A2AErrorSchema](Core.md#a2aerrorschema)
+- [ArtifactSchema](Core.md#artifactschema)
+- [ERROR\_CODES](Core.md#error_codes)
+- [JsonRpcMessageSchema](Core.md#jsonrpcmessageschema)
+- [JsonRpcRequestSchema](Core.md#jsonrpcrequestschema)
+- [JsonRpcResponseSchema](Core.md#jsonrpcresponseschema)
+- [JsonRpcStreamResponseSchema](Core.md#jsonrpcstreamresponseschema)
+- [MessagePartSchema](Core.md#messagepartschema)
+- [TaskStateSchema](Core.md#taskstateschema)
+- [schemas](Core.md#schemas)
+
+### Functions
+
+- [Trace](Core.md#trace)
+- [TraceClass](Core.md#traceclass)
+- [agentCardToJson](Core.md#agentcardtojson)
+- [createTransition](Core.md#createtransition)
+- [createValidator](Core.md#createvalidator)
+- [deserializeArtifact](Core.md#deserializeartifact)
+- [extractTextContent](Core.md#extracttextcontent)
+- [formatValidationError](Core.md#formatvalidationerror)
+- [fromJsonRpcResponse](Core.md#fromjsonrpcresponse)
+- [isAgentCard](Core.md#isagentcard)
+- [isMessage](Core.md#ismessage)
+- [isPushNotificationConfig](Core.md#ispushnotificationconfig)
+- [isTask](Core.md#istask)
+- [jsonToAgentCard](Core.md#jsontoagentcard)
+- [jsonToTask](Core.md#jsontotask)
+- [serializeArtifact](Core.md#serializeartifact)
+- [taskToJson](Core.md#tasktojson)
+- [toJsonRpcRequest](Core.md#tojsonrpcrequest)
+- [validateAgentCard](Core.md#validateagentcard)
+- [validateArtifact](Core.md#validateartifact)
+- [validateDiscoverRequest](Core.md#validatediscoverrequest)
+- [validateDiscoverResponse](Core.md#validatediscoverresponse)
+- [validateMessage](Core.md#validatemessage)
+- [validateMessageParts](Core.md#validatemessageparts)
+- [validatePushNotificationConfig](Core.md#validatepushnotificationconfig)
+- [validateTask](Core.md#validatetask)
+- [validateTransition](Core.md#validatetransition)
+- [validateWithSchema](Core.md#validatewithschema)
+
+## References
+
+### A2AErrorType
+
+Renames and re-exports [A2AError](../classes/Core.A2AError.md)
+
+## Type Aliases
+
+### Artifact
+
+Ƭ **Artifact**: [`TypeOf`](Core.z.md#typeof)\<typeof [`ArtifactSchema`](Core.md#artifactschema)\>
+
+Type representing an artifact produced by a task
+
+___
+
+### JsonRpcMessage
+
+Ƭ **JsonRpcMessage**: [`TypeOf`](Core.z.md#typeof)\<typeof [`JsonRpcMessageSchema`](Core.md#jsonrpcmessageschema)\>
+
+Base JSON-RPC message type
+
+___
+
+### JsonRpcRequest
+
+Ƭ **JsonRpcRequest**: [`TypeOf`](Core.z.md#typeof)\<typeof [`JsonRpcRequestSchema`](Core.md#jsonrpcrequestschema)\>
+
+JSON-RPC request type
+
+This type represents a JSON-RPC 2.0 request message, including the jsonrpc
+version, request id, method name, and optional parameters.
+
+**`Example`**
+
+```typescript
+// Create a JSON-RPC request
+const request: JsonRpcRequest = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  method: 'getTaskStatus',
+  params: { taskId: 'task-456' }
+};
+```
+
+___
+
+### JsonRpcResponse
+
+Ƭ **JsonRpcResponse**\<`T`\>: [`TypeOf`](Core.z.md#typeof)\<typeof [`JsonRpcResponseSchema`](Core.md#jsonrpcresponseschema)\> & [`JsonRpcResponseBase`](../interfaces/Core.JsonRpcResponseBase.md)\<`T`\>
+
+JSON-RPC response type
+
+This type represents a JSON-RPC 2.0 response message, parameterized by the
+result type for type safety. It extends the base response interface and is
+used for standard (non-streaming) JSON-RPC responses.
+
+**`Example`**
+
+```typescript
+// Create a JSON-RPC response with a string result
+const response: JsonRpcResponse<string> = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  result: 'task-456'
+};
+
+// Create a JSON-RPC error response
+const errorResponse: JsonRpcResponse<never> = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  error: {
+    code: -32602,
+    message: 'Invalid params'
+  }
+};
+```
+
+#### Type parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `T` | `any` | Response result type |
+
+___
+
+### JsonRpcStreamResponse
+
+Ƭ **JsonRpcStreamResponse**\<`T`\>: [`TypeOf`](Core.z.md#typeof)\<typeof [`JsonRpcStreamResponseSchema`](Core.md#jsonrpcstreamresponseschema)\> & [`JsonRpcResponseBase`](../interfaces/Core.JsonRpcResponseBase.md)\<`T`\>
+
+JSON-RPC streaming response type
+
+This type represents a JSON-RPC 2.0 streaming response message, parameterized
+by the data type for type safety. It's used for responses that stream data
+over time, such as task message streams.
+
+**`Example`**
+
+```typescript
+// Create a JSON-RPC streaming response with a MessagePart
+const streamResponse: JsonRpcStreamResponse<MessagePart> = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  result: {
+    type: 'text',
+    content: 'Hello, world!',
+    format: 'markdown'
+  }
+};
+```
+
+#### Type parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `T` | `any` | Response data type |
+
+___
+
+### MessagePart
+
+Ƭ **MessagePart**: [`TypeOf`](Core.z.md#typeof)\<typeof [`MessagePartSchema`](Core.md#messagepartschema)\>
+
+Type representing a part of a message
+
+___
+
+### TaskState
+
+Ƭ **TaskState**: [`TypeOf`](Core.z.md#typeof)\<typeof [`TaskStateSchema`](Core.md#taskstateschema)\>
+
+Type representing the possible states of a task
+
+## Variables
+
+### A2AErrorSchema
+
+• `Const` **A2AErrorSchema**: [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `code`: [`ZodNumber`](../classes/Core.z.ZodNumber.md) ; `data`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\>\> ; `message`: [`ZodString`](../classes/Core.z.ZodString.md)  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `code`: `number` ; `data?`: `Record`\<`string`, `any`\> ; `message`: `string`  }, \{ `code`: `number` ; `data?`: `Record`\<`string`, `any`\> ; `message`: `string`  }\>
+
+Schema defining standardized errors in the A2A protocol
+
+**`Remarks`**
+
+Error codes follow JSON-RPC error code conventions
+
+___
+
+### ArtifactSchema
+
+• `Const` **ArtifactSchema**: [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\> ; `createdAt`: [`ZodString`](../classes/Core.z.ZodString.md) ; `id`: [`ZodString`](../classes/Core.z.ZodString.md) ; `type`: [`ZodEnum`](../classes/Core.z.ZodEnum.md)\<[``"text"``, ``"file"``, ``"data"``]\> ; `updatedAt`: [`ZodString`](../classes/Core.z.ZodString.md)  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `Record`\<`string`, `any`\> ; `createdAt`: `string` ; `id`: `string` ; `type`: ``"text"`` \| ``"file"`` \| ``"data"`` ; `updatedAt`: `string`  }, \{ `content`: `Record`\<`string`, `any`\> ; `createdAt`: `string` ; `id`: `string` ; `type`: ``"text"`` \| ``"file"`` \| ``"data"`` ; `updatedAt`: `string`  }\>
+
+Schema defining artifacts produced during task execution
+
+**`Remarks`**
+
+Artifacts are persistent outputs from tasks that can be referenced later
+
+___
+
+### ERROR\_CODES
+
+• `Const` **ERROR\_CODES**: `Object`
+
+Standard error codes for the A2A protocol
+
+These error codes are standardized across all A2A SDK implementations
+(JavaScript, Python, etc.) to ensure consistent error handling.
+
+Error code ranges:
+- Task errors: -32000 to -32049
+- Queue errors: -32050 to -32099
+
+**`Example`**
+
+```typescript
+// Check for a specific error code
+if (error.code === ERROR_CODES.TASK_NOT_FOUND) {
+  console.log('The requested task does not exist');
+}
+```
+
+#### Type declaration
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `INVALID_TASK_STATE` | ``-32010`` | Error code for invalid task state transitions (-32010) |
+| `NO_QUEUE` | ``-32051`` | Error code for when a required queue doesn't exist (-32051) |
+| `QUEUE_EXISTS` | ``-32050`` | Error code for when a queue already exists (-32050) |
+| `TASK_ALREADY_COMPLETED` | ``-32012`` | Error code for attempting to modify a completed task (-32012) |
+| `TASK_CANCELED` | ``-32013`` | Error code for attempting to work with a canceled task (-32013) |
+| `TASK_FAILED` | ``-32014`` | Error code for a task that failed to complete (-32014) |
+| `TASK_NOT_FOUND` | ``-32011`` | Error code for task not found (-32011) |
+
+___
+
+### JsonRpcMessageSchema
+
+• `Const` **JsonRpcMessageSchema**: [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `id`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodUnion`](../classes/Core.z.ZodUnion.md)\<[[`ZodString`](../classes/Core.z.ZodString.md), [`ZodNumber`](../classes/Core.z.ZodNumber.md)]\>\> ; `jsonrpc`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"2.0"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"``  }, \{ `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"``  }\>
+
+Base JSON-RPC 2.0 message schema
+
+This schema defines the base structure for all JSON-RPC 2.0 messages,
+including the required jsonrpc field and optional id field. All JSON-RPC
+requests and responses extend this base schema.
+
+**`See`**
+
+https://www.jsonrpc.org/specification
+
+**`Example`**
+
+```typescript
+// Validate a JSON-RPC message
+const message = {
+  jsonrpc: '2.0',
+  id: 'request-123'
+};
+
+const result = JsonRpcMessageSchema.safeParse(message);
+if (result.success) {
+  console.log('Valid JSON-RPC message');
+} else {
+  console.error('Invalid JSON-RPC message:', result.error);
+}
+```
+
+___
+
+### JsonRpcRequestSchema
+
+• `Const` **JsonRpcRequestSchema**: [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `id`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodUnion`](../classes/Core.z.ZodUnion.md)\<[[`ZodString`](../classes/Core.z.ZodString.md), [`ZodNumber`](../classes/Core.z.ZodNumber.md)]\>\> ; `jsonrpc`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"2.0"``\>  } & \{ `method`: [`ZodString`](../classes/Core.z.ZodString.md) ; `params`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\>\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"`` ; `method`: `string` ; `params?`: `Record`\<`string`, `any`\>  }, \{ `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"`` ; `method`: `string` ; `params?`: `Record`\<`string`, `any`\>  }\>
+
+JSON-RPC request schema
+
+This schema defines the structure for JSON-RPC 2.0 request messages,
+extending the base message schema with required method and optional
+params fields. The method field specifies the operation to be performed,
+and the params field contains the arguments for that operation.
+
+**`Example`**
+
+```typescript
+// Create and validate a JSON-RPC request
+const request = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  method: 'sendMessage',
+  params: {
+    agentId: 'assistant-agent',
+    parts: [{ type: 'text', content: 'Hello, world!' }]
+  }
+};
+
+const result = JsonRpcRequestSchema.safeParse(request);
+if (result.success) {
+  console.log('Valid JSON-RPC request');
+} else {
+  console.error('Invalid JSON-RPC request:', result.error);
+}
+```
+
+___
+
+### JsonRpcResponseSchema
+
+• `Const` **JsonRpcResponseSchema**: [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `id`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodUnion`](../classes/Core.z.ZodUnion.md)\<[[`ZodString`](../classes/Core.z.ZodString.md), [`ZodNumber`](../classes/Core.z.ZodNumber.md)]\>\> ; `jsonrpc`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"2.0"``\>  } & \{ `error`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `code`: [`ZodNumber`](../classes/Core.z.ZodNumber.md) ; `data`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodAny`](../classes/Core.z.ZodAny.md)\> ; `message`: [`ZodString`](../classes/Core.z.ZodString.md)  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `code`: `number` ; `data?`: `any` ; `message`: `string`  }, \{ `code`: `number` ; `data?`: `any` ; `message`: `string`  }\>\> ; `result`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodAny`](../classes/Core.z.ZodAny.md)\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `error?`: \{ `code`: `number` ; `data?`: `any` ; `message`: `string`  } ; `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"`` ; `result?`: `any`  }, \{ `error?`: \{ `code`: `number` ; `data?`: `any` ; `message`: `string`  } ; `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"`` ; `result?`: `any`  }\>
+
+JSON-RPC response schema
+
+This schema defines the structure for JSON-RPC 2.0 response messages,
+extending the base message schema with optional result and error fields.
+A successful response includes a result field, while an error response
+includes an error field with code, message, and optional data properties.
+
+**`Example`**
+
+```typescript
+// Create and validate a successful JSON-RPC response
+const successResponse = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  result: { taskId: 'task-456' }
+};
+
+// Create and validate an error JSON-RPC response
+const errorResponse = {
+  jsonrpc: '2.0',
+  id: 'request-123',
+  error: {
+    code: -32602,
+    message: 'Invalid params',
+    data: { details: 'Missing required field: agentId' }
+  }
+};
+```
+
+___
+
+### JsonRpcStreamResponseSchema
+
+• `Const` **JsonRpcStreamResponseSchema**: [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `id`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodUnion`](../classes/Core.z.ZodUnion.md)\<[[`ZodString`](../classes/Core.z.ZodString.md), [`ZodNumber`](../classes/Core.z.ZodNumber.md)]\>\> ; `jsonrpc`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"2.0"``\>  } & \{ `data`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodAny`](../classes/Core.z.ZodAny.md)\> ; `event`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodString`](../classes/Core.z.ZodString.md)\> ; `result`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodAny`](../classes/Core.z.ZodAny.md)\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `data?`: `any` ; `event?`: `string` ; `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"`` ; `result?`: `any`  }, \{ `data?`: `any` ; `event?`: `string` ; `id?`: `string` \| `number` ; `jsonrpc`: ``"2.0"`` ; `result?`: `any`  }\>
+
+JSON-RPC streaming response schema
+
+**`Example`**
+
+```ts
+{
+ *   jsonrpc: '2.0',
+ *   event: 'update',
+ *   data: { progress: 50 }
+ * }
+```
+
+___
+
+### MessagePartSchema
+
+• `Const` **MessagePartSchema**: [`ZodDiscriminatedUnion`](../classes/Core.z.ZodDiscriminatedUnion.md)\<``"type"``, [[`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodString`](../classes/Core.z.ZodString.md) ; `format`: [`ZodDefault`](../classes/Core.z.ZodDefault.md)\<[`ZodEnum`](../classes/Core.z.ZodEnum.md)\<[``"plain"``, ``"markdown"``]\>\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"text"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `string` ; `format`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  }, \{ `content`: `string` ; `format?`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  }\>, [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodUnion`](../classes/Core.z.ZodUnion.md)\<[[`ZodString`](../classes/Core.z.ZodString.md), [`ZodType`](../classes/Core.z.ZodType.md)\<`Uint8Array`\<`ArrayBuffer`\>, [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), `Uint8Array`\<`ArrayBuffer`\>\>]\> ; `mimeType`: [`ZodString`](../classes/Core.z.ZodString.md) ; `name`: [`ZodString`](../classes/Core.z.ZodString.md) ; `size`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodNumber`](../classes/Core.z.ZodNumber.md)\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"file"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  }, \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  }\>, [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\> ; `schema`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodString`](../classes/Core.z.ZodString.md)\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"data"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  }, \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  }\>, [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodString`](../classes/Core.z.ZodString.md) ; `format`: [`ZodDefault`](../classes/Core.z.ZodDefault.md)\<[`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"plain"``\>\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"heartbeat"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `string` ; `format`: ``"plain"`` ; `type`: ``"heartbeat"``  }, \{ `content`: `string` ; `format?`: ``"plain"`` ; `type`: ``"heartbeat"``  }\>]\>
+
+Schema defining the different types of message parts in the A2A protocol
+
+**`Remarks`**
+
+Uses a discriminated union based on the 'type' field
+
+___
+
+### TaskStateSchema
+
+• `Const` **TaskStateSchema**: [`ZodEnum`](../classes/Core.z.ZodEnum.md)\<[``"submitted"``, ``"working"``, ``"input_required"``, ``"completed"``, ``"failed"``, ``"canceled"``]\>
+
+Schema defining the possible states of a task in the A2A protocol
+
+**`Remarks`**
+
+This is used for validation with Zod
+
+___
+
+### schemas
+
+• `Const` **schemas**: `Object`
+
+Collection of all schema definitions for A2A protocol objects
+
+This object provides access to all the Zod schemas defined in this module,
+allowing them to be used directly for validation or type inference.
+
+**`Example`**
+
+```typescript
+// Use a schema directly for validation
+const result = schemas.Message.safeParse(data);
+
+// Create a type from a schema
+type MessageType = z.infer<typeof schemas.Message>;
+```
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `A2AError` | [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `code`: [`ZodNumber`](../classes/Core.z.ZodNumber.md) ; `data`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\>\> ; `message`: [`ZodString`](../classes/Core.z.ZodString.md)  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `code`: `number` ; `data?`: `Record`\<`string`, `any`\> ; `message`: `string`  }, \{ `code`: `number` ; `data?`: `Record`\<`string`, `any`\> ; `message`: `string`  }\> |
+| `AgentCard` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`AgentCard`](../interfaces/Core.AgentCard.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`AgentCard`](../interfaces/Core.AgentCard.md)\> |
+| `Artifact` | [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\> ; `createdAt`: [`ZodString`](../classes/Core.z.ZodString.md) ; `id`: [`ZodString`](../classes/Core.z.ZodString.md) ; `type`: [`ZodEnum`](../classes/Core.z.ZodEnum.md)\<[``"text"``, ``"file"``, ``"data"``]\> ; `updatedAt`: [`ZodString`](../classes/Core.z.ZodString.md)  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `Record`\<`string`, `any`\> ; `createdAt`: `string` ; `id`: `string` ; `type`: ``"text"`` \| ``"file"`` \| ``"data"`` ; `updatedAt`: `string`  }, \{ `content`: `Record`\<`string`, `any`\> ; `createdAt`: `string` ; `id`: `string` ; `type`: ``"text"`` \| ``"file"`` \| ``"data"`` ; `updatedAt`: `string`  }\> |
+| `DiscoverRequest` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`DiscoverRequest`](../interfaces/Core.DiscoverRequest.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`DiscoverRequest`](../interfaces/Core.DiscoverRequest.md)\> |
+| `DiscoverResponse` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`DiscoverResponse`](../interfaces/Core.DiscoverResponse.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`DiscoverResponse`](../interfaces/Core.DiscoverResponse.md)\> |
+| `Message` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`Message`](../interfaces/Core.Message.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`Message`](../interfaces/Core.Message.md)\> |
+| `MessagePart` | [`ZodDiscriminatedUnion`](../classes/Core.z.ZodDiscriminatedUnion.md)\<``"type"``, [[`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodString`](../classes/Core.z.ZodString.md) ; `format`: [`ZodDefault`](../classes/Core.z.ZodDefault.md)\<[`ZodEnum`](../classes/Core.z.ZodEnum.md)\<[``"plain"``, ``"markdown"``]\>\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"text"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `string` ; `format`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  }, \{ `content`: `string` ; `format?`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  }\>, [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodUnion`](../classes/Core.z.ZodUnion.md)\<[[`ZodString`](../classes/Core.z.ZodString.md), [`ZodType`](../classes/Core.z.ZodType.md)\<`Uint8Array`\<`ArrayBuffer`\>, [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), `Uint8Array`\<`ArrayBuffer`\>\>]\> ; `mimeType`: [`ZodString`](../classes/Core.z.ZodString.md) ; `name`: [`ZodString`](../classes/Core.z.ZodString.md) ; `size`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodNumber`](../classes/Core.z.ZodNumber.md)\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"file"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  }, \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  }\>, [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodRecord`](../classes/Core.z.ZodRecord.md)\<[`ZodString`](../classes/Core.z.ZodString.md), [`ZodAny`](../classes/Core.z.ZodAny.md)\> ; `schema`: [`ZodOptional`](../classes/Core.z.ZodOptional.md)\<[`ZodString`](../classes/Core.z.ZodString.md)\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"data"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  }, \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  }\>, [`ZodObject`](../classes/Core.z.ZodObject.md)\<\{ `content`: [`ZodString`](../classes/Core.z.ZodString.md) ; `format`: [`ZodDefault`](../classes/Core.z.ZodDefault.md)\<[`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"plain"``\>\> ; `type`: [`ZodLiteral`](../classes/Core.z.ZodLiteral.md)\<``"heartbeat"``\>  }, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), \{ `content`: `string` ; `format`: ``"plain"`` ; `type`: ``"heartbeat"``  }, \{ `content`: `string` ; `format?`: ``"plain"`` ; `type`: ``"heartbeat"``  }\>]\> |
+| `MessageSendConfiguration` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`MessageSendConfiguration`](../interfaces/Core.MessageSendConfiguration.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`MessageSendConfiguration`](../interfaces/Core.MessageSendConfiguration.md)\> |
+| `PushNotificationConfig` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`PushNotificationConfig`](../interfaces/Core.PushNotificationConfig.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`PushNotificationConfig`](../interfaces/Core.PushNotificationConfig.md)\> |
+| `Task` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`Task`](../interfaces/Core.Task.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`Task`](../interfaces/Core.Task.md)\> |
+| `TaskTransition` | [`ZodType`](../classes/Core.z.ZodType.md)\<[`TaskTransition`](../interfaces/Core.TaskTransition.md), [`ZodTypeDef`](../interfaces/Core.z.ZodTypeDef.md), [`TaskTransition`](../interfaces/Core.TaskTransition.md)\> |
+
+## Functions
+
+### Trace
+
+▸ **Trace**(`nameOrOptions?`): `any`
+
+Method decorator that automatically creates a span for the decorated method
+
+This decorator instruments methods with OpenTelemetry tracing, creating spans
+that track method execution, timing, and errors. It supports both synchronous
+and asynchronous methods.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `nameOrOptions?` | `string` \| `TraceOptions` | Optional span name or configuration object |
+
+#### Returns
+
+`any`
+
+**`Example`**
+
+```typescript
+class UserService {
+  // Basic usage
+  @Trace()
+  async getUser(id: string) {
+    // Method implementation
+  }
+
+  // With custom span name
+  @Trace('FetchUserDetails')
+  async getUserDetails(id: string) {
+    // Method implementation
+  }
+
+  // With options object
+  @Trace({ name: 'UserAuthentication' })
+  async authenticateUser(username: string, password: string) {
+    // Method implementation
+  }
+}
+```
+
+___
+
+### TraceClass
+
+▸ **TraceClass**(`name?`): `ClassDecorator`
+
+Class decorator to automatically trace all methods in a class
+
+This decorator applies the Trace decorator to all methods in a class,
+making it easy to instrument an entire class without decorating each
+method individually.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `name?` | `string` | Optional custom name prefix for the spans (defaults to class name) |
+
+#### Returns
+
+`ClassDecorator`
+
+A class decorator
+
+**`Example`**
+
+```typescript
+// Basic usage - traces all methods with ClassName.methodName
+@TraceClass()
+class UserService {
+  async getUser(id: string) { 
+    // Method implementation
+  }
+  async updateUser(id: string, data: any) { 
+    // Method implementation
+  }
+}
+
+// With custom name prefix
+@TraceClass('Users')
+class UserService {
+  // Will be traced as 'Users.getUser'
+  async getUser(id: string) { 
+    // Method implementation
+  }
+}
+```
+
+___
+
+### agentCardToJson
+
+▸ **agentCardToJson**(`agent`): `Record`\<`string`, `any`\>
+
+Converts an AgentCard to a JSON-serializable object
+
+This function converts an AgentCard instance to a plain JavaScript object
+that can be safely serialized to JSON. It creates a deep copy of the agent's
+capabilities array to prevent modifications to the original object.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `agent` | [`AgentCard`](../interfaces/Core.AgentCard.md) | The AgentCard to convert |
+
+#### Returns
+
+`Record`\<`string`, `any`\>
+
+A JSON-serializable representation of the agent
+
+**`Example`**
+
+```typescript
+const agent: AgentCard = {
+  id: 'assistant-agent',
+  name: 'Assistant',
+  capabilities: ['chat', 'answer-questions'],
+  endpoint: 'https://example.com/agents/assistant'
+};
+
+const json = agentCardToJson(agent);
+const serialized = JSON.stringify(json);
+```
+
+___
+
+### createTransition
+
+▸ **createTransition**(`from`, `to`, `reason?`): [`TaskTransition`](../interfaces/Core.TaskTransition.md)
+
+Creates a new task transition record
+
+This function creates a transition record that documents a change in task state.
+Transition records include the starting state, ending state, timestamp, and an
+optional reason for the transition.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `from` | ``"submitted"`` \| ``"working"`` \| ``"input_required"`` \| ``"completed"`` \| ``"failed"`` \| ``"canceled"`` | Starting task state |
+| `to` | ``"submitted"`` \| ``"working"`` \| ``"input_required"`` \| ``"completed"`` \| ``"failed"`` \| ``"canceled"`` | Ending task state |
+| `reason?` | `string` | Optional reason for the transition |
+
+#### Returns
+
+[`TaskTransition`](../interfaces/Core.TaskTransition.md)
+
+A new transition object with timestamp
+
+**`Example`**
+
+```typescript
+// Create a transition record when a task is completed
+const transition = createTransition('working', 'completed');
+console.log(transition);
+// Output: {
+//   from: 'working',
+//   to: 'completed',
+//   timestamp: '2023-05-26T12:34:56.789Z'
+// }
+
+// Create a transition record with a reason
+const failedTransition = createTransition(
+  'working',
+  'failed',
+  'API request timeout'
+);
+console.log(failedTransition);
+// Output: {
+//   from: 'working',
+//   to: 'failed',
+//   timestamp: '2023-05-26T12:35:12.345Z',
+//   reason: 'API request timeout'
+// }
+```
+
+___
+
+### createValidator
+
+▸ **createValidator**\<`T`\>(`schema`): `Object`
+
+Creates a reusable validator from a JSON Schema definition
+
+This function converts a JSON Schema to a Zod validator and returns an object
+with a validate function and the schema. The validate function can be used to
+validate data against the schema multiple times without recreating the validator.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `schema` | `Record`\<`string`, `any`\> | JSON Schema definition |
+
+#### Returns
+
+`Object`
+
+An object with a validate function and the Zod schema
+
+| Name | Type |
+| :------ | :------ |
+| `schema` | [`ZodObject`](../classes/Core.z.ZodObject.md)\<`Record`\<`string`, [`ZodTypeAny`](Core.z.md#zodtypeany)\>, ``"strip"``, [`ZodTypeAny`](Core.z.md#zodtypeany), {}, {}\> |
+| `validate` | (`data`: `unknown`) => [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, `T`\> |
+
+**`Example`**
+
+```typescript
+// Create a reusable validator
+const userValidator = createValidator<User>({
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    email: { type: 'string', format: 'email' },
+    age: { type: 'number', minimum: 18 }
+  },
+  required: ['name', 'email']
+});
+
+// Validate multiple users
+const user1Result = userValidator.validate({
+  name: 'John Doe',
+  email: 'john@example.com',
+  age: 25
+});
+
+const user2Result = userValidator.validate({
+  name: 'Jane Smith',
+  email: 'jane@example.com',
+  age: 30
+});
+
+// You can also access the Zod schema directly
+type UserType = z.infer<typeof userValidator.schema>;
+```
+
+___
+
+### deserializeArtifact
+
+▸ **deserializeArtifact**(`data`): [`Artifact`](Core.md#artifact)
+
+Deserializes an artifact from a JSON string
+
+This function converts a JSON string representation back into an Artifact object.
+It handles error cases by throwing appropriate A2AError instances.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `string` | JSON encoded artifact data |
+
+#### Returns
+
+[`Artifact`](Core.md#artifact)
+
+Deserialized Artifact object
+
+**`Throws`**
+
+If deserialization fails
+
+**`Example`**
+
+```typescript
+try {
+  const artifactJson = '{"id":"artifact-123","type":"text","content":"This is a text artifact"}';
+  const artifact = deserializeArtifact(artifactJson);
+  console.log('Artifact type:', artifact.type);
+  console.log('Artifact content:', artifact.content);
+} catch (error) {
+  console.error('Failed to deserialize:', error);
+}
+```
+
+___
+
+### extractTextContent
+
+▸ **extractTextContent**(`parts`): `string`
+
+Extracts and combines text content from message parts
+
+This function filters message parts to include only those with type 'text',
+extracts their content, and combines them with double newlines between each part.
+It's useful for getting a plain text representation of a message that might
+include multiple types of content.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `parts` | (\{ `content`: `string` ; `format`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  } \| \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  } \| \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  } \| \{ `content`: `string` ; `format`: ``"plain"`` ; `type`: ``"heartbeat"``  })[] | Message parts to process |
+
+#### Returns
+
+`string`
+
+Combined text content from all text parts, separated by double newlines
+
+**`Example`**
+
+```typescript
+const messageParts = [
+  { type: 'text', content: 'Hello, world!' },
+  { type: 'file', content: 'base64-encoded-content', name: 'image.png', mimeType: 'image/png' },
+  { type: 'text', content: 'This is a second text part.' }
+];
+
+const textContent = extractTextContent(messageParts);
+console.log(textContent);
+// Output:
+// Hello, world!
+//
+// This is a second text part.
+```
+
+___
+
+### formatValidationError
+
+▸ **formatValidationError**(`error`): `string`
+
+Formats a Zod validation error into a human-readable string
+
+This function takes a Zod error object and converts it into a string
+representation, with each issue formatted as "path: message" and joined
+with semicolons.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `error` | [`ZodError`](../classes/Core.z.ZodError.md)\<`any`\> | The Zod error to format |
+
+#### Returns
+
+`string`
+
+A formatted error string
+
+**`Example`**
+
+```typescript
+const result = validateTask(invalidTask);
+
+if (!result.success) {
+  const errorMessage = formatValidationError(result.error);
+  console.error('Validation failed:', errorMessage);
+  // Example output: "name: Required; status: Invalid enum value"
+}
+```
+
+___
+
+### fromJsonRpcResponse
+
+▸ **fromJsonRpcResponse**\<`T`\>(`response`): `T`
+
+Extracts the result from a JSON-RPC response
+
+This function extracts the result from a JSON-RPC response, throwing an error
+if the response contains an error. It's a type-safe way to handle JSON-RPC
+responses in the A2A protocol.
+
+#### Type parameters
+
+| Name | Description |
+| :------ | :------ |
+| `T` | The expected type of the result |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `response` | [`JsonRpcResponse`](Core.md#jsonrpcresponse) | The JSON-RPC response to extract the result from |
+
+#### Returns
+
+`T`
+
+The result from the JSON-RPC response, cast to type T
+
+**`Throws`**
+
+Error if the response contains an error
+
+**`Example`**
+
+```typescript
+try {
+  // Extract agents from a discover response
+  const agents = fromJsonRpcResponse<AgentCard[]>(response);
+  console.log(`Found ${agents.length} agents`);
+} catch (error) {
+  console.error('Error in JSON-RPC response:', error.message);
+}
+```
+
+___
+
+### isAgentCard
+
+▸ **isAgentCard**(`data`): data is AgentCard
+
+Checks if the provided data is a valid AgentCard
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to check |
+
+#### Returns
+
+data is AgentCard
+
+True if the data is a valid AgentCard, false otherwise
+
+**`Example`**
+
+```typescript
+const data = getAgentFromSomewhere();
+
+if (isAgentCard(data)) {
+  // TypeScript now knows that data is an AgentCard
+  console.log('Agent capabilities:', data.capabilities);
+}
+```
+
+___
+
+### isMessage
+
+▸ **isMessage**(`data`): data is Message
+
+Checks if the provided data is a valid Message
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to check |
+
+#### Returns
+
+data is Message
+
+True if the data is a valid Message, false otherwise
+
+**`Example`**
+
+```typescript
+const data = { parts: [{ type: 'text', content: 'Hello' }] };
+
+if (isMessage(data)) {
+  // TypeScript now knows that data is a Message
+  console.log('Message parts:', data.parts.length);
+}
+```
+
+___
+
+### isPushNotificationConfig
+
+▸ **isPushNotificationConfig**(`data`): data is PushNotificationConfig
+
+Checks if the provided data is a valid PushNotificationConfig
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to check |
+
+#### Returns
+
+data is PushNotificationConfig
+
+True if the data is a valid PushNotificationConfig, false otherwise
+
+**`Example`**
+
+```typescript
+const data = getConfigFromSomewhere();
+
+if (isPushNotificationConfig(data)) {
+  // TypeScript now knows that data is a PushNotificationConfig
+  console.log('Push notifications enabled:', data.enabled);
+}
+```
+
+___
+
+### isTask
+
+▸ **isTask**(`data`): data is Task
+
+Checks if the provided data is a valid Task
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to check |
+
+#### Returns
+
+data is Task
+
+True if the data is a valid Task, false otherwise
+
+**`Example`**
+
+```typescript
+const data = getTaskFromSomewhere();
+
+if (isTask(data)) {
+  // TypeScript now knows that data is a Task
+  console.log('Task status:', data.status);
+}
+```
+
+___
+
+### jsonToAgentCard
+
+▸ **jsonToAgentCard**(`json`): [`AgentCard`](../interfaces/Core.AgentCard.md)
+
+Converts a JSON object to an AgentCard
+
+This function converts a plain JavaScript object (typically parsed from JSON)
+into an AgentCard instance. It validates that the required fields are present
+and ensures the capabilities array is properly formatted.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `json` | `Record`\<`string`, `any`\> | The JSON object to convert |
+
+#### Returns
+
+[`AgentCard`](../interfaces/Core.AgentCard.md)
+
+An AgentCard instance
+
+**`Example`**
+
+```typescript
+// Parse JSON from an API response
+const responseData = JSON.parse(responseText);
+
+// Convert to an AgentCard
+const agent = jsonToAgentCard(responseData);
+console.log(`Agent: ${agent.name} (${agent.id})`);
+console.log(`Capabilities: ${agent.capabilities.join(', ')}`);
+```
+
+___
+
+### jsonToTask
+
+▸ **jsonToTask**(`json`): [`Task`](../interfaces/Core.Task.md)
+
+Converts a JSON object to a Task
+
+This function converts a plain JavaScript object (typically parsed from JSON)
+into a Task instance. It validates that the required fields are present and
+sets default values for missing fields. By default, new tasks are created with
+a 'submitted' status.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `json` | `Record`\<`string`, `any`\> | The JSON object to convert |
+
+#### Returns
+
+[`Task`](../interfaces/Core.Task.md)
+
+A Task instance
+
+**`Example`**
+
+```typescript
+// Parse JSON from an API response
+const responseData = JSON.parse(responseText);
+
+// Convert to a Task
+const task = jsonToTask(responseData);
+console.log(`Task: ${task.name} (${task.id})`);
+console.log(`Status: ${task.status}`);
+console.log(`Created: ${new Date(task.createdAt).toLocaleString()}`);
+```
+
+___
+
+### serializeArtifact
+
+▸ **serializeArtifact**(`artifact`): `string`
+
+Serializes an artifact to a JSON string
+
+This function converts an Artifact object to a JSON string representation
+that can be stored or transmitted. It handles error cases by throwing
+appropriate A2AError instances.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `artifact` | `Object` | Artifact object to serialize |
+| `artifact.content` | `Record`\<`string`, `any`\> | The actual content of the artifact |
+| `artifact.createdAt` | `string` | ISO timestamp when the artifact was created |
+| `artifact.id` | `string` | Unique identifier for the artifact |
+| `artifact.type` | ``"text"`` \| ``"file"`` \| ``"data"`` | The type of content this artifact contains |
+| `artifact.updatedAt` | `string` | ISO timestamp when the artifact was last updated |
+
+#### Returns
+
+`string`
+
+JSON string representation of the artifact
+
+**`Throws`**
+
+If serialization fails
+
+**`Example`**
+
+```typescript
+const artifact: Artifact = {
+  id: 'artifact-123',
+  type: 'text',
+  content: 'This is a text artifact',
+  metadata: { created: new Date().toISOString() }
+};
+
+try {
+  const serialized = serializeArtifact(artifact);
+  console.log('Serialized artifact:', serialized);
+} catch (error) {
+  console.error('Failed to serialize:', error);
+}
+```
+
+___
+
+### taskToJson
+
+▸ **taskToJson**(`task`): `Record`\<`string`, `any`\>
+
+Converts a Task to a JSON-serializable object
+
+This function converts a Task instance to a plain JavaScript object that can
+be safely serialized to JSON. It creates deep copies of the task's input and
+output schemas to prevent modifications to the original object.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `task` | [`Task`](../interfaces/Core.Task.md) | The Task to convert |
+
+#### Returns
+
+`Record`\<`string`, `any`\>
+
+A JSON-serializable representation of the task
+
+**`Example`**
+
+```typescript
+const task: Task = {
+  id: 'task-123',
+  name: 'Answer Question',
+  status: 'completed',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
+  inputSchema: { type: 'object', properties: { question: { type: 'string' } } },
+  outputSchema: { type: 'object', properties: { answer: { type: 'string' } } }
+};
+
+const json = taskToJson(task);
+const serialized = JSON.stringify(json);
+```
+
+___
+
+### toJsonRpcRequest
+
+▸ **toJsonRpcRequest**(`request`): [`JsonRpcRequest`](Core.md#jsonrpcrequest)
+
+Converts an A2A protocol discover request to a JSON-RPC request
+
+This function transforms an A2A protocol discover request into a standard
+JSON-RPC 2.0 request format, ensuring compatibility with JSON-RPC servers.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `request` | [`DiscoverRequest`](../interfaces/Core.DiscoverRequest.md) | The A2A protocol discover request to convert |
+
+#### Returns
+
+[`JsonRpcRequest`](Core.md#jsonrpcrequest)
+
+A JSON-RPC 2.0 formatted request
+
+**`Example`**
+
+```typescript
+const discoverRequest: DiscoverRequest = {
+  id: '123',
+  method: 'discoverAgents',
+  params: { capability: 'chat' }
+};
+
+const jsonRpcRequest = toJsonRpcRequest(discoverRequest);
+// {
+//   jsonrpc: '2.0',
+//   id: '123',
+//   method: 'discoverAgents',
+//   params: { capability: 'chat' }
+// }
+```
+
+___
+
+### validateAgentCard
+
+▸ **validateAgentCard**(`data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`AgentCard`](../interfaces/Core.AgentCard.md)\>
+
+Validates an agent card object against the AgentCard schema
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to validate |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`AgentCard`](../interfaces/Core.AgentCard.md)\>
+
+A SafeParseReturnType containing either the validated AgentCard or validation errors
+
+**`Example`**
+
+```typescript
+const result = validateAgentCard({
+  id: '123e4567-e89b-12d3-a456-426614174000',
+  name: 'Weather Agent',
+  capabilities: ['weather-forecasting', 'location-search'],
+  endpoint: 'https://example.com/agents/weather'
+});
+
+if (result.success) {
+  // Use the validated agent card
+  console.log('Valid agent card:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid agent card:', result.error);
+}
+```
+
+___
+
+### validateArtifact
+
+▸ **validateArtifact**(`artifact`): `boolean`
+
+Validates an artifact's structure and content
+
+This function checks that an artifact has the required fields and that
+the type is one of the supported values ('text', 'file', or 'data').
+It throws an appropriate error if validation fails.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `artifact` | `Object` | Artifact object to validate |
+| `artifact.content` | `Record`\<`string`, `any`\> | The actual content of the artifact |
+| `artifact.createdAt` | `string` | ISO timestamp when the artifact was created |
+| `artifact.id` | `string` | Unique identifier for the artifact |
+| `artifact.type` | ``"text"`` \| ``"file"`` \| ``"data"`` | The type of content this artifact contains |
+| `artifact.updatedAt` | `string` | ISO timestamp when the artifact was last updated |
+
+#### Returns
+
+`boolean`
+
+True if the artifact is valid
+
+**`Throws`**
+
+If validation fails, with specific error codes
+
+**`Example`**
+
+```typescript
+try {
+  // Valid artifact
+  const valid = validateArtifact({
+    id: 'artifact-123',
+    type: 'file',
+    content: 'base64-encoded-content',
+    metadata: { filename: 'document.pdf', mimeType: 'application/pdf' }
+  });
+  console.log('Artifact is valid:', valid);
+  
+  // This would throw an error
+  validateArtifact({
+    id: 'invalid-artifact',
+    type: 'unsupported-type', // Invalid type
+    content: 'some-content'
+  });
+} catch (error) {
+  console.error('Validation failed:', error);
+}
+```
+
+___
+
+### validateDiscoverRequest
+
+▸ **validateDiscoverRequest**(`data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`DiscoverRequest`](../interfaces/Core.DiscoverRequest.md)\>
+
+Validates a discover request against the DiscoverRequest schema
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to validate |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`DiscoverRequest`](../interfaces/Core.DiscoverRequest.md)\>
+
+A SafeParseReturnType containing either the validated DiscoverRequest or validation errors
+
+**`Example`**
+
+```typescript
+const result = validateDiscoverRequest({
+  id: '1',
+  method: 'discover',
+  params: { capability: 'weather-forecasting' },
+  jsonrpc: '2.0'
+});
+
+if (result.success) {
+  // Use the validated request
+  console.log('Valid discover request:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid discover request:', result.error);
+}
+```
+
+___
+
+### validateDiscoverResponse
+
+▸ **validateDiscoverResponse**(`data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`DiscoverResponse`](../interfaces/Core.DiscoverResponse.md)\>
+
+Validates a discover response against the DiscoverResponse schema
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to validate |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`DiscoverResponse`](../interfaces/Core.DiscoverResponse.md)\>
+
+A SafeParseReturnType containing either the validated DiscoverResponse or validation errors
+
+**`Example`**
+
+```typescript
+const result = validateDiscoverResponse({
+  id: '1',
+  result: [
+    {
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      name: 'Weather Agent',
+      capabilities: ['weather-forecasting'],
+      endpoint: 'https://example.com/agents/weather'
+    }
+  ]
+});
+
+if (result.success) {
+  // Use the validated response
+  console.log('Valid discover response:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid discover response:', result.error);
+}
+```
+
+___
+
+### validateMessage
+
+▸ **validateMessage**(`data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`Message`](../interfaces/Core.Message.md)\>
+
+Validates a message object against the Message schema
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to validate |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`Message`](../interfaces/Core.Message.md)\>
+
+A SafeParseReturnType containing either the validated Message or validation errors
+
+**`Example`**
+
+```typescript
+const result = validateMessage({
+  parts: [{ type: 'text', content: 'Hello, world!' }]
+});
+
+if (result.success) {
+  // Use the validated message
+  console.log('Valid message:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid message:', result.error);
+}
+```
+
+___
+
+### validateMessageParts
+
+▸ **validateMessageParts**(`parts`): `void`
+
+Validates message parts for compliance with the A2A protocol
+
+This function checks that message parts are present, have content, and use
+supported types. It throws appropriate errors if validation fails, which can
+be caught and handled by the caller.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `parts` | (\{ `content`: `string` ; `format`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  } \| \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  } \| \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  } \| \{ `content`: `string` ; `format`: ``"plain"`` ; `type`: ``"heartbeat"``  })[] | Message parts to validate |
+
+#### Returns
+
+`void`
+
+**`Throws`**
+
+If validation fails, with specific error codes
+
+**`Example`**
+
+```typescript
+try {
+  // Valid message parts
+  validateMessageParts([
+    { type: 'text', content: 'Hello, world!' },
+    { type: 'file', content: 'base64-encoded-content', name: 'document.pdf', mimeType: 'application/pdf' }
+  ]);
+  console.log('Message parts are valid');
+  
+  // This would throw an error
+  validateMessageParts([
+    { type: 'unknown', content: 'some content' } // Invalid type
+  ]);
+} catch (error) {
+  console.error('Validation failed:', error);
+}
+```
+
+___
+
+### validatePushNotificationConfig
+
+▸ **validatePushNotificationConfig**(`data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`PushNotificationConfig`](../interfaces/Core.PushNotificationConfig.md)\>
+
+Validates a push notification configuration against the PushNotificationConfig schema
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to validate |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`PushNotificationConfig`](../interfaces/Core.PushNotificationConfig.md)\>
+
+A SafeParseReturnType containing either the validated PushNotificationConfig or validation errors
+
+**`Example`**
+
+```typescript
+const result = validatePushNotificationConfig({
+  enabled: true,
+  endpoint: 'https://example.com/webhooks/a2a',
+  authToken: 'secret-token',
+  events: ['taskCompleted', 'taskFailed']
+});
+
+if (result.success) {
+  // Use the validated config
+  console.log('Valid push config:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid push config:', result.error);
+}
+```
+
+___
+
+### validateTask
+
+▸ **validateTask**(`data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`Task`](../interfaces/Core.Task.md)\>
+
+Validates a task object against the Task schema
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `data` | `unknown` | The data to validate |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, [`Task`](../interfaces/Core.Task.md)\>
+
+A SafeParseReturnType containing either the validated Task or validation errors
+
+**`Example`**
+
+```typescript
+const result = validateTask({
+  id: '123e4567-e89b-12d3-a456-426614174000',
+  name: 'Process Data',
+  status: 'submitted',
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
+});
+
+if (result.success) {
+  // Use the validated task
+  console.log('Valid task:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid task:', result.error);
+}
+```
+
+___
+
+### validateTransition
+
+▸ **validateTransition**(`current`, `next`): `void`
+
+Validates that a task state transition is allowed
+
+This function checks if a proposed state transition follows the rules of the
+task state machine. It throws an error if the transition is not allowed.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `current` | ``"submitted"`` \| ``"working"`` \| ``"input_required"`` \| ``"completed"`` \| ``"failed"`` \| ``"canceled"`` | Current task state |
+| `next` | ``"submitted"`` \| ``"working"`` \| ``"input_required"`` \| ``"completed"`` \| ``"failed"`` \| ``"canceled"`` | Proposed next state |
+
+#### Returns
+
+`void`
+
+**`Throws`**
+
+If the transition is invalid
+
+**`Example`**
+
+```typescript
+try {
+  // Valid transition
+  validateTransition('submitted', 'working');
+  console.log('Transition is valid');
+  
+  // Invalid transition
+  validateTransition('completed', 'working');
+} catch (error) {
+  console.error('Invalid transition:', error.message);
+  // Output: Invalid transition: Invalid transition from completed to working
+}
+```
+
+___
+
+### validateWithSchema
+
+▸ **validateWithSchema**\<`T`\>(`schema`, `data`): [`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, `T`\>
+
+Validates data against a JSON Schema definition
+
+This function converts a JSON Schema to a Zod validator and uses it to
+validate the provided data. It returns a SafeParseReturnType that contains
+either the validated data or validation errors.
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `schema` | `Record`\<`string`, `any`\> | JSON Schema definition |
+| `data` | `unknown` | Data to validate against the schema |
+
+#### Returns
+
+[`SafeParseReturnType`](Core.z.md#safeparsereturntype)\<`unknown`, `T`\>
+
+A SafeParseReturnType containing either the validated data or validation errors
+
+**`Example`**
+
+```typescript
+const userSchema = {
+  type: 'object',
+  properties: {
+    name: { type: 'string' },
+    age: { type: 'number', minimum: 0 }
+  },
+  required: ['name']
+};
+
+const result = validateWithSchema<User>(userSchema, {
+  name: 'John Doe',
+  age: 30
+});
+
+if (result.success) {
+  // Use the validated data
+  console.log('Valid user:', result.data);
+} else {
+  // Handle validation errors
+  console.error('Invalid user:', result.error);
+}
+```
