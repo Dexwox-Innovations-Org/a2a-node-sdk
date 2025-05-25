@@ -14,8 +14,8 @@ This guide provides instructions for developing with the A2A (Agent-to-Agent) pl
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/dexwox/a2a-node.git
-   cd a2a-node
+   git clone https://github.com/Dexwox-Innovations-Org/a2a-node-sdk.git
+   cd a2a-node-sdk
    ```
 
 2. Install dependencies:
@@ -257,5 +257,5 @@ Please follow these guidelines when contributing to the A2A platform:
 
 - [API Reference](/docs/api.md)
 - [Protocol Specification](/docs/protocol.md)
-- [Examples](/meta/examples)
-- [GitHub Repository](https://github.com/dexwox/a2a-node)
+- [Examples](/examples)
+- [GitHub Repository](https://github.com/Dexwox-Innovations-Org/a2a-node-sdk)

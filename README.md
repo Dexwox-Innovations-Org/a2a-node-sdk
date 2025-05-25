@@ -43,8 +43,8 @@ Shared types and utilities for Google's A2A protocol:
 
 #### For Development
 ```bash
-git clone https://github.com/dexwox/a2a-node.git
-cd a2a-node
+git clone https://github.com/Dexwox-Innovations-Org/a2a-node-sdk.git
+cd a2a-node-sdk
 pnpm install
 ```
 
@@ -68,13 +68,14 @@ pnpm test
 pnpm dev
 ```
 
-### Examples
-Check out the [examples](/meta/examples) directory for working code samples:
+## Examples
 
-- **[Basic Client](/meta/examples/basic-client)**: Simple client implementation
-- **[Basic Server](/meta/examples/basic-server)**: Simple server implementation
-- **[Weather Agent](/meta/examples/weather-agent)**: Example agent implementation
-- **[Full Stack](/meta/examples/full-stack)**: Complete example with client, server, and agent integration
+Check out the [examples](/examples) directory for working code samples:
+
+- **[Basic Client](/examples/basic-client)**: Simple client implementation showing how to connect to an A2A server
+- **[Basic Server](/examples/basic-server)**: Simple server implementation demonstrating how to create and host an agent
+- **[Weather Agent](/examples/weather-agent)**: Example agent implementation that processes weather-related queries
+- **[Full Stack](/examples/full-stack)**: Complete example with client, server, and agent integration
 
 ## Architecture
 
@@ -94,14 +95,7 @@ graph TD
 - [Deployment Guide](/docs/deployment.md) - Strategies for deploying A2A applications to production
 - [Integration Guide](/docs/integration.md) - Instructions for integrating A2A with other systems
 
-## Examples
 
-See the [examples](/meta/examples) directory for working code samples:
-
-- **[Basic Client](/meta/examples/basic-client)** - Simple client implementation showing how to connect to an A2A server
-- **[Basic Server](/meta/examples/basic-server)** - Simple server implementation demonstrating how to create and host an agent
-- **[Weather Agent](/meta/examples/weather-agent)** - Example agent implementation that processes weather-related queries
-- **[Full Stack](/meta/examples/full-stack)** - Complete example with client, server, and agent integration
 
 ## Contributing
 
@@ -115,7 +109,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
-- [Report an Issue](https://github.com/dexwox/a2a-node/issues)
+- [Report an Issue](https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/issues)
 
 ## Legal
 

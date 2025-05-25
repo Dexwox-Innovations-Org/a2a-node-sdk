@@ -606,4 +606,4 @@ app.listen(PORT, () => {
 
 ## Conclusion
 
-These integration examples demonstrate how to incorporate the A2A platform into various systems and frameworks. Adapt these patterns to your specific requirements and infrastructure. For more detailed information, refer to the API documentation and examples in the `/meta/examples` directory.
+These integration examples demonstrate how to incorporate the A2A platform into various systems and frameworks. Adapt these patterns to your specific requirements and infrastructure. For more detailed information, refer to the API documentation and examples in the `/examples` directory.

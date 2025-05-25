@@ -166,4 +166,4 @@ try {
 
 ## Advanced Usage
 
-For more advanced usage patterns, refer to the examples in the `/meta/examples` directory.
+For more advanced usage patterns, refer to the examples in the `/examples` directory.
