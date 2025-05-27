@@ -26,15 +26,27 @@ export default withNextra({
       config.entry = async () => {
         const entries = await originalEntry()
         if (entries['main.js']) {
-          // Ensure polyfills are first and only added once
-          const polyfills = ['./polyfills.js']
-          const mainEntries = entries['main.js'].filter(
-            entry => entry !== './polyfills.js'
-          )
-          entries['main.js'] = [...polyfills, ...mainEntries]
+          // Ensure polyfills are loaded properly without circular deps
+          entries['main.js'] = [
+            require.resolve('./polyfills.js'),
+            ...entries['main.js'].filter(
+              entry => entry !== './polyfills.js'
+            )
+          ]
         }
         return entries
       }
+      
+      // Enable circular dependency warnings
+      const CircularDependencyPlugin = require('circular-dependency-plugin')
+      config.plugins.push(
+        new CircularDependencyPlugin({
+          exclude: /node_modules/,
+          failOnError: false,
+          allowAsyncCycles: false,
+          cwd: process.cwd(),
+        })
+      )
     }
 
     // Configure module resolution
