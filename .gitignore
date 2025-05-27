@@ -42,3 +42,4 @@ coverage/
 # Package manager specific
 package-lock.json
 yarn.lock
+.next
