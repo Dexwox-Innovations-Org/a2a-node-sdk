@@ -25,8 +25,13 @@ export default withNextra({
       const originalEntry = config.entry
       config.entry = async () => {
         const entries = await originalEntry()
-        if (entries['main.js'] && !entries['main.js'].includes('./polyfills.js')) {
-          entries['main.js'].unshift('./polyfills.js')
+        if (entries['main.js']) {
+          // Ensure polyfills are first and only added once
+          const polyfills = ['./polyfills.js']
+          const mainEntries = entries['main.js'].filter(
+            entry => entry !== './polyfills.js'
+          )
+          entries['main.js'] = [...polyfills, ...mainEntries]
         }
         return entries
       }

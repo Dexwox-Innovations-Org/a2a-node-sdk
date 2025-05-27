@@ -1,6 +1,6 @@
 // Polyfills for Node.js modules in browser/static generation environment
 if (typeof global === 'undefined') {
-  global = globalThis;
+  var global = globalThis;
 }
 
 if (typeof process === 'undefined') {
@@ -20,3 +20,8 @@ if (typeof EventEmitter === 'undefined') {
 export const EventEmitter = require('events').EventEmitter;
 export const Buffer = require('buffer').Buffer;
 export const process = require('process/browser');
+
+// Ensure global is available in all environments
+if (typeof window !== 'undefined') {
+  window.global = global;
+}
