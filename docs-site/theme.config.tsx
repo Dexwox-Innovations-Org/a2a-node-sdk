@@ -1,17 +1,17 @@
 import React from 'react'
 
+// For now, we'll keep the original theme config structure
+// The ThemeProvider will be integrated through _app.tsx
 const config = {
   logo: <span>A2A Node SDK</span>,
   project: {
     link: 'https://github.com/Dexwox-Innovations-Org/a2a-node-sdk',
   },
-  chat: {
-    link: 'https://discord.gg/dexwox',
-  },
+  // chat: {
+  //   link: 'https://discord.gg/dexwox',
+  // },
   docsRepositoryBase: 'https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/tree/main/docs-site',
-  footer: {
-    text: 'A2A Node SDK Documentation - Built by Dexwox Innovations',
-  },
+  footer: false,
   head: (
     <>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -61,3 +61,7 @@ const config = {
 }
 
 export default config
+
+// Export theme utilities for easy access
+export { ThemeProvider, defaultTheme } from './components/ThemeProvider'
+export { presetThemes, createTheme, useTheme } from './components/ThemeProvider'
