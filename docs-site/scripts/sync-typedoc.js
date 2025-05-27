@@ -92,9 +92,48 @@ function syncDirectory(srcDir, destDir, prefix = '') {
   }
 }
 
+function generateDisplayName(filename) {
+  // Remove file extension
+  const name = filename.replace(/\.mdx?$/, '');
+  
+  // Handle special cases for better display names
+  if (name.startsWith('Core.z.')) {
+    // For Zod types, show just the Zod part
+    return name.replace('Core.z.', 'z.');
+  }
+  
+  // For other namespaced items, show just the class/interface name
+  const parts = name.split('.');
+  if (parts.length > 1) {
+    return parts[parts.length - 1];
+  }
+  
+  return name;
+}
+
+function generateMetaForDirectory(dirPath) {
+  if (!fs.existsSync(dirPath)) {
+    return {};
+  }
+
+  const files = fs.readdirSync(dirPath)
+    .filter(file => file.endsWith('.mdx') && file !== 'index.mdx')
+    .sort();
+
+  const meta = {};
+  
+  for (const file of files) {
+    const key = file.replace('.mdx', '');
+    const displayName = generateDisplayName(file);
+    meta[key] = displayName;
+  }
+
+  return meta;
+}
+
 function createMetaFiles() {
-  // Create _meta.js files for navigation only if they don't exist
-  const metaFiles = [
+  // Always regenerate meta files to include all current files
+  const metaConfigs = [
     {
       path: path.join(API_REFERENCE_DIR, '_meta.js'),
       content: `export default {
@@ -107,73 +146,32 @@ function createMetaFiles() {
   "interfaces": "Interfaces",
   "enums": "Enums"
 };`
-    },
-    {
-      path: path.join(API_REFERENCE_DIR, 'classes/_meta.js'),
-      content: `export default {
-  "Client.AgentClient": "AgentClient",
-  "Client.MessageClient": "MessageClient", 
-  "Client.TaskClient": "TaskClient",
-  "Core.A2AError": "A2AError",
-  "Core.InvalidTaskStateError": "InvalidTaskStateError",
-  "Core.TaskAlreadyCompletedError": "TaskAlreadyCompletedError",
-  "Core.TaskCanceledError": "TaskCanceledError",
-  "Core.TaskFailedError": "TaskFailedError",
-  "Core.TaskNotFoundError": "TaskNotFoundError",
-  "Server.A2AServer": "A2AServer",
-  "Server.DefaultAgentExecutor": "DefaultAgentExecutor",
-  "Server.DefaultRequestHandler": "DefaultRequestHandler",
-  "Server.TaskManager": "TaskManager"
-};`
-    },
-    {
-      path: path.join(API_REFERENCE_DIR, 'interfaces/_meta.js'),
-      content: `export default {
-  "Client.MessageClientOptions": "MessageClientOptions",
-  "Client.StreamOptions": "StreamOptions",
-  "Core.AgentCard": "AgentCard",
-  "Core.DiscoverRequest": "DiscoverRequest",
-  "Core.DiscoverResponse": "DiscoverResponse",
-  "Core.JsonRpcResponseBase": "JsonRpcResponseBase",
-  "Core.Message": "Message",
-  "Core.MessageSendConfiguration": "MessageSendConfiguration",
-  "Core.PushNotificationConfig": "PushNotificationConfig",
-  "Core.Task": "Task",
-  "Core.TaskTransition": "TaskTransition",
-  "Server.AgentExecutor": "AgentExecutor",
-  "Server.RequestHandler": "RequestHandler"
-};`
-    },
-    {
-      path: path.join(API_REFERENCE_DIR, 'enums/_meta.js'),
-      content: `export default {
-  "Core.ArtifactErrorCode": "ArtifactErrorCode",
-  "Core.MessageErrorCode": "MessageErrorCode",
-  "Core.TaskErrorCode": "TaskErrorCode"
-};`
-    },
-    {
-      path: path.join(API_REFERENCE_DIR, 'modules/_meta.js'),
-      content: `export default {
-  "Client": "Client",
-  "Core": "Core",
-  "Server": "Server"
-};`
     }
   ];
 
-  metaFiles.forEach(({ path: metaPath, content }) => {
-    // Only create if file doesn't exist to preserve manual customizations
-    if (!fs.existsSync(metaPath)) {
-      const dir = path.dirname(metaPath);
-      if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-      }
-      fs.writeFileSync(metaPath, content);
-      console.log(`✓ Created: ${path.relative(process.cwd(), metaPath)}`);
-    } else {
-      console.log(`⚠ Skipped: ${path.relative(process.cwd(), metaPath)} (already exists)`);
+  // Generate dynamic meta files for subdirectories
+  const subdirs = ['classes', 'interfaces', 'enums', 'modules'];
+  
+  for (const subdir of subdirs) {
+    const subdirPath = path.join(API_REFERENCE_DIR, subdir);
+    const meta = generateMetaForDirectory(subdirPath);
+    
+    if (Object.keys(meta).length > 0) {
+      const metaContent = `export default ${JSON.stringify(meta, null, 2)};`;
+      metaConfigs.push({
+        path: path.join(subdirPath, '_meta.js'),
+        content: metaContent
+      });
     }
+  }
+
+  metaConfigs.forEach(({ path: metaPath, content }) => {
+    const dir = path.dirname(metaPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    fs.writeFileSync(metaPath, content);
+    console.log(`✓ Generated: ${path.relative(process.cwd(), metaPath)}`);
   });
 }
 
