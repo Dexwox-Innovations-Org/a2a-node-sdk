@@ -1,32 +1,23 @@
 // Polyfills for Node.js modules in browser/static generation environment
-(function initPolyfills() {
-  // Initialize global scope first
-  if (typeof global === 'undefined') {
-    global = globalThis || window || self || {};
-  }
+import process from 'process/browser'
+import { Buffer } from 'buffer'
+import { EventEmitter } from 'events'
 
-  // Initialize process before anything else
-  if (typeof process === 'undefined') {
-    global.process = require('process/browser');
-  }
+// Initialize global scope first with proper fallbacks
+const root = typeof globalThis !== 'undefined' ? globalThis :
+             typeof window !== 'undefined' ? window :
+             typeof global !== 'undefined' ? global :
+             typeof self !== 'undefined' ? self : {};
 
-  // Initialize Buffer
-  if (typeof Buffer === 'undefined') {
-    global.Buffer = require('buffer').Buffer;
-  }
+// Assign to global if it doesn't exist
+if (typeof global === 'undefined') {
+  root.global = root;
+}
 
-  // Initialize EventEmitter
-  if (typeof EventEmitter === 'undefined') {
-    global.EventEmitter = require('events').EventEmitter;
-  }
-})();
+// Initialize globals
+root.process = process
+root.Buffer = Buffer
+root.EventEmitter = EventEmitter
 
 // Export for ES modules
-export const EventEmitter = require('events').EventEmitter;
-export const Buffer = require('buffer').Buffer;
-export const process = require('process/browser');
-
-// Ensure global is available in all environments
-if (typeof window !== 'undefined') {
-  window.global = global;
-}
+export { EventEmitter, Buffer, process }
