@@ -77,15 +77,19 @@ jspm_packages/
 .pnp.*
 
 # Generated API reference files (created by sync script)
-pages/api-reference/**/*.mdx
 pages/api-reference/classes/
 pages/api-reference/interfaces/
 pages/api-reference/enums/
 pages/api-reference/modules/
+pages/api-reference/classes/*.mdx
+pages/api-reference/interfaces/*.mdx
+pages/api-reference/enums/*.mdx
+pages/api-reference/modules/*.mdx
 
-# Keep the _meta.js files but ignore generated content
+# Keep the _meta.js files and root-level .mdx files
 !pages/api-reference/classes/_meta.js
 !pages/api-reference/interfaces/_meta.js
 !pages/api-reference/enums/_meta.js
 !pages/api-reference/modules/_meta.js
 !pages/api-reference/_meta.js
+!pages/api-reference/*.mdx
