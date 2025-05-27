@@ -43,15 +43,17 @@ jobs:
         run: pnpm run docs:generate
 
       - name: Sync TypeDoc documentation
-        run: pnpm --filter "@dexwox/a2a-docs" run sync-docs
+        working-directory: docs-site
+        run: pnpm run sync-docs
 
       - name: Build documentation site
-        run: GITHUB_PAGES=true pnpm --filter "@dexwox/a2a-docs" run build
+        working-directory: docs-site
+        env:
+          GITHUB_PAGES: true
+        run: pnpm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
-        with:
-          enablement: true
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
