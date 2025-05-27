@@ -96,6 +96,19 @@ function createMetaFiles() {
   // Create _meta.js files for navigation only if they don't exist
   const metaFiles = [
     {
+      path: path.join(API_REFERENCE_DIR, '_meta.js'),
+      content: `export default {
+  "index": "Overview",
+  "core": "Core Package",
+  "client": "Client Package", 
+  "server": "Server Package",
+  "modules": "Modules",
+  "classes": "Classes",
+  "interfaces": "Interfaces",
+  "enums": "Enums"
+};`
+    },
+    {
       path: path.join(API_REFERENCE_DIR, 'classes/_meta.js'),
       content: `export default {
   "Client.AgentClient": "AgentClient",
