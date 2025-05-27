@@ -46,6 +46,19 @@ jobs:
         working-directory: docs-site
         run: pnpm run sync-docs
 
+      - name: Debug - List generated files
+        working-directory: docs-site
+        run: |
+          echo "=== Contents of pages/api-reference ==="
+          ls -la pages/api-reference/
+          echo "=== Contents of pages/api-reference/_meta.js ==="
+          cat pages/api-reference/_meta.js || echo "File not found"
+          echo "=== Check if subdirectories exist ==="
+          ls -la pages/api-reference/classes/ || echo "classes directory not found"
+          ls -la pages/api-reference/interfaces/ || echo "interfaces directory not found"
+          ls -la pages/api-reference/enums/ || echo "enums directory not found"
+          ls -la pages/api-reference/modules/ || echo "modules directory not found"
+
       - name: Build documentation site
         working-directory: docs-site
         env:
