@@ -17,34 +17,26 @@ import { TASK_UPDATED, TASK_COMPLETED, TASK_FAILED } from './types';
 /**
  * Client for managing tasks in the A2A protocol
  * 
- * The TaskClient provides methods for creating, monitoring, and managing tasks.
- * It extends EventEmitter to provide event-based notifications for task status changes.
+ * The TaskClient provides methods for creating, monitoring, and managing tasks
+ * with support for real-time status updates and push notifications.
  * 
  * @example
  * ```typescript
  * const taskClient = new TaskClient({ baseUrl: 'https://a2a-server.example.com' });
  * 
- * // Create a new task
- * const task = await taskClient.createTask({
- *   name: 'Weather Analysis',
- *   agentId: 'weather-agent',
- *   input: { location: 'New York', days: 5 }
- * });
+ * // Get task status
+ * const task = await taskClient.getTaskStatus('task-123');
+ * console.log(`Task status: ${task.status}`);
  * 
- * // Monitor task status
- * taskClient.onTaskUpdate(task.id, (updatedTask) => {
- *   console.log(`Task status: ${updatedTask.status}`);
- *   if (updatedTask.status === 'completed') {
- *     console.log('Task result:', updatedTask.output);
- *   }
- * });
+ * // Cancel a task
+ * await taskClient.cancelTask('task-123');
  * ```
  */
 @TraceClass()
 export class TaskClient extends EventEmitter {
-  /** Cache of push notification configurations by task ID */
+  /** @private Cache of push notification configurations by task ID */
   private pushConfigs: Map<string, PushNotificationConfig> = new Map();
-  /** Map of task ID to callback functions for task updates */
+  /** @private Map of task ID to callback functions for task updates */
   private taskCallbacks: Map<string, (task: Task) => void> = new Map();
 
   /**

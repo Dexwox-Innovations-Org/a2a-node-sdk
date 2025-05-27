@@ -1,0 +1,44 @@
+{
+  "name": "@dexwox/a2a-docs",
+  "version": "1.0.0",
+  "description": "Documentation site for A2A Node SDK",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "export": "next build && next export",
+    "sync-docs": "node scripts/sync-typedoc.js",
+    "build-with-docs": "npm run sync-docs && npm run build"
+  },
+  "keywords": [
+    "a2a",
+    "agent",
+    "documentation",
+    "nextra"
+  ],
+  "author": "Dexwox Innovations Pvt Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@chevrotain/regexp-to-ast": "^11.0.3",
+    "@mdx-js/loader": "^3.1.0",
+    "@mdx-js/react": "^3.1.0",
+    "@next/mdx": "^15.3.2",
+    "buffer": "^6.0.3",
+    "events": "^3.3.0",
+    "next": "^15.3.2",
+    "nextra": "^3.0.0",
+    "nextra-theme-docs": "^3.0.0",
+    "process": "^0.11.10",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.0.0",
+    "typescript": "^5.0.0"
+  }
+}

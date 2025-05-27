@@ -42,9 +42,9 @@ interface AgentResolutionCache {
  * ```
  */
 export class AgentClient {
-  /** Cache for agent resolution results */
+  /** @private Cache for agent resolution results */
   private agentCache: AgentResolutionCache | null = null;
-  /** Time-to-live for the agent cache in milliseconds (default: 5 minutes) */
+  /** @private Time-to-live for the agent cache in milliseconds */
   private cacheTTL = 300000; // 5 minutes
 
   /**

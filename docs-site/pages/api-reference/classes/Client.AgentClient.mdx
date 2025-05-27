@@ -1,0 +1,156 @@
+import { Callout } from 'nextra/components'
+
+---
+title: Client. Agent Client
+---
+
+[A2A Node SDK - v0.1.0](/api-reference/README) / [Modules](/api-reference/modules) / [Client](/api-reference/modules/Client) / AgentClient
+
+# Class: AgentClient
+
+[Client](/api-reference/modules/Client).AgentClient
+
+Client for discovering and interacting with A2A agents
+
+**`Example`**
+
+```typescript
+const agentClient = new AgentClient({ baseUrl: 'https://a2a-server.example.com' });
+
+// Get all available agents
+const agents = await agentClient.resolveAgents();
+
+// Get a specific agent by ID
+const agent = await agentClient.getAgentCard('weather-agent');
+```
+
+## Table of contents
+
+### Constructors
+
+- [constructor](Client.AgentClient.md#constructor)
+
+### Methods
+
+- [getAgentCard](Client.AgentClient.md#getagentcard)
+- [resolveAgents](Client.AgentClient.md#resolveagents)
+
+## Constructors
+
+### constructor
+
+• **new AgentClient**(`options`): [`AgentClient`](Client.AgentClient)
+
+Creates a new AgentClient instance
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `options` | [`MessageClientOptions`](/api-reference/interfaces/Client.MessageClientOptions) | Configuration options for the client |
+
+#### Returns
+
+[`AgentClient`](Client.AgentClient)
+
+## Methods
+
+### getAgentCard
+
+▸ **getAgentCard**(`agentId`, `forceRefresh?`): `Promise`\<[`AgentCard`](/api-reference/interfaces/Core.AgentCard)\>
+
+Gets a specific agent's card by ID
+
+This method retrieves information about a specific agent by its ID. It uses
+the resolveAgents method internally and filters the results to find the
+requested agent.
+
+#### Parameters
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `agentId` | `string` | `undefined` | The ID of the agent to look up |
+| `forceRefresh` | `boolean` | `false` | Whether to bypass the cache and force a fresh request (default: false) |
+
+#### Returns
+
+`Promise`\<[`AgentCard`](/api-reference/interfaces/Core.AgentCard)\>
+
+Promise resolving to the requested AgentCard
+
+**`Throws`**
+
+If the agent with the specified ID is not found
+
+**`Throws`**
+
+If there's a network issue contacting the server
+
+**`Throws`**
+
+If the request times out
+
+**`Example`**
+
+```typescript
+try {
+  const weatherAgent = await agentClient.getAgentCard('weather-agent');
+  console.log(`Found agent: ${weatherAgent.name}`);
+} catch (error) {
+  if (error.code === 'VALIDATION_ERROR') {
+    console.error('Agent not found');
+  } else {
+    console.error('Error fetching agent:', error.message);
+  }
+}
+```
+
+___
+
+### resolveAgents
+
+▸ **resolveAgents**(`capability?`, `forceRefresh?`): `Promise`\<[`AgentCard`](/api-reference/interfaces/Core.AgentCard)[]\>
+
+Resolves agent cards with caching
+
+This method discovers available agents from the A2A server. Results are cached
+to improve performance and reduce network traffic. The cache can be bypassed
+by setting forceRefresh to true.
+
+#### Parameters
+
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `capability?` | `string` | `undefined` | Optional capability filter to find agents with specific capabilities |
+| `forceRefresh` | `boolean` | `false` | Whether to bypass the cache and force a fresh request (default: false) |
+
+#### Returns
+
+`Promise`\<[`AgentCard`](/api-reference/interfaces/Core.AgentCard)[]\>
+
+Promise resolving to an array of matching AgentCards
+
+**`Throws`**
+
+If there's a network issue contacting the server
+
+**`Throws`**
+
+If the server response is invalid
+
+**`Throws`**
+
+If the request times out
+
+**`Example`**
+
+```typescript
+// Get all agents
+const allAgents = await agentClient.resolveAgents();
+
+// Get only agents with a specific capability
+const weatherAgents = await agentClient.resolveAgents('weather-forecasting');
+
+// Force a fresh request bypassing the cache
+const freshAgents = await agentClient.resolveAgents(undefined, true);
+```

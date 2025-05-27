@@ -1,0 +1,138 @@
+import { Callout } from 'nextra/components'
+
+---
+title: Core.z.object Util
+---
+
+[A2A Node SDK - v0.1.0](/api-reference/README) / [Modules](/api-reference/modules) / [Core](Core) / [z](Core.z) / objectUtil
+
+# Namespace: objectUtil
+
+[Core](Core).[z](Core.z).objectUtil
+
+## Table of contents
+
+### Type Aliases
+
+- [MergeShapes](Core.z.objectUtil.md#mergeshapes)
+- [addQuestionMarks](Core.z.objectUtil.md#addquestionmarks)
+- [extendShape](Core.z.objectUtil.md#extendshape)
+- [flatten](Core.z.objectUtil.md#flatten)
+- [identity](Core.z.objectUtil.md#identity)
+- [noNever](Core.z.objectUtil.md#nonever)
+- [noNeverKeys](Core.z.objectUtil.md#noneverkeys)
+
+### Functions
+
+- [mergeShapes](Core.z.objectUtil.md#mergeshapes-1)
+
+## Type Aliases
+
+### MergeShapes
+
+Ƭ **MergeShapes**\<`U`, `V`\>: keyof `U` & keyof `V` extends `never` ? `U` & `V` : \{ [k in Exclude\<keyof U, keyof V\>]: U[k] } & `V`
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `U` |
+| `V` |
+
+___
+
+### addQuestionMarks
+
+Ƭ **addQuestionMarks**\<`T`, `_O`\>: \{ [K in requiredKeys\<T\>]: T[K] } & \{ [K in optionalKeys\<T\>]?: T[K] } & \{ [k in keyof T]?: unknown }
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends `object` |
+| `_O` | `any` |
+
+___
+
+### extendShape
+
+Ƭ **extendShape**\<`A`, `B`\>: keyof `A` & keyof `B` extends `never` ? `A` & `B` : \{ [K in keyof A as K extends keyof B ? never : K]: A[K] } & \{ [K in keyof B]: B[K] }
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `A` | extends `object` |
+| `B` | extends `object` |
+
+___
+
+### flatten
+
+Ƭ **flatten**\<`T`\>: [`identity`](Core.z.objectUtil.md#identity)\<\{ [k in keyof T]: T[k] }\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+___
+
+### identity
+
+Ƭ **identity**\<`T`\>: `T`
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+___
+
+### noNever
+
+Ƭ **noNever**\<`T`\>: [`identity`](Core.z.objectUtil.md#identity)\<\{ [k in noNeverKeys\<T\>]: k extends keyof T ? T[k] : never }\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+___
+
+### noNeverKeys
+
+Ƭ **noNeverKeys**\<`T`\>: \{ [k in keyof T]: [T[k]] extends [never] ? never : k }[keyof `T`]
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `T` |
+
+## Functions
+
+### mergeShapes
+
+▸ **mergeShapes**\<`U`, `T`\>(`first`, `second`): `T` & `U`
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `U` |
+| `T` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `first` | `U` |
+| `second` | `T` |
+
+#### Returns
+
+`T` & `U`

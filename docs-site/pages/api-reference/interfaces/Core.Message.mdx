@@ -1,0 +1,49 @@
+import { Callout } from 'nextra/components'
+
+---
+title: Core. Message
+---
+
+[A2A Node SDK - v0.1.0](/api-reference/README) / [Modules](/api-reference/modules) / [Core](/api-reference/modules/Core) / Message
+
+# Interface: Message
+
+[Core](/api-reference/modules/Core).Message
+
+Represents a complete message in the A2A protocol
+
+**`Remarks`**
+
+Messages are composed of one or more message parts
+
+## Table of contents
+
+### Properties
+
+- [contextId](Core.Message.md#contextid)
+- [parts](Core.Message.md#parts)
+- [taskId](Core.Message.md#taskid)
+
+## Properties
+
+### contextId
+
+• `Optional` **contextId**: `string`
+
+Optional context ID for grouping related messages
+
+___
+
+### parts
+
+• **parts**: (\{ `content`: `string` ; `format`: ``"plain"`` \| ``"markdown"`` ; `type`: ``"text"``  } \| \{ `content`: `string` \| `Uint8Array`\<`ArrayBuffer`\> ; `mimeType`: `string` ; `name`: `string` ; `size?`: `number` ; `type`: ``"file"``  } \| \{ `content`: `Record`\<`string`, `any`\> ; `schema?`: `string` ; `type`: ``"data"``  } \| \{ `content`: `string` ; `format`: ``"plain"`` ; `type`: ``"heartbeat"``  })[]
+
+Array of message parts that make up this message
+
+___
+
+### taskId
+
+• `Optional` **taskId**: `string`
+
+Optional ID of the task this message is associated with

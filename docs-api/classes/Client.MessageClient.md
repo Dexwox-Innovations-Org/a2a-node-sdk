@@ -19,15 +19,6 @@ const messageClient = new MessageClient({ baseUrl: 'https://a2a-server.example.c
 const messageId = await messageClient.sendMessage([
   { type: 'text', content: 'What is the weather in New York?' }
 ], 'weather-agent');
-
-// Stream messages with real-time updates
-await messageClient.streamMessage([
-  { type: 'text', content: 'Generate a story about space travel' }
-], 'story-agent', {
-  onMessage: (data) => console.log('Received:', data),
-  onError: (error) => console.error('Stream error:', error),
-  onComplete: () => console.log('Stream completed')
-});
 ```
 
 ## Hierarchy
@@ -1482,12 +1473,10 @@ ___
 
 ▸ **streamMessage**(`parts`, `agentId`, `options`): `Promise`\<`void`\>
 
-Streams messages to and from an agent using Server-Sent Events
+Streams messages to and from an agent
 
 This method establishes a real-time streaming connection with an agent,
-allowing for continuous message exchange. It includes robust error handling
-with automatic retries, exponential backoff, and heartbeat monitoring to
-ensure connection reliability.
+allowing for continuous message exchange with automatic error handling.
 
 #### Parameters
 
@@ -1514,30 +1503,13 @@ If the message parts are invalid
 **`Example`**
 
 ```typescript
-// Stream with basic configuration
 await messageClient.streamMessage(
   [{ type: 'text', content: 'Tell me a story about dragons' }],
   'storyteller-agent',
   {
-    onMessage: (data) => {
-      if (data.type === 'text') {
-        console.log('Story part:', data.content);
-      }
-    },
+    onMessage: (data) => console.log('Received:', data),
     onError: (error) => console.error('Stream error:', error),
-    onComplete: () => console.log('Story complete!')
-  }
-);
-
-// Stream with custom retry configuration
-await messageClient.streamMessage(
-  [{ type: 'text', content: 'Generate a long report' }],
-  'report-agent',
-  {
-    onMessage: (data) => console.log('Report chunk:', data),
-    maxRetries: 10,
-    retryDelay: 2000,
-    backoffFactor: 1.5
+    onComplete: () => console.log('Stream completed')
   }
 );
 ```

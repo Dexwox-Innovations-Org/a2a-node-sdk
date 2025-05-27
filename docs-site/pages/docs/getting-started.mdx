@@ -1,0 +1,231 @@
+---
+title: Getting Started
+description: Get started with A2A Node SDK in minutes
+---
+
+import { Callout } from 'nextra/components'
+
+# Getting Started
+
+Welcome to the A2A Node SDK! This guide will help you get up and running with Google's Agent-to-Agent communication protocol in TypeScript.
+
+## What is A2A?
+
+The Agent-to-Agent (A2A) protocol is Google's specification for enabling seamless communication between AI agents. It provides a standardized way for agents to:
+
+- Exchange messages and data
+- Manage tasks and workflows
+- Stream real-time communication
+- Handle errors and retries
+- Discover and connect to other agents
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- **Node.js 18+** installed on your system
+- **pnpm 8+** (recommended) or npm/yarn
+- Basic knowledge of TypeScript/JavaScript
+- Understanding of async/await patterns
+
+## Quick Start
+
+### Step 1: Install the SDK
+
+Choose your preferred package manager:
+
+**Using pnpm (recommended):**
+```bash
+# Install the unified package (recommended)
+pnpm add @dexwox/a2a-node
+
+# Or install individual packages
+pnpm add @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+```
+
+**Using npm:**
+```bash
+# Install the unified package (recommended)
+npm install @dexwox/a2a-node
+
+# Or install individual packages
+npm install @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+```
+
+**Using yarn:**
+```bash
+# Install the unified package (recommended)
+yarn add @dexwox/a2a-node
+
+# Or install individual packages
+yarn add @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+```
+
+### Create Your First Client
+
+Create a simple client to connect to an A2A server:
+
+```typescript filename="client.ts"
+import { MessageClient, AgentClient } from '@dexwox/a2a-node';
+
+async function main() {
+  // Create clients
+  const messageClient = new MessageClient({ 
+    baseUrl: 'https://your-a2a-server.com' 
+  });
+  
+  const agentClient = new AgentClient({ 
+    baseUrl: 'https://your-a2a-server.com' 
+  });
+
+  try {
+    // Discover available agents
+    const agents = await agentClient.resolveAgents();
+    console.log('Available agents:', agents.map(a => a.name));
+
+    if (agents.length > 0) {
+      // Send a message to the first agent
+      const messageId = await messageClient.sendMessage([
+        { type: 'text', content: 'Hello from A2A Node SDK!' }
+      ], agents[0].id);
+      
+      console.log('Message sent successfully:', messageId);
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+main();
+```
+
+### Create Your First Server
+
+Create a simple A2A server that can receive and process messages:
+
+```typescript filename="server.ts"
+import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-node';
+
+// Create an agent executor
+const executor = new DefaultAgentExecutor({
+  async executeTask(task) {
+    console.log('Processing task:', task.name);
+    
+    // Your agent logic here
+    const result = `Processed: ${task.name}`;
+    
+    return {
+      status: 'completed',
+      result,
+      artifacts: [{
+        id: 'result-1',
+        type: 'text',
+        content: { text: result },
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      }]
+    };
+  }
+});
+
+// Create the server
+const server = new A2AServer({
+  agentCard: {
+    id: 'my-first-agent',
+    name: 'My First Agent',
+    description: 'A simple A2A agent built with Node SDK',
+    capabilities: ['text-processing', 'greeting'],
+    endpoint: 'http://localhost:3000',
+    version: '1.0.0'
+  },
+  executor
+});
+
+// Start the server
+async function startServer() {
+  try {
+    await server.start(3000);
+    console.log('🚀 A2A server running on http://localhost:3000');
+    console.log('📋 Agent card available at http://localhost:3000/.well-known/agent.json');
+  } catch (error) {
+    console.error('Failed to start server:', error);
+  }
+}
+
+startServer();
+```
+
+### Test Your Setup
+
+Run your server and client:
+
+```bash
+# Terminal 1: Start the server
+npx tsx server.ts
+
+# Terminal 2: Run the client (update baseUrl to http://localhost:3000)
+npx tsx client.ts
+```
+
+## Package Architecture
+
+The A2A Node SDK is organized into three main packages:
+
+### `@dexwox/a2a-core`
+Core types, utilities, and protocol definitions:
+- Protocol type definitions and interfaces
+- Validation utilities and decorators  
+- Common utilities for working with A2A messages
+- Error classes for protocol-specific error handling
+
+### `@dexwox/a2a-client`
+Client libraries for connecting to A2A servers:
+- Type-safe API client for A2A protocol
+- Agent discovery and management
+- Message streaming with retry logic
+- Circuit breaker pattern for resilience
+
+### `@dexwox/a2a-server`
+Server implementation for hosting A2A agents:
+- Express-based HTTP/WebSocket server
+- Task management and state tracking
+- Request handling and routing
+- Middleware support for extensibility
+
+## Key Concepts
+
+### Agents
+Agents are the core entities in the A2A protocol. Each agent has:
+- **Agent Card**: Metadata describing the agent's capabilities
+- **Endpoint**: URL where the agent can be reached
+- **Capabilities**: List of what the agent can do
+
+### Tasks
+Tasks represent units of work that agents can process:
+- **States**: submitted, working, completed, failed, canceled
+- **Artifacts**: Outputs produced by task execution
+- **Transitions**: History of state changes
+
+### Messages
+Messages are the primary communication mechanism:
+- **Parts**: Text, file, or data components
+- **Streaming**: Real-time message exchange
+- **Context**: Grouping related messages
+
+## Next Steps
+
+<Callout type="info">
+  Ready to dive deeper? Check out our comprehensive guides:
+</Callout>
+
+- **[Client Guide](/docs/client)** - Learn advanced client patterns and features
+- **[Server Guide](/docs/server)** - Build production-ready A2A servers
+- **[Protocol Specification](/docs/protocol)** - Understand the A2A protocol in detail
+- **[Examples](/docs/examples)** - Explore real-world use cases and implementations
+
+## Need Help?
+
+- 📖 [API Reference](/api-reference) - Complete API documentation
+- 💬 [Discord Community](https://discord.gg/dexwox) - Get help from the community
+- 🐛 [GitHub Issues](https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/issues) - Report bugs or request features
+- 📧 [Contact Us](mailto:support@dexwox.com) - Direct support from our team

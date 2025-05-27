@@ -122,9 +122,7 @@ export interface HttpClientOptions {
  * Low-level HTTP client for communicating with A2A protocol servers
  * 
  * This class provides the core HTTP communication layer for the A2A SDK,
- * handling JSON-RPC requests, streaming, circuit breaking for reliability,
- * and agent card resolution. It's used internally by the higher-level client
- * classes but can also be used directly for advanced use cases.
+ * handling JSON-RPC requests, streaming, and agent card resolution.
  * 
  * @example
  * ```typescript
@@ -144,18 +142,18 @@ export interface HttpClientOptions {
  */
 @TraceClass('A2AHttpClient')
 export class A2AHttpClient {
-  /** Configuration options for the client */
+  /** @private Configuration options for the client */
   private readonly options: HttpClientOptions;
-  /** Circuit breaker for handling failures and preventing cascading failures */
+  /** @private Circuit breaker for handling failures */
   private readonly circuitBreaker: CircuitBreaker;
-  /** Resolver for agent card information */
+  /** @private Resolver for agent card information */
   private readonly agentCardResolver: AgentCardResolver;
 
-  /** Default circuit breaker configuration */
+  /** @private Default circuit breaker configuration */
   private static readonly DEFAULT_CIRCUIT_BREAKER_OPTIONS = {
-    failureThreshold: 3,   // Number of failures before opening the circuit
-    successThreshold: 2,   // Number of successes needed to close the circuit
-    timeout: 10000         // Time in ms before attempting to close the circuit
+    failureThreshold: 3,
+    successThreshold: 2,
+    timeout: 10000
   };
 
   /**

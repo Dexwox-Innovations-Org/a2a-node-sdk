@@ -1,0 +1,49 @@
+import { Callout } from 'nextra/components'
+
+---
+title: Core. Message Send Configuration
+---
+
+[A2A Node SDK - v0.1.0](/api-reference/README) / [Modules](/api-reference/modules) / [Core](/api-reference/modules/Core) / MessageSendConfiguration
+
+# Interface: MessageSendConfiguration
+
+[Core](/api-reference/modules/Core).MessageSendConfiguration
+
+Configuration options for sending messages
+
+**`Remarks`**
+
+Used to control message delivery behavior
+
+## Table of contents
+
+### Properties
+
+- [metadata](Core.MessageSendConfiguration.md#metadata)
+- [priority](Core.MessageSendConfiguration.md#priority)
+- [timeout](Core.MessageSendConfiguration.md#timeout)
+
+## Properties
+
+### metadata
+
+• `Optional` **metadata**: `Record`\<`string`, `unknown`\>
+
+Optional additional metadata for the message
+
+___
+
+### priority
+
+• `Optional` **priority**: `number`
+
+Optional priority level for message processing (higher numbers = higher priority)
+
+___
+
+### timeout
+
+• `Optional` **timeout**: `number`
+
+Optional timeout in milliseconds for message delivery

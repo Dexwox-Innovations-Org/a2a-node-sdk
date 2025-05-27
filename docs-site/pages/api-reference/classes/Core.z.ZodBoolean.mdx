@@ -1,0 +1,932 @@
+import { Callout } from 'nextra/components'
+
+---
+title: Core.z. Zod Boolean
+---
+
+[A2A Node SDK - v0.1.0](/api-reference/README) / [Modules](/api-reference/modules) / [Core](/api-reference/modules/Core) / [z](/api-reference/modules/Core.z) / ZodBoolean
+
+# Class: ZodBoolean
+
+[Core](/api-reference/modules/Core).[z](/api-reference/modules/Core.z).ZodBoolean
+
+## Hierarchy
+
+- [`ZodType`](Core.z.ZodType)\<`boolean`, [`ZodBooleanDef`](/api-reference/interfaces/Core.z.ZodBooleanDef), `boolean`\>
+
+  ↳ **`ZodBoolean`**
+
+## Table of contents
+
+### Constructors
+
+- [constructor](Core.z.ZodBoolean.md#constructor)
+
+### Properties
+
+- [\_def](Core.z.ZodBoolean.md#_def)
+- [\_input](Core.z.ZodBoolean.md#_input)
+- [\_output](Core.z.ZodBoolean.md#_output)
+- [\_type](Core.z.ZodBoolean.md#_type)
+- [create](Core.z.ZodBoolean.md#create)
+- [spa](Core.z.ZodBoolean.md#spa)
+- [~standard](Core.z.ZodBoolean.md#~standard)
+
+### Accessors
+
+- [description](Core.z.ZodBoolean.md#description)
+
+### Methods
+
+- [\_getOrReturnCtx](Core.z.ZodBoolean.md#_getorreturnctx)
+- [\_getType](Core.z.ZodBoolean.md#_gettype)
+- [\_parse](Core.z.ZodBoolean.md#_parse)
+- [\_parseAsync](Core.z.ZodBoolean.md#_parseasync)
+- [\_parseSync](Core.z.ZodBoolean.md#_parsesync)
+- [\_processInputParams](Core.z.ZodBoolean.md#_processinputparams)
+- [\_refinement](Core.z.ZodBoolean.md#_refinement)
+- [and](Core.z.ZodBoolean.md#and)
+- [array](Core.z.ZodBoolean.md#array)
+- [brand](Core.z.ZodBoolean.md#brand)
+- [catch](Core.z.ZodBoolean.md#catch)
+- [default](Core.z.ZodBoolean.md#default)
+- [describe](Core.z.ZodBoolean.md#describe)
+- [isNullable](Core.z.ZodBoolean.md#isnullable)
+- [isOptional](Core.z.ZodBoolean.md#isoptional)
+- [nullable](Core.z.ZodBoolean.md#nullable)
+- [nullish](Core.z.ZodBoolean.md#nullish)
+- [optional](Core.z.ZodBoolean.md#optional)
+- [or](Core.z.ZodBoolean.md#or)
+- [parse](Core.z.ZodBoolean.md#parse)
+- [parseAsync](Core.z.ZodBoolean.md#parseasync)
+- [pipe](Core.z.ZodBoolean.md#pipe)
+- [promise](Core.z.ZodBoolean.md#promise)
+- [readonly](Core.z.ZodBoolean.md#readonly)
+- [refine](Core.z.ZodBoolean.md#refine)
+- [refinement](Core.z.ZodBoolean.md#refinement)
+- [safeParse](Core.z.ZodBoolean.md#safeparse)
+- [safeParseAsync](Core.z.ZodBoolean.md#safeparseasync)
+- [superRefine](Core.z.ZodBoolean.md#superrefine)
+- [transform](Core.z.ZodBoolean.md#transform)
+- [~validate](Core.z.ZodBoolean.md#~validate)
+
+## Constructors
+
+### constructor
+
+• **new ZodBoolean**(`def`): [`ZodBoolean`](Core.z.ZodBoolean)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | [`ZodBooleanDef`](/api-reference/interfaces/Core.z.ZodBooleanDef) |
+
+#### Returns
+
+[`ZodBoolean`](Core.z.ZodBoolean)
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[constructor](Core.z.ZodType.md#constructor)
+
+## Properties
+
+### \_def
+
+• `Readonly` **\_def**: [`ZodBooleanDef`](/api-reference/interfaces/Core.z.ZodBooleanDef)
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_def](Core.z.ZodType.md#_def)
+
+___
+
+### \_input
+
+• `Readonly` **\_input**: `boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_input](Core.z.ZodType.md#_input)
+
+___
+
+### \_output
+
+• `Readonly` **\_output**: `boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_output](Core.z.ZodType.md#_output)
+
+___
+
+### \_type
+
+• `Readonly` **\_type**: `boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_type](Core.z.ZodType.md#_type)
+
+___
+
+### create
+
+▪ `Static` **create**: (`params?`: \{ `description?`: `string` ; `errorMap?`: [`ZodErrorMap`](../modules/Core.z.md#zoderrormap) ; `invalid_type_error?`: `string` ; `message?`: `string` ; `required_error?`: `string`  } & \{ `coerce?`: `boolean`  }) => [`ZodBoolean`](Core.z.ZodBoolean)
+
+#### Type declaration
+
+▸ (`params?`): [`ZodBoolean`](Core.z.ZodBoolean)
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `params?` | \{ `description?`: `string` ; `errorMap?`: [`ZodErrorMap`](../modules/Core.z.md#zoderrormap) ; `invalid_type_error?`: `string` ; `message?`: `string` ; `required_error?`: `string`  } & \{ `coerce?`: `boolean`  } |
+
+##### Returns
+
+[`ZodBoolean`](Core.z.ZodBoolean)
+
+___
+
+### spa
+
+• **spa**: (`data`: `unknown`, `params?`: `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\>) => `Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>\>
+
+Alias of safeParseAsync
+
+#### Type declaration
+
+▸ (`data`, `params?`): `Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>\>
+
+##### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+##### Returns
+
+`Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[spa](Core.z.ZodType.md#spa)
+
+___
+
+### ~standard
+
+• **~standard**: `Props`\<`boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[~standard](Core.z.ZodType.md#~standard)
+
+## Accessors
+
+### description
+
+• `get` **description**(): `undefined` \| `string`
+
+#### Returns
+
+`undefined` \| `string`
+
+#### Inherited from
+
+ZodType.description
+
+## Methods
+
+### \_getOrReturnCtx
+
+▸ **_getOrReturnCtx**(`input`, `ctx?`): [`ParseContext`](/api-reference/interfaces/Core.z.ParseContext)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+| `ctx?` | [`ParseContext`](/api-reference/interfaces/Core.z.ParseContext) |
+
+#### Returns
+
+[`ParseContext`](/api-reference/interfaces/Core.z.ParseContext)
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_getOrReturnCtx](Core.z.ZodType.md#_getorreturnctx)
+
+___
+
+### \_getType
+
+▸ **_getType**(`input`): `string`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+`string`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_getType](Core.z.ZodType.md#_gettype)
+
+___
+
+### \_parse
+
+▸ **_parse**(`input`): [`ParseReturnType`](../modules/Core.z.md#parsereturntype)\<`boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+[`ParseReturnType`](../modules/Core.z.md#parsereturntype)\<`boolean`\>
+
+#### Overrides
+
+[ZodType](Core.z.ZodType).[_parse](Core.z.ZodType.md#_parse)
+
+___
+
+### \_parseAsync
+
+▸ **_parseAsync**(`input`): [`AsyncParseReturnType`](../modules/Core.z.md#asyncparsereturntype)\<`boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+[`AsyncParseReturnType`](../modules/Core.z.md#asyncparsereturntype)\<`boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_parseAsync](Core.z.ZodType.md#_parseasync)
+
+___
+
+### \_parseSync
+
+▸ **_parseSync**(`input`): [`SyncParseReturnType`](../modules/Core.z.md#syncparsereturntype)\<`boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+[`SyncParseReturnType`](../modules/Core.z.md#syncparsereturntype)\<`boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_parseSync](Core.z.ZodType.md#_parsesync)
+
+___
+
+### \_processInputParams
+
+▸ **_processInputParams**(`input`): `Object`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `input` | [`ParseInput`](../modules/Core.z.md#parseinput) |
+
+#### Returns
+
+`Object`
+
+| Name | Type |
+| :------ | :------ |
+| `ctx` | [`ParseContext`](/api-reference/interfaces/Core.z.ParseContext) |
+| `status` | [`ParseStatus`](Core.z.ParseStatus) |
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_processInputParams](Core.z.ZodType.md#_processinputparams)
+
+___
+
+### \_refinement
+
+▸ **_refinement**(`refinement`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => `any` |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[_refinement](Core.z.ZodType.md#_refinement)
+
+___
+
+### and
+
+▸ **and**\<`T`\>(`incoming`): [`ZodIntersection`](Core.z.ZodIntersection)\<[`ZodBoolean`](Core.z.ZodBoolean), `T`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `incoming` | `T` |
+
+#### Returns
+
+[`ZodIntersection`](Core.z.ZodIntersection)\<[`ZodBoolean`](Core.z.ZodBoolean), `T`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[and](Core.z.ZodType.md#and)
+
+___
+
+### array
+
+▸ **array**(): [`ZodArray`](Core.z.ZodArray)\<[`ZodBoolean`](Core.z.ZodBoolean), ``"many"``\>
+
+#### Returns
+
+[`ZodArray`](Core.z.ZodArray)\<[`ZodBoolean`](Core.z.ZodBoolean), ``"many"``\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[array](Core.z.ZodType.md#array)
+
+___
+
+### brand
+
+▸ **brand**\<`B`\>(`brand?`): [`ZodBranded`](Core.z.ZodBranded)\<[`ZodBoolean`](Core.z.ZodBoolean), `B`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `B` | extends `string` \| `number` \| `symbol` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `brand?` | `B` |
+
+#### Returns
+
+[`ZodBranded`](Core.z.ZodBranded)\<[`ZodBoolean`](Core.z.ZodBoolean), `B`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[brand](Core.z.ZodType.md#brand)
+
+___
+
+### catch
+
+▸ **catch**(`def`): [`ZodCatch`](Core.z.ZodCatch)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | `boolean` |
+
+#### Returns
+
+[`ZodCatch`](Core.z.ZodCatch)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[catch](Core.z.ZodType.md#catch)
+
+▸ **catch**(`def`): [`ZodCatch`](Core.z.ZodCatch)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | (`ctx`: \{ `error`: [`ZodError`](Core.z.ZodError)\<`any`\> ; `input`: `boolean`  }) => `boolean` |
+
+#### Returns
+
+[`ZodCatch`](Core.z.ZodCatch)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[catch](Core.z.ZodType.md#catch)
+
+___
+
+### default
+
+▸ **default**(`def`): [`ZodDefault`](Core.z.ZodDefault)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | `boolean` |
+
+#### Returns
+
+[`ZodDefault`](Core.z.ZodDefault)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[default](Core.z.ZodType.md#default)
+
+▸ **default**(`def`): [`ZodDefault`](Core.z.ZodDefault)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `def` | () => `boolean` |
+
+#### Returns
+
+[`ZodDefault`](Core.z.ZodDefault)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[default](Core.z.ZodType.md#default)
+
+___
+
+### describe
+
+▸ **describe**(`description`): `this`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `description` | `string` |
+
+#### Returns
+
+`this`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[describe](Core.z.ZodType.md#describe)
+
+___
+
+### isNullable
+
+▸ **isNullable**(): `boolean`
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[isNullable](Core.z.ZodType.md#isnullable)
+
+___
+
+### isOptional
+
+▸ **isOptional**(): `boolean`
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[isOptional](Core.z.ZodType.md#isoptional)
+
+___
+
+### nullable
+
+▸ **nullable**(): [`ZodNullable`](Core.z.ZodNullable)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Returns
+
+[`ZodNullable`](Core.z.ZodNullable)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[nullable](Core.z.ZodType.md#nullable)
+
+___
+
+### nullish
+
+▸ **nullish**(): [`ZodOptional`](Core.z.ZodOptional)\<[`ZodNullable`](Core.z.ZodNullable)\<[`ZodBoolean`](Core.z.ZodBoolean)\>\>
+
+#### Returns
+
+[`ZodOptional`](Core.z.ZodOptional)\<[`ZodNullable`](Core.z.ZodNullable)\<[`ZodBoolean`](Core.z.ZodBoolean)\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[nullish](Core.z.ZodType.md#nullish)
+
+___
+
+### optional
+
+▸ **optional**(): [`ZodOptional`](Core.z.ZodOptional)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Returns
+
+[`ZodOptional`](Core.z.ZodOptional)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[optional](Core.z.ZodType.md#optional)
+
+___
+
+### or
+
+▸ **or**\<`T`\>(`option`): [`ZodUnion`](Core.z.ZodUnion)\<[[`ZodBoolean`](Core.z.ZodBoolean), `T`]\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `option` | `T` |
+
+#### Returns
+
+[`ZodUnion`](Core.z.ZodUnion)\<[[`ZodBoolean`](Core.z.ZodBoolean), `T`]\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[or](Core.z.ZodType.md#or)
+
+___
+
+### parse
+
+▸ **parse**(`data`, `params?`): `boolean`
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+`boolean`
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[parse](Core.z.ZodType.md#parse)
+
+___
+
+### parseAsync
+
+▸ **parseAsync**(`data`, `params?`): `Promise`\<`boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+`Promise`\<`boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[parseAsync](Core.z.ZodType.md#parseasync)
+
+___
+
+### pipe
+
+▸ **pipe**\<`T`\>(`target`): [`ZodPipeline`](Core.z.ZodPipeline)\<[`ZodBoolean`](Core.z.ZodBoolean), `T`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`ZodTypeAny`](../modules/Core.z.md#zodtypeany) |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `target` | `T` |
+
+#### Returns
+
+[`ZodPipeline`](Core.z.ZodPipeline)\<[`ZodBoolean`](Core.z.ZodBoolean), `T`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[pipe](Core.z.ZodType.md#pipe)
+
+___
+
+### promise
+
+▸ **promise**(): [`ZodPromise`](Core.z.ZodPromise)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Returns
+
+[`ZodPromise`](Core.z.ZodPromise)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[promise](Core.z.ZodType.md#promise)
+
+___
+
+### readonly
+
+▸ **readonly**(): [`ZodReadonly`](Core.z.ZodReadonly)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Returns
+
+[`ZodReadonly`](Core.z.ZodReadonly)\<[`ZodBoolean`](Core.z.ZodBoolean)\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[readonly](Core.z.ZodType.md#readonly)
+
+___
+
+### refine
+
+▸ **refine**\<`RefinedOutput`\>(`check`, `message?`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `RefinedOutput`, `boolean`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `RefinedOutput` | extends `boolean` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `boolean`) => arg is RefinedOutput |
+| `message?` | `string` \| `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](/api-reference/interfaces/Core.z.ZodCustomIssue), ``"code"``\>\> \| (`arg`: `boolean`) => `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](/api-reference/interfaces/Core.z.ZodCustomIssue), ``"code"``\>\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `RefinedOutput`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[refine](Core.z.ZodType.md#refine)
+
+▸ **refine**(`check`, `message?`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `boolean`) => `unknown` |
+| `message?` | `string` \| `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](/api-reference/interfaces/Core.z.ZodCustomIssue), ``"code"``\>\> \| (`arg`: `boolean`) => `Partial`\<[`Omit`](../modules/Core.z.util.md#omit)\<[`ZodCustomIssue`](/api-reference/interfaces/Core.z.ZodCustomIssue), ``"code"``\>\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[refine](Core.z.ZodType.md#refine)
+
+___
+
+### refinement
+
+▸ **refinement**\<`RefinedOutput`\>(`check`, `refinementData`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `RefinedOutput`, `boolean`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `RefinedOutput` | extends `boolean` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `boolean`) => arg is RefinedOutput |
+| `refinementData` | [`IssueData`](../modules/Core.z.md#issuedata) \| (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => [`IssueData`](../modules/Core.z.md#issuedata) |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `RefinedOutput`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[refinement](Core.z.ZodType.md#refinement)
+
+▸ **refinement**(`check`, `refinementData`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `check` | (`arg`: `boolean`) => `boolean` |
+| `refinementData` | [`IssueData`](../modules/Core.z.md#issuedata) \| (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => [`IssueData`](../modules/Core.z.md#issuedata) |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[refinement](Core.z.ZodType.md#refinement)
+
+___
+
+### safeParse
+
+▸ **safeParse**(`data`, `params?`): [`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[safeParse](Core.z.ZodType.md#safeparse)
+
+___
+
+### safeParseAsync
+
+▸ **safeParseAsync**(`data`, `params?`): `Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+| `params?` | `Partial`\<[`ParseParams`](../modules/Core.z.md#parseparams)\> |
+
+#### Returns
+
+`Promise`\<[`SafeParseReturnType`](../modules/Core.z.md#safeparsereturntype)\<`boolean`, `boolean`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[safeParseAsync](Core.z.ZodType.md#safeparseasync)
+
+___
+
+### superRefine
+
+▸ **superRefine**\<`RefinedOutput`\>(`refinement`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `RefinedOutput`, `boolean`\>
+
+#### Type parameters
+
+| Name | Type |
+| :------ | :------ |
+| `RefinedOutput` | extends `boolean` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => arg is RefinedOutput |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `RefinedOutput`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[superRefine](Core.z.ZodType.md#superrefine)
+
+▸ **superRefine**(`refinement`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => `void` |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[superRefine](Core.z.ZodType.md#superrefine)
+
+▸ **superRefine**(`refinement`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `refinement` | (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => `Promise`\<`void`\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `boolean`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[superRefine](Core.z.ZodType.md#superrefine)
+
+___
+
+### transform
+
+▸ **transform**\<`NewOut`\>(`transform`): [`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `NewOut`, `boolean`\>
+
+#### Type parameters
+
+| Name |
+| :------ |
+| `NewOut` |
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `transform` | (`arg`: `boolean`, `ctx`: [`RefinementCtx`](/api-reference/interfaces/Core.z.RefinementCtx)) => `NewOut` \| `Promise`\<`NewOut`\> |
+
+#### Returns
+
+[`ZodEffects`](Core.z.ZodEffects)\<[`ZodBoolean`](Core.z.ZodBoolean), `NewOut`, `boolean`\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[transform](Core.z.ZodType.md#transform)
+
+___
+
+### ~validate
+
+▸ **~validate**(`data`): `Result`\<`boolean`\> \| `Promise`\<`Result`\<`boolean`\>\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `data` | `unknown` |
+
+#### Returns
+
+`Result`\<`boolean`\> \| `Promise`\<`Result`\<`boolean`\>\>
+
+#### Inherited from
+
+[ZodType](Core.z.ZodType).[~validate](Core.z.ZodType.md#~validate)

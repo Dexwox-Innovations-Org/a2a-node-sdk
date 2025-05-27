@@ -34,15 +34,6 @@ import { AgentClient } from './agent-client';
  * const messageId = await messageClient.sendMessage([
  *   { type: 'text', content: 'What is the weather in New York?' }
  * ], 'weather-agent');
- * 
- * // Stream messages with real-time updates
- * await messageClient.streamMessage([
- *   { type: 'text', content: 'Generate a story about space travel' }
- * ], 'story-agent', {
- *   onMessage: (data) => console.log('Received:', data),
- *   onError: (error) => console.error('Stream error:', error),
- *   onComplete: () => console.log('Stream completed')
- * });
  * ```
  */
 @TraceClass()
@@ -123,12 +114,10 @@ export class MessageClient extends EventEmitter {
   }
 
   /**
-   * Streams messages to and from an agent using Server-Sent Events
+   * Streams messages to and from an agent
    * 
    * This method establishes a real-time streaming connection with an agent,
-   * allowing for continuous message exchange. It includes robust error handling
-   * with automatic retries, exponential backoff, and heartbeat monitoring to
-   * ensure connection reliability.
+   * allowing for continuous message exchange with automatic error handling.
    * 
    * @param parts - Initial message parts to send to the agent
    * @param agentId - ID of the target agent to stream with
@@ -136,42 +125,19 @@ export class MessageClient extends EventEmitter {
    * @param options.onMessage - Callback function for received messages
    * @param options.onError - Optional callback function for stream errors
    * @param options.onComplete - Optional callback function when stream completes
-   * @param options.maxRetries - Maximum number of reconnection attempts (default: 5)
-   * @param options.retryDelay - Initial delay between retries in ms (default: 1000)
-   * @param options.backoffFactor - Exponential backoff multiplier (default: 2)
-   * @param options.maxRetryDelay - Maximum delay between retries in ms (default: 30000)
-   * @param options.heartbeatInterval - Interval for checking heartbeats in ms (default: 10000)
-   * @param options.heartbeatTimeout - Time to wait before considering connection dead in ms (default: 30000)
    * @returns Promise that resolves when the stream completes
    * @throws {A2ANetworkError} If there's a network issue establishing the stream
    * @throws {A2AValidationError} If the message parts are invalid
    * 
    * @example
    * ```typescript
-   * // Stream with basic configuration
    * await messageClient.streamMessage(
    *   [{ type: 'text', content: 'Tell me a story about dragons' }],
    *   'storyteller-agent',
    *   {
-   *     onMessage: (data) => {
-   *       if (data.type === 'text') {
-   *         console.log('Story part:', data.content);
-   *       }
-   *     },
+   *     onMessage: (data) => console.log('Received:', data),
    *     onError: (error) => console.error('Stream error:', error),
-   *     onComplete: () => console.log('Story complete!')
-   *   }
-   * );
-   * 
-   * // Stream with custom retry configuration
-   * await messageClient.streamMessage(
-   *   [{ type: 'text', content: 'Generate a long report' }],
-   *   'report-agent',
-   *   {
-   *     onMessage: (data) => console.log('Report chunk:', data),
-   *     maxRetries: 10,
-   *     retryDelay: 2000,
-   *     backoffFactor: 1.5
+   *     onComplete: () => console.log('Stream completed')
    *   }
    * );
    * ```

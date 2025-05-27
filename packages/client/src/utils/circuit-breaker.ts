@@ -36,42 +36,31 @@ export interface CircuitBreakerOptions {
  * Circuit breaker implementation for improving reliability
  * 
  * The circuit breaker pattern prevents cascading failures by temporarily disabling
- * operations that are likely to fail. It has three states:
- * 
- * - CLOSED: Normal operation, requests pass through
- * - OPEN: Circuit is broken, requests are immediately rejected
- * - HALF_OPEN: Testing if the system has recovered, allowing limited requests
+ * operations that are likely to fail.
  * 
  * @example
  * ```typescript
- * // Create a circuit breaker
  * const breaker = new CircuitBreaker({
  *   failureThreshold: 3,
  *   successThreshold: 2,
  *   timeout: 10000
  * });
  * 
- * // Execute a function with circuit breaker protection
- * try {
- *   const result = await breaker.execute(async () => {
- *     return await fetch('https://api.example.com/data');
- *   });
- *   console.log('Request succeeded:', result);
- * } catch (error) {
- *   console.error('Request failed or circuit is open:', error);
- * }
+ * const result = await breaker.execute(async () => {
+ *   return await fetch('https://api.example.com/data');
+ * });
  * ```
  */
 export class CircuitBreaker {
-  /** Current state of the circuit breaker */
+  /** @private Current state of the circuit breaker */
   private state: 'CLOSED' | 'OPEN' | 'HALF_OPEN' = 'CLOSED';
-  /** Count of consecutive failures */
+  /** @private Count of consecutive failures */
   private failureCount = 0;
-  /** Count of consecutive successes in HALF_OPEN state */
+  /** @private Count of consecutive successes in HALF_OPEN state */
   private successCount = 0;
-  /** Timestamp of the last failure */
+  /** @private Timestamp of the last failure */
   private lastFailureTime = 0;
-  /** Configuration options */
+  /** @private Configuration options */
   private readonly options: CircuitBreakerOptions;
 
   /**

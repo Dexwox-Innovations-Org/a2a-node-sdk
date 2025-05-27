@@ -1,0 +1,977 @@
+---
+title: Examples
+description: Explore real-world use cases and implementations
+---
+
+import { Callout } from 'nextra/components'
+
+# Examples
+
+Explore real-world use cases and implementations of the A2A Node SDK. These examples demonstrate practical applications and best practices for building A2A agents.
+
+## Quick Examples
+
+### Basic Client-Server Communication
+
+A simple example showing how to set up a client and server for basic communication.
+
+#### Server Implementation
+
+```typescript filename="server.ts"
+import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-node';
+
+// Create a simple echo agent
+const executor = new DefaultAgentExecutor({
+  async executeTask(task) {
+    const { name, input } = task;
+    
+    if (name === 'echo') {
+      return {
+        status: 'completed',
+        result: {
+          message: `Echo: ${input.message}`,
+          timestamp: new Date().toISOString()
+        },
+        artifacts: [{
+          id: `echo-${Date.now()}`,
+          type: 'text',
+          content: { text: `Echo: ${input.message}` },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }]
+      };
+    }
+    
+    throw new Error(`Unknown task: ${name}`);
+  }
+});
+
+// Create and start server
+const server = new A2AServer({
+  agentCard: {
+    id: 'echo-agent',
+    name: 'Echo Agent',
+    description: 'Simple agent that echoes messages',
+    capabilities: ['echo', 'text-processing'],
+    endpoint: 'http://localhost:3000',
+    version: '1.0.0'
+  },
+  executor
+});
+
+await server.start(3000);
+console.log('🚀 Echo agent running on http://localhost:3000');
+```
+
+#### Client Implementation
+
+```typescript filename="client.ts"
+import { AgentClient, TaskClient } from '@dexwox/a2a-node';
+
+async function main() {
+  // Create clients
+  const agentClient = new AgentClient({
+    baseUrl: 'http://localhost:3000'
+  });
+  
+  const taskClient = new TaskClient({
+    baseUrl: 'http://localhost:3000'
+  });
+  
+  try {
+    // Discover the agent
+    const agents = await agentClient.resolveAgents();
+    console.log('Found agents:', agents.map(a => a.name));
+    
+    // Create a task
+    const task = await taskClient.createTask({
+      name: 'echo',
+      description: 'Echo a message',
+      input: {
+        message: 'Hello, A2A World!'
+      }
+    });
+    
+    console.log('Task created:', task.id);
+    
+    // Wait for completion
+    let taskStatus = await taskClient.getTask(task.id);
+    while (taskStatus.status === 'submitted' || taskStatus.status === 'working') {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      taskStatus = await taskClient.getTask(task.id);
+    }
+    
+    console.log('Task completed:', taskStatus.result);
+  } catch (error) {
+    console.error('Error:', error.message);
+  }
+}
+
+main();
+```
+
+## Real-World Examples
+
+### 1. Weather Agent
+
+A comprehensive weather agent that provides current weather and forecasts.
+
+<Callout type="info">
+This example demonstrates API integration, error handling, and structured responses.
+</Callout>
+
+```typescript filename="weather-agent.ts"
+import { A2AServer, AgentExecutor, Task, TaskResult } from '@dexwox/a2a-node';
+import axios from 'axios';
+
+interface WeatherData {
+  location: string;
+  temperature: number;
+  condition: string;
+  humidity: number;
+  windSpeed: number;
+}
+
+interface ForecastData {
+  location: string;
+  days: Array<{
+    date: string;
+    temperature: { min: number; max: number };
+    condition: string;
+    precipitation: number;
+  }>;
+}
+
+class WeatherAgentExecutor implements AgentExecutor {
+  private apiKey: string;
+  
+  constructor(apiKey: string) {
+    this.apiKey = apiKey;
+  }
+  
+  async executeTask(task: Task): Promise<TaskResult> {
+    const { name, input } = task;
+    
+    try {
+      switch (name) {
+        case 'get-current-weather':
+          return await this.getCurrentWeather(input);
+        case 'get-forecast':
+          return await this.getForecast(input);
+        case 'get-weather-alerts':
+          return await this.getWeatherAlerts(input);
+        default:
+          throw new Error(`Unsupported task: ${name}`);
+      }
+    } catch (error) {
+      return {
+        status: 'failed',
+        error: error.message
+      };
+    }
+  }
+  
+  private async getCurrentWeather(input: any): Promise<TaskResult> {
+    const { location } = input;
+    
+    if (!location) {
+      throw new Error('Location is required');
+    }
+    
+    // Call weather API
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/weather`,
+      {
+        params: {
+          q: location,
+          appid: this.apiKey,
+          units: 'metric'
+        }
+      }
+    );
+    
+    const data = response.data;
+    const weatherData: WeatherData = {
+      location: data.name,
+      temperature: Math.round(data.main.temp),
+      condition: data.weather[0].description,
+      humidity: data.main.humidity,
+      windSpeed: data.wind.speed
+    };
+    
+    return {
+      status: 'completed',
+      result: weatherData,
+      artifacts: [
+        {
+          id: `weather-${Date.now()}`,
+          type: 'json',
+          content: { data: weatherData },
+          metadata: {
+            source: 'OpenWeatherMap',
+            timestamp: new Date().toISOString()
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ]
+    };
+  }
+  
+  private async getForecast(input: any): Promise<TaskResult> {
+    const { location, days = 5 } = input;
+    
+    if (!location) {
+      throw new Error('Location is required');
+    }
+    
+    if (days < 1 || days > 16) {
+      throw new Error('Days must be between 1 and 16');
+    }
+    
+    // Call forecast API
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast`,
+      {
+        params: {
+          q: location,
+          appid: this.apiKey,
+          units: 'metric',
+          cnt: days * 8 // 8 forecasts per day (3-hour intervals)
+        }
+      }
+    );
+    
+    const data = response.data;
+    const forecastData: ForecastData = {
+      location: data.city.name,
+      days: this.processForecastData(data.list, days)
+    };
+    
+    return {
+      status: 'completed',
+      result: forecastData,
+      artifacts: [
+        {
+          id: `forecast-${Date.now()}`,
+          type: 'json',
+          content: { data: forecastData },
+          metadata: {
+            source: 'OpenWeatherMap',
+            timestamp: new Date().toISOString()
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ]
+    };
+  }
+  
+  private async getWeatherAlerts(input: any): Promise<TaskResult> {
+    const { location } = input;
+    
+    // Simulate weather alerts (in real implementation, use weather alerts API)
+    const alerts = [
+      {
+        id: 'alert-1',
+        type: 'warning',
+        title: 'Heavy Rain Warning',
+        description: 'Heavy rainfall expected in the next 6 hours',
+        severity: 'moderate',
+        startTime: new Date().toISOString(),
+        endTime: new Date(Date.now() + 6 * 60 * 60 * 1000).toISOString()
+      }
+    ];
+    
+    return {
+      status: 'completed',
+      result: { location, alerts },
+      artifacts: [
+        {
+          id: `alerts-${Date.now()}`,
+          type: 'json',
+          content: { alerts },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ]
+    };
+  }
+  
+  private processForecastData(forecastList: any[], days: number) {
+    const dailyData = new Map();
+    
+    forecastList.forEach(item => {
+      const date = item.dt_txt.split(' ')[0];
+      
+      if (!dailyData.has(date)) {
+        dailyData.set(date, {
+          date,
+          temperatures: [],
+          conditions: [],
+          precipitation: 0
+        });
+      }
+      
+      const dayData = dailyData.get(date);
+      dayData.temperatures.push(item.main.temp);
+      dayData.conditions.push(item.weather[0].description);
+      dayData.precipitation += item.rain?.['3h'] || 0;
+    });
+    
+    return Array.from(dailyData.values())
+      .slice(0, days)
+      .map(day => ({
+        date: day.date,
+        temperature: {
+          min: Math.round(Math.min(...day.temperatures)),
+          max: Math.round(Math.max(...day.temperatures))
+        },
+        condition: day.conditions[0], // Use first condition
+        precipitation: Math.round(day.precipitation * 10) / 10
+      }));
+  }
+}
+
+// Create and start the weather agent
+const weatherAgent = new A2AServer({
+  agentCard: {
+    id: 'weather-agent-v2',
+    name: 'Weather Information Agent',
+    description: 'Provides current weather, forecasts, and alerts',
+    version: '2.0.0',
+    capabilities: [
+      'weather-current',
+      'weather-forecast',
+      'weather-alerts',
+      'location-services'
+    ],
+    endpoint: 'http://localhost:3001',
+    metadata: {
+      author: 'Weather Corp',
+      license: 'MIT',
+      supportedRegions: ['global']
+    },
+    supportedTasks: [
+      {
+        name: 'get-current-weather',
+        description: 'Get current weather for a location',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            location: { type: 'string', description: 'Location name or coordinates' }
+          },
+          required: ['location']
+        }
+      },
+      {
+        name: 'get-forecast',
+        description: 'Get weather forecast for a location',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            location: { type: 'string', description: 'Location name or coordinates' },
+            days: { type: 'number', minimum: 1, maximum: 16, default: 5 }
+          },
+          required: ['location']
+        }
+      },
+      {
+        name: 'get-weather-alerts',
+        description: 'Get weather alerts for a location',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            location: { type: 'string', description: 'Location name or coordinates' }
+          },
+          required: ['location']
+        }
+      }
+    ]
+  },
+  executor: new WeatherAgentExecutor(process.env.OPENWEATHER_API_KEY!)
+});
+
+await weatherAgent.start(3001);
+console.log('🌤️ Weather agent running on http://localhost:3001');
+```
+
+### 2. File Processing Agent
+
+An agent that processes various file types and extracts information.
+
+```typescript filename="file-processor-agent.ts"
+import { A2AServer, AgentExecutor, Task, TaskResult } from '@dexwox/a2a-node';
+import { promises as fs } from 'fs';
+import path from 'path';
+import csv from 'csv-parser';
+import * as XLSX from 'xlsx';
+
+class FileProcessorExecutor implements AgentExecutor {
+  private tempDir: string;
+  
+  constructor() {
+    this.tempDir = path.join(process.cwd(), 'temp');
+    this.ensureTempDir();
+  }
+  
+  private async ensureTempDir() {
+    try {
+      await fs.mkdir(this.tempDir, { recursive: true });
+    } catch (error) {
+      // Directory already exists
+    }
+  }
+  
+  async executeTask(task: Task): Promise<TaskResult> {
+    const { name, input } = task;
+    
+    try {
+      switch (name) {
+        case 'process-csv':
+          return await this.processCsv(input);
+        case 'process-excel':
+          return await this.processExcel(input);
+        case 'extract-text':
+          return await this.extractText(input);
+        case 'analyze-file':
+          return await this.analyzeFile(input);
+        default:
+          throw new Error(`Unsupported task: ${name}`);
+      }
+    } catch (error) {
+      return {
+        status: 'failed',
+        error: error.message
+      };
+    }
+  }
+  
+  private async processCsv(input: any): Promise<TaskResult> {
+    const { fileContent, options = {} } = input;
+    
+    if (!fileContent) {
+      throw new Error('File content is required');
+    }
+    
+    // Save content to temp file
+    const tempFile = path.join(this.tempDir, `csv-${Date.now()}.csv`);
+    await fs.writeFile(tempFile, fileContent);
+    
+    try {
+      const rows: any[] = [];
+      
+      return new Promise((resolve, reject) => {
+        require('fs').createReadStream(tempFile)
+          .pipe(csv(options))
+          .on('data', (row: any) => rows.push(row))
+          .on('end', () => {
+            const result = {
+              rowCount: rows.length,
+              columns: Object.keys(rows[0] || {}),
+              data: rows.slice(0, 100), // Limit to first 100 rows
+              summary: this.generateCsvSummary(rows)
+            };
+            
+            resolve({
+              status: 'completed',
+              result,
+              artifacts: [
+                {
+                  id: `csv-analysis-${Date.now()}`,
+                  type: 'json',
+                  content: { analysis: result },
+                  createdAt: new Date().toISOString(),
+                  updatedAt: new Date().toISOString()
+                }
+              ]
+            });
+          })
+          .on('error', reject);
+      });
+    } finally {
+      // Cleanup temp file
+      await fs.unlink(tempFile).catch(() => {});
+    }
+  }
+  
+  private async processExcel(input: any): Promise<TaskResult> {
+    const { fileContent, sheetName } = input;
+    
+    if (!fileContent) {
+      throw new Error('File content is required');
+    }
+    
+    // Parse Excel file
+    const workbook = XLSX.read(fileContent, { type: 'buffer' });
+    const targetSheet = sheetName || workbook.SheetNames[0];
+    
+    if (!workbook.Sheets[targetSheet]) {
+      throw new Error(`Sheet '${targetSheet}' not found`);
+    }
+    
+    const worksheet = workbook.Sheets[targetSheet];
+    const data = XLSX.utils.sheet_to_json(worksheet);
+    
+    const result = {
+      sheetName: targetSheet,
+      availableSheets: workbook.SheetNames,
+      rowCount: data.length,
+      columns: Object.keys(data[0] || {}),
+      data: data.slice(0, 100), // Limit to first 100 rows
+      summary: this.generateExcelSummary(data)
+    };
+    
+    return {
+      status: 'completed',
+      result,
+      artifacts: [
+        {
+          id: `excel-analysis-${Date.now()}`,
+          type: 'json',
+          content: { analysis: result },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ]
+    };
+  }
+  
+  private async extractText(input: any): Promise<TaskResult> {
+    const { fileContent, fileType } = input;
+    
+    if (!fileContent) {
+      throw new Error('File content is required');
+    }
+    
+    let extractedText = '';
+    
+    switch (fileType?.toLowerCase()) {
+      case 'txt':
+      case 'text':
+        extractedText = fileContent.toString();
+        break;
+      case 'json':
+        try {
+          const jsonData = JSON.parse(fileContent);
+          extractedText = JSON.stringify(jsonData, null, 2);
+        } catch (error) {
+          throw new Error('Invalid JSON format');
+        }
+        break;
+      default:
+        // Try to extract as text
+        extractedText = fileContent.toString();
+    }
+    
+    const analysis = {
+      characterCount: extractedText.length,
+      wordCount: extractedText.split(/\s+/).filter(word => word.length > 0).length,
+      lineCount: extractedText.split('\n').length,
+      preview: extractedText.substring(0, 500) + (extractedText.length > 500 ? '...' : '')
+    };
+    
+    return {
+      status: 'completed',
+      result: {
+        text: extractedText,
+        analysis
+      },
+      artifacts: [
+        {
+          id: `text-extraction-${Date.now()}`,
+          type: 'text',
+          content: { text: extractedText },
+          metadata: { analysis },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ]
+    };
+  }
+  
+  private async analyzeFile(input: any): Promise<TaskResult> {
+    const { fileName, fileSize, fileType, fileContent } = input;
+    
+    const analysis = {
+      fileName,
+      fileSize,
+      fileType,
+      sizeCategory: this.categorizeSizeFile(fileSize),
+      typeCategory: this.categorizeFileType(fileType),
+      contentPreview: fileContent ? fileContent.toString().substring(0, 200) : null,
+      recommendations: this.generateRecommendations(fileType, fileSize)
+    };
+    
+    return {
+      status: 'completed',
+      result: analysis,
+      artifacts: [
+        {
+          id: `file-analysis-${Date.now()}`,
+          type: 'json',
+          content: { analysis },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ]
+    };
+  }
+  
+  private generateCsvSummary(rows: any[]) {
+    if (rows.length === 0) return {};
+    
+    const columns = Object.keys(rows[0]);
+    const summary: any = {};
+    
+    columns.forEach(column => {
+      const values = rows.map(row => row[column]).filter(val => val !== null && val !== undefined);
+      const numericValues = values.filter(val => !isNaN(Number(val))).map(Number);
+      
+      summary[column] = {
+        totalValues: values.length,
+        uniqueValues: new Set(values).size,
+        nullValues: rows.length - values.length,
+        dataType: numericValues.length > values.length * 0.8 ? 'numeric' : 'text'
+      };
+      
+      if (numericValues.length > 0) {
+        summary[column].statistics = {
+          min: Math.min(...numericValues),
+          max: Math.max(...numericValues),
+          avg: numericValues.reduce((a, b) => a + b, 0) / numericValues.length
+        };
+      }
+    });
+    
+    return summary;
+  }
+  
+  private generateExcelSummary(data: any[]) {
+    return this.generateCsvSummary(data); // Same logic for Excel
+  }
+  
+  private categorizeSizeFile(size: number): string {
+    if (size < 1024) return 'tiny';
+    if (size < 1024 * 1024) return 'small';
+    if (size < 10 * 1024 * 1024) return 'medium';
+    if (size < 100 * 1024 * 1024) return 'large';
+    return 'very-large';
+  }
+  
+  private categorizeFileType(type: string): string {
+    const documentTypes = ['pdf', 'doc', 'docx', 'txt'];
+    const spreadsheetTypes = ['xls', 'xlsx', 'csv'];
+    const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp'];
+    const videoTypes = ['mp4', 'avi', 'mov', 'wmv'];
+    
+    if (documentTypes.includes(type?.toLowerCase())) return 'document';
+    if (spreadsheetTypes.includes(type?.toLowerCase())) return 'spreadsheet';
+    if (imageTypes.includes(type?.toLowerCase())) return 'image';
+    if (videoTypes.includes(type?.toLowerCase())) return 'video';
+    
+    return 'other';
+  }
+  
+  private generateRecommendations(fileType: string, fileSize: number): string[] {
+    const recommendations = [];
+    
+    if (fileSize > 50 * 1024 * 1024) {
+      recommendations.push('Consider compressing large files before processing');
+    }
+    
+    if (['csv', 'xlsx'].includes(fileType?.toLowerCase())) {
+      recommendations.push('Use process-csv or process-excel tasks for structured data analysis');
+    }
+    
+    if (['txt', 'json'].includes(fileType?.toLowerCase())) {
+      recommendations.push('Use extract-text task for text content analysis');
+    }
+    
+    return recommendations;
+  }
+}
+
+// Create and start the file processor agent
+const fileProcessorAgent = new A2AServer({
+  agentCard: {
+    id: 'file-processor-v1',
+    name: 'File Processing Agent',
+    description: 'Processes and analyzes various file types',
+    version: '1.0.0',
+    capabilities: [
+      'file-processing',
+      'data-analysis',
+      'text-extraction',
+      'csv-processing',
+      'excel-processing'
+    ],
+    endpoint: 'http://localhost:3002'
+  },
+  executor: new FileProcessorExecutor()
+});
+
+await fileProcessorAgent.start(3002);
+console.log('📁 File processor agent running on http://localhost:3002');
+```
+
+### 3. Multi-Agent Orchestration
+
+An example showing how multiple agents can work together to complete complex tasks.
+
+```typescript filename="orchestrator.ts"
+import { AgentClient, TaskClient, MessageClient } from '@dexwox/a2a-node';
+
+interface AgentInfo {
+  id: string;
+  name: string;
+  capabilities: string[];
+  client: TaskClient;
+}
+
+class AgentOrchestrator {
+  private agents: Map<string, AgentInfo> = new Map();
+  private agentClient: AgentClient;
+  private messageClient: MessageClient;
+  
+  constructor() {
+    this.agentClient = new AgentClient({ baseUrl: 'http://localhost:3000' });
+    this.messageClient = new MessageClient({ baseUrl: 'http://localhost:3000' });
+  }
+  
+  async discoverAgents(): Promise<void> {
+    console.log('🔍 Discovering available agents...');
+    
+    // Discover agents on different ports
+    const ports = [3001, 3002, 3003];
+    
+    for (const port of ports) {
+      try {
+        const agentClient = new AgentClient({ baseUrl: `http://localhost:${port}` });
+        const agents = await agentClient.resolveAgents();
+        
+        for (const agent of agents) {
+          this.agents.set(agent.id, {
+            id: agent.id,
+            name: agent.name,
+            capabilities: agent.capabilities,
+            client: new TaskClient({ baseUrl: `http://localhost:${port}` })
+          });
+          
+          console.log(`✅ Found agent: ${agent.name} (${agent.capabilities.join(', ')})`);
+        }
+      } catch (error) {
+        console.log(`❌ No agent found on port ${port}`);
+      }
+    }
+  }
+  
+  async processWeatherReport(location: string): Promise<any> {
+    console.log(`\n🌤️ Generating weather report for ${location}...`);
+    
+    // Step 1: Get current weather
+    const weatherAgent = this.findAgentByCapability('weather-current');
+    if (!weatherAgent) {
+      throw new Error('No weather agent available');
+    }
+    
+    const weatherTask = await weatherAgent.client.createTask({
+      name: 'get-current-weather',
+      input: { location }
+    });
+    
+    const weatherResult = await this.waitForTask(weatherAgent.client, weatherTask.id);
+    console.log('✅ Current weather retrieved');
+    
+    // Step 2: Get forecast
+    const forecastTask = await weatherAgent.client.createTask({
+      name: 'get-forecast',
+      input: { location, days: 3 }
+    });
+    
+    const forecastResult = await this.waitForTask(weatherAgent.client, forecastTask.id);
+    console.log('✅ Forecast retrieved');
+    
+    // Step 3: Generate report document (if document agent available)
+    const docAgent = this.findAgentByCapability('document-generation');
+    let reportDocument = null;
+    
+    if (docAgent) {
+      const reportData = {
+        location,
+        currentWeather: weatherResult.result,
+        forecast: forecastResult.result,
+        generatedAt: new Date().toISOString()
+      };
+      
+      const docTask = await docAgent.client.createTask({
+        name: 'generate-report',
+        input: {
+          template: 'weather-report',
+          data: reportData
+        }
+      });
+      
+      reportDocument = await this.waitForTask(docAgent.client, docTask.id);
+      console.log('✅ Report document generated');
+    }
+    
+    return {
+      location,
+      currentWeather: weatherResult.result,
+      forecast: forecastResult.result,
+      document: reportDocument?.result,
+      generatedAt: new Date().toISOString()
+    };
+  }
+  
+  async processDataAnalysis(csvData: string): Promise<any> {
+    console.log('\n📊 Processing data analysis workflow...');
+    
+    // Step 1: Process CSV data
+    const fileAgent = this.findAgentByCapability('file-processing');
+    if (!fileAgent) {
+      throw new Error('No file processing agent available');
+    }
+    
+    const csvTask = await fileAgent.client.createTask({
+      name: 'process-csv',
+      input: { fileContent: csvData }
+    });
+    
+    const csvResult = await this.waitForTask(fileAgent.client, csvTask.id);
+    console.log('✅ CSV data processed');
+    
+    // Step 2: Generate insights (if analytics agent available)
+    const analyticsAgent = this.findAgentByCapability('data-analytics');
+    let insights = null;
+    
+    if (analyticsAgent) {
+      const analyticsTask = await analyticsAgent.client.createTask({
+        name: 'generate-insights',
+        input: {
+          data: csvResult.result.data,
+          summary: csvResult.result.summary
+        }
+      });
+      
+      insights = await this.waitForTask(analyticsAgent.client, analyticsTask.id);
+      console.log('✅ Data insights generated');
+    }
+    
+    return {
+      dataAnalysis: csvResult.result,
+      insights: insights?.result,
+      processedAt: new Date().toISOString()
+    };
+  }
+  
+  private findAgentByCapability(capability: string): AgentInfo | null {
+    for (const agent of this.agents.values()) {
+      if (agent.capabilities.includes(capability)) {
+        return agent;
+      }
+    }
+    return null;
+  }
+  
+  private async waitForTask(client: TaskClient, taskId: string): Promise<any> {
+    let task = await client.getTask(taskId);
+    
+    while (task.status === 'submitted' || task.status === 'working') {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      task = await client.getTask(taskId);
+    }
+    
+    if (task.status === 'failed') {
+      throw new Error(`Task failed: ${task.error}`);
+    }
+    
+    return task;
+  }
+  
+  listAvailableAgents(): void {
+    console.log('\n📋 Available Agents:');
+    for (const agent of this.agents.values()) {
+      console.log(`  • ${agent.name} (${agent.id})`);
+      console.log(`    Capabilities: ${agent.capabilities.join(', ')}`);
+    }
+  }
+}
+
+// Usage example
+async function main() {
+  const orchestrator = new AgentOrchestrator();
+  
+  try {
+    // Discover available agents
+    await orchestrator.discoverAgents();
+    orchestrator.listAvailableAgents();
+    
+    // Example 1: Weather report workflow
+    const weatherReport = await orchestrator.processWeatherReport('New York, NY');
+    console.log('\n📄 Weather Report Generated:', weatherReport);
+    
+    // Example 2: Data analysis workflow
+    const csvData = `name,age,city
+John,25,New York
+Jane,30,Los Angeles
+Bob,35,Chicago`;
+    
+    const dataAnalysis = await orchestrator.processDataAnalysis(csvData);
+    console.log('\n📈 Data Analysis Complete:', dataAnalysis);
+    
+  } catch (error) {
+    console.error('❌ Orchestration failed:', error.message);
+  }
+}
+
+main();
+```
+
+## Testing Examples
+
+### Unit Testing Agents
+
+```typescript filename="weather-agent.test.ts"
+import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+import { A2AServer } from '@dexwox/a2a-node';
+import { WeatherAgentExecutor } from './weather-agent';
+import request from 'supertest';
+
+describe('Weather Agent', () => {
+  let server: A2AServer;
+  let app: any;
+  
+  beforeEach(async () => {
+    server = new A2AServer({
+      agentCard: {
+        id: 'test-weather-agent',
+        name: 'Test Weather Agent',
+        capabilities: ['weather-current'],
+        endpoint: 'http://localhost:3000',
+        version: '1.0.0'
+      },
+      executor: new WeatherAgentExecutor('test-api-key')
+    });
+    
+    app = server.getApp();
+  });
+  
+  afterEach(async () => {
+    if (server) {
+      await server.stop();
+    }
+  });
+  
+  it('should return agent card', async () => {
+    const response = await request(app)
+      .get('/.well-known/agent.json')
+      .expect(200);
+    
+    expect(response.body.id).toBe('test-weather-agent');
+    expect(response.body.capabilities).toContain('weather-current');
+  });
+  
+  it('should create weather task', async () => {
+    const response = await request

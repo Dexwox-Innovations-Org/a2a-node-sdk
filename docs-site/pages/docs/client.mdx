@@ -1,0 +1,449 @@
+---
+title: Client Guide
+description: Learn advanced client patterns and features for A2A Node SDK
+---
+
+import { Callout } from 'nextra/components'
+
+# Client Guide
+
+Learn how to build powerful A2A clients using the A2A Node SDK. This guide covers advanced patterns, best practices, and real-world usage scenarios.
+
+## Overview
+
+The A2A Node SDK provides three main client classes for interacting with A2A servers:
+
+- **`AgentClient`** - For agent discovery and management
+- **`MessageClient`** - For sending and receiving messages
+- **`TaskClient`** - For task management and monitoring
+
+## AgentClient
+
+The `AgentClient` is used to discover and interact with A2A agents.
+
+### Basic Usage
+
+```typescript
+import { AgentClient } from '@dexwox/a2a-node';
+
+const agentClient = new AgentClient({
+  baseUrl: 'https://your-a2a-server.com',
+  timeout: 30000, // 30 seconds
+  retries: 3
+});
+
+// Discover all available agents
+const agents = await agentClient.resolveAgents();
+console.log('Available agents:', agents);
+
+// Get a specific agent by ID
+const agent = await agentClient.getAgentCard('weather-agent');
+console.log('Agent capabilities:', agent.capabilities);
+```
+
+### Advanced Configuration
+
+```typescript
+const agentClient = new AgentClient({
+  baseUrl: 'https://your-a2a-server.com',
+  timeout: 30000,
+  retries: 3,
+  headers: {
+    'Authorization': 'Bearer your-token',
+    'User-Agent': 'MyApp/1.0.0'
+  },
+  // Circuit breaker configuration
+  circuitBreaker: {
+    failureThreshold: 5,
+    resetTimeout: 60000,
+    monitoringPeriod: 10000
+  }
+});
+```
+
+### Error Handling
+
+```typescript
+try {
+  const agents = await agentClient.resolveAgents();
+} catch (error) {
+  if (error instanceof A2AError) {
+    console.error('A2A Error:', error.code, error.message);
+  } else {
+    console.error('Network Error:', error.message);
+  }
+}
+```
+
+## MessageClient
+
+The `MessageClient` handles message sending and streaming communication.
+
+### Sending Messages
+
+```typescript
+import { MessageClient } from '@dexwox/a2a-node';
+
+const messageClient = new MessageClient({
+  baseUrl: 'https://your-a2a-server.com'
+});
+
+// Send a simple text message
+const messageId = await messageClient.sendMessage([
+  { type: 'text', content: 'Hello, agent!' }
+], 'target-agent-id');
+
+// Send a message with multiple parts
+const messageId = await messageClient.sendMessage([
+  { type: 'text', content: 'Please analyze this data:' },
+  { 
+    type: 'file', 
+    content: {
+      name: 'data.csv',
+      mimeType: 'text/csv',
+      data: csvData
+    }
+  }
+], 'data-analysis-agent');
+```
+
+### Message Streaming
+
+```typescript
+// Stream messages in real-time
+const stream = messageClient.streamMessages('conversation-id', {
+  includeHistory: true,
+  maxMessages: 100
+});
+
+for await (const message of stream) {
+  console.log('New message:', message);
+  
+  // Process message parts
+  for (const part of message.parts) {
+    if (part.type === 'text') {
+      console.log('Text:', part.content);
+    } else if (part.type === 'file') {
+      console.log('File:', part.content.name);
+    }
+  }
+}
+```
+
+### Message Configuration
+
+```typescript
+const messageId = await messageClient.sendMessage(
+  [{ type: 'text', content: 'Hello!' }],
+  'agent-id',
+  {
+    // Message configuration
+    priority: 'high',
+    timeout: 60000,
+    retryPolicy: {
+      maxRetries: 3,
+      backoffMultiplier: 2,
+      initialDelay: 1000
+    },
+    // Push notification settings
+    pushNotification: {
+      title: 'New Message',
+      body: 'You have received a new message',
+      icon: 'https://example.com/icon.png'
+    }
+  }
+);
+```
+
+## TaskClient
+
+The `TaskClient` manages task lifecycle and monitoring.
+
+### Creating and Managing Tasks
+
+```typescript
+import { TaskClient } from '@dexwox/a2a-node';
+
+const taskClient = new TaskClient({
+  baseUrl: 'https://your-a2a-server.com'
+});
+
+// Create a new task
+const task = await taskClient.createTask({
+  name: 'analyze-data',
+  description: 'Analyze the provided dataset',
+  agentId: 'data-agent',
+  input: {
+    dataset: 'sales-data-2024.csv',
+    analysisType: 'trend-analysis'
+  }
+});
+
+console.log('Task created:', task.id);
+```
+
+### Monitoring Task Progress
+
+```typescript
+// Get task status
+const taskStatus = await taskClient.getTask(task.id);
+console.log('Task status:', taskStatus.status);
+
+// Stream task updates
+const taskStream = taskClient.streamTaskUpdates(task.id);
+
+for await (const update of taskStream) {
+  console.log('Task update:', update);
+  
+  if (update.status === 'completed') {
+    console.log('Task completed!');
+    console.log('Result:', update.result);
+    break;
+  } else if (update.status === 'failed') {
+    console.error('Task failed:', update.error);
+    break;
+  }
+}
+```
+
+### Task Cancellation
+
+```typescript
+// Cancel a running task
+try {
+  await taskClient.cancelTask(task.id);
+  console.log('Task cancelled successfully');
+} catch (error) {
+  if (error.code === 'TASK_ALREADY_COMPLETED') {
+    console.log('Task was already completed');
+  } else {
+    console.error('Failed to cancel task:', error.message);
+  }
+}
+```
+
+## Advanced Patterns
+
+### Connection Pooling
+
+```typescript
+import { AgentClient, MessageClient, TaskClient } from '@dexwox/a2a-node';
+
+// Shared configuration for connection pooling
+const baseConfig = {
+  baseUrl: 'https://your-a2a-server.com',
+  keepAlive: true,
+  maxSockets: 10,
+  timeout: 30000
+};
+
+const agentClient = new AgentClient(baseConfig);
+const messageClient = new MessageClient(baseConfig);
+const taskClient = new TaskClient(baseConfig);
+```
+
+### Retry Logic with Exponential Backoff
+
+```typescript
+const messageClient = new MessageClient({
+  baseUrl: 'https://your-a2a-server.com',
+  retryPolicy: {
+    maxRetries: 5,
+    initialDelay: 1000,
+    maxDelay: 30000,
+    backoffMultiplier: 2,
+    jitter: true
+  }
+});
+```
+
+### Custom Error Handling
+
+```typescript
+import { A2AError, TaskFailedError, MessageErrorCode } from '@dexwox/a2a-node';
+
+try {
+  await messageClient.sendMessage(parts, agentId);
+} catch (error) {
+  if (error instanceof TaskFailedError) {
+    console.error('Task execution failed:', error.taskId);
+  } else if (error instanceof A2AError) {
+    switch (error.code) {
+      case MessageErrorCode.AGENT_NOT_FOUND:
+        console.error('Agent not found');
+        break;
+      case MessageErrorCode.INVALID_MESSAGE_FORMAT:
+        console.error('Invalid message format');
+        break;
+      default:
+        console.error('A2A Error:', error.message);
+    }
+  } else {
+    console.error('Unexpected error:', error);
+  }
+}
+```
+
+### Batch Operations
+
+```typescript
+// Send multiple messages concurrently
+const messages = [
+  { parts: [{ type: 'text', content: 'Message 1' }], agentId: 'agent-1' },
+  { parts: [{ type: 'text', content: 'Message 2' }], agentId: 'agent-2' },
+  { parts: [{ type: 'text', content: 'Message 3' }], agentId: 'agent-3' }
+];
+
+const messagePromises = messages.map(({ parts, agentId }) =>
+  messageClient.sendMessage(parts, agentId)
+);
+
+const messageIds = await Promise.all(messagePromises);
+console.log('All messages sent:', messageIds);
+```
+
+### Health Monitoring
+
+```typescript
+// Monitor client health
+const agentClient = new AgentClient({
+  baseUrl: 'https://your-a2a-server.com',
+  healthCheck: {
+    enabled: true,
+    interval: 30000, // 30 seconds
+    timeout: 5000,   // 5 seconds
+    onHealthChange: (isHealthy) => {
+      console.log('Client health:', isHealthy ? 'OK' : 'UNHEALTHY');
+    }
+  }
+});
+```
+
+## Best Practices
+
+### 1. Connection Management
+
+<Callout type="info">
+Always reuse client instances when possible to benefit from connection pooling and reduce overhead.
+</Callout>
+
+```typescript
+// ✅ Good: Reuse clients
+const agentClient = new AgentClient(config);
+const messageClient = new MessageClient(config);
+
+// Use these clients throughout your application
+
+// ❌ Bad: Creating new clients for each operation
+async function sendMessage() {
+  const client = new MessageClient(config); // Creates new connection
+  return client.sendMessage(parts, agentId);
+}
+```
+
+### 2. Error Handling
+
+```typescript
+// ✅ Good: Comprehensive error handling
+try {
+  const result = await taskClient.createTask(taskData);
+  return result;
+} catch (error) {
+  if (error instanceof A2AError) {
+    // Handle A2A-specific errors
+    logger.error('A2A Error:', { code: error.code, message: error.message });
+  } else {
+    // Handle network/system errors
+    logger.error('System Error:', error.message);
+  }
+  throw error;
+}
+```
+
+### 3. Resource Cleanup
+
+```typescript
+// ✅ Good: Proper cleanup
+class A2AService {
+  private clients: Array<AgentClient | MessageClient | TaskClient> = [];
+
+  constructor() {
+    this.agentClient = new AgentClient(config);
+    this.messageClient = new MessageClient(config);
+    this.taskClient = new TaskClient(config);
+    
+    this.clients.push(this.agentClient, this.messageClient, this.taskClient);
+  }
+
+  async cleanup() {
+    await Promise.all(this.clients.map(client => client.close()));
+  }
+}
+```
+
+### 4. Configuration Management
+
+```typescript
+// ✅ Good: Environment-based configuration
+const config = {
+  baseUrl: process.env.A2A_SERVER_URL || 'http://localhost:3000',
+  timeout: parseInt(process.env.A2A_TIMEOUT || '30000'),
+  retries: parseInt(process.env.A2A_RETRIES || '3'),
+  headers: {
+    'Authorization': `Bearer ${process.env.A2A_TOKEN}`,
+    'User-Agent': `${process.env.APP_NAME}/${process.env.APP_VERSION}`
+  }
+};
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Connection Timeouts
+
+```typescript
+// Increase timeout for slow networks
+const client = new MessageClient({
+  baseUrl: 'https://your-a2a-server.com',
+  timeout: 60000, // 60 seconds
+  retries: 5
+});
+```
+
+#### Rate Limiting
+
+```typescript
+// Implement rate limiting
+import { RateLimiter } from 'limiter';
+
+const limiter = new RateLimiter(10, 'second'); // 10 requests per second
+
+async function sendMessageWithRateLimit(parts, agentId) {
+  await new Promise(resolve => limiter.removeTokens(1, resolve));
+  return messageClient.sendMessage(parts, agentId);
+}
+```
+
+#### Memory Leaks
+
+```typescript
+// Properly handle streams
+const stream = messageClient.streamMessages('conversation-id');
+
+try {
+  for await (const message of stream) {
+    // Process message
+  }
+} finally {
+  // Ensure stream is closed
+  await stream.close();
+}
+```
+
+## Next Steps
+
+- **[Server Guide](/docs/server)** - Learn how to build A2A servers
+- **[Protocol Specification](/docs/protocol)** - Understand the A2A protocol
+- **[Examples](/docs/examples)** - See real-world implementations
+- **[API Reference](/api-reference)** - Complete API documentation

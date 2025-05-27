@@ -61,44 +61,36 @@ interface CachedAgentCard {
 /**
  * Resolves and caches agent cards from agent servers
  * 
- * This class handles fetching agent cards from agent servers, with built-in
- * caching, timeout handling, and circuit breaking for reliability. It follows
- * the A2A protocol for agent discovery.
+ * This class handles fetching agent cards from agent servers with built-in
+ * caching and timeout handling. It follows the A2A protocol for agent discovery.
  * 
  * @example
  * ```typescript
- * // Create a resolver for a specific agent server
- * const resolver = new AgentCardResolver('https://agent.example.com', {
- *   cacheTtl: 600000 // 10 minutes
- * });
+ * const resolver = new AgentCardResolver('https://agent.example.com');
  * 
  * // Resolve the agent card
- * try {
- *   const agentCard = await resolver.resolve();
- *   console.log('Agent name:', agentCard.name);
- *   console.log('Agent capabilities:', agentCard.capabilities);
- * } catch (error) {
- *   console.error('Failed to resolve agent card:', error);
- * }
+ * const agentCard = await resolver.resolve();
+ * console.log('Agent name:', agentCard.name);
+ * console.log('Agent capabilities:', agentCard.capabilities);
  * ```
  */
 export class AgentCardResolver {
-  /** Base URL of the agent server */
+  /** @private Base URL of the agent server */
   private readonly baseUrl: string;
   
-  /** Path to the agent card endpoint */
+  /** @private Path to the agent card endpoint */
   private readonly agentCardPath: string;
   
-  /** Cache time-to-live in milliseconds */
+  /** @private Cache time-to-live in milliseconds */
   private readonly cacheTtl: number;
   
-  /** Request timeout in milliseconds */
+  /** @private Request timeout in milliseconds */
   private readonly timeout: number;
   
-  /** Circuit breaker for handling failures */
+  /** @private Circuit breaker for handling failures */
   private readonly circuitBreaker: CircuitBreaker;
   
-  /** Currently cached agent card, if any */
+  /** @private Currently cached agent card, if any */
   private cache: CachedAgentCard | null = null;
 
   /**
