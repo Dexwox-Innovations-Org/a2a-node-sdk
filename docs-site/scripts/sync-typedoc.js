@@ -93,7 +93,7 @@ function syncDirectory(srcDir, destDir, prefix = '') {
 }
 
 function createMetaFiles() {
-  // Create _meta.js files for navigation
+  // Create _meta.js files for navigation only if they don't exist
   const metaFiles = [
     {
       path: path.join(API_REFERENCE_DIR, 'classes/_meta.js'),
@@ -138,16 +138,29 @@ function createMetaFiles() {
   "Core.MessageErrorCode": "MessageErrorCode",
   "Core.TaskErrorCode": "TaskErrorCode"
 };`
+    },
+    {
+      path: path.join(API_REFERENCE_DIR, 'modules/_meta.js'),
+      content: `export default {
+  "Client": "Client",
+  "Core": "Core",
+  "Server": "Server"
+};`
     }
   ];
 
   metaFiles.forEach(({ path: metaPath, content }) => {
-    const dir = path.dirname(metaPath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    // Only create if file doesn't exist to preserve manual customizations
+    if (!fs.existsSync(metaPath)) {
+      const dir = path.dirname(metaPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(metaPath, content);
+      console.log(`✓ Created: ${path.relative(process.cwd(), metaPath)}`);
+    } else {
+      console.log(`⚠ Skipped: ${path.relative(process.cwd(), metaPath)} (already exists)`);
     }
-    fs.writeFileSync(metaPath, content);
-    console.log(`✓ Created: ${path.relative(process.cwd(), metaPath)}`);
   });
 }
 
@@ -160,7 +173,7 @@ function main() {
   syncDirectory(path.join(DOCS_API_DIR, 'enums'), path.join(API_REFERENCE_DIR, 'enums'));
   syncDirectory(path.join(DOCS_API_DIR, 'modules'), path.join(API_REFERENCE_DIR, 'modules'));
 
-  // Create navigation meta files
+  // Create navigation meta files (only if they don't exist)
   createMetaFiles();
 
   console.log('\n✅ TypeDoc documentation sync completed!');
