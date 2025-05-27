@@ -12,11 +12,14 @@
     "build:server": "cd packages/server && pnpm run clean && pnpm run build",
     "build:all": "pnpm -r run build",
     "lint": "pnpm -r run lint",
-    "docs:typedoc": "typedoc --options typedoc.json",
-    "docs:build": "pnpm run docs:typedoc"
+    "docs:generate": "typedoc --options typedoc.json",
+    "docs:build": "pnpm run docs:generate",
+    "docs:dev": "cd docs-site && pnpm dev",
+    "docs:deploy": "cd docs-site && pnpm run build-with-docs"
   },
   "workspaces": [
-    "packages/*"
+    "packages/*",
+    "docs-site"
   ],
   "keywords": [
     "a2a",

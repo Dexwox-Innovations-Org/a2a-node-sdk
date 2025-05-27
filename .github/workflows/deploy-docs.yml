@@ -1,8 +1,12 @@
-name: Deploy to GitHub Pages
+name: Deploy Documentation to GitHub Pages
 
 on:
   push:
     branches: [ main ]
+    paths:
+      - 'docs-site/**'
+      - 'docs-api/**'
+      - '.github/workflows/deploy-docs.yml'
   workflow_dispatch:
 
 permissions:
@@ -25,24 +29,30 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-          cache: 'npm'
+          cache: 'pnpm'
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
           version: 8
 
-      - name: Install dependencies
+      - name: Install root dependencies
+        run: pnpm install
+
+      - name: Install docs-site dependencies
         run: |
           cd docs-site
           pnpm install
+
+      - name: Generate TypeDoc documentation
+        run: pnpm run docs:generate
 
       - name: Sync TypeDoc documentation
         run: |
           cd docs-site
           pnpm run sync-docs
 
-      - name: Build with Next.js
+      - name: Build documentation site
         run: |
           cd docs-site
           GITHUB_PAGES=true pnpm run build
