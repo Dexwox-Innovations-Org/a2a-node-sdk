@@ -36,13 +36,8 @@ jobs:
           node-version: '18'
           cache: 'pnpm'
 
-      - name: Install root dependencies
+      - name: Install all workspace dependencies
         run: pnpm install
-
-      - name: Install docs-site dependencies
-        run: |
-          cd docs-site
-          pnpm install
 
       - name: Generate TypeDoc documentation
         run: pnpm run docs:generate
