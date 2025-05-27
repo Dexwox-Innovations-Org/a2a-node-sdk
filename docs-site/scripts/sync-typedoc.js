@@ -132,12 +132,9 @@ function generateMetaForDirectory(dirPath) {
 }
 
 function createMetaFiles() {
-  // Clean up existing meta files first
+  // Clean up existing generated meta files first
   const subdirs = ['classes', 'interfaces', 'enums', 'modules'];
-  const metaFilesToClean = [
-    path.join(API_REFERENCE_DIR, '_meta.js'),
-    ...subdirs.map(subdir => path.join(API_REFERENCE_DIR, subdir, '_meta.js'))
-  ];
+  const metaFilesToClean = subdirs.map(subdir => path.join(API_REFERENCE_DIR, subdir, '_meta.js'));
   
   metaFilesToClean.forEach(metaPath => {
     if (fs.existsSync(metaPath)) {
@@ -146,45 +143,45 @@ function createMetaFiles() {
     }
   });
 
-  // Always regenerate meta files to include all current files
-  const metaConfigs = [
-    {
-      path: path.join(API_REFERENCE_DIR, '_meta.js'),
-      content: `export default {
-  "index": "Overview",
-  "core": "Core Package",
-  "client": "Client Package", 
-  "server": "Server Package",
-  "modules": "Modules",
-  "classes": "Classes",
-  "interfaces": "Interfaces",
-  "enums": "Enums"
-};`
-    }
-  ];
-
   // Generate dynamic meta files for subdirectories
+  const generatedSubdirs = [];
   for (const subdir of subdirs) {
     const subdirPath = path.join(API_REFERENCE_DIR, subdir);
     const meta = generateMetaForDirectory(subdirPath);
     
     if (Object.keys(meta).length > 0) {
       const metaContent = `export default ${JSON.stringify(meta, null, 2)};`;
-      metaConfigs.push({
-        path: path.join(subdirPath, '_meta.js'),
-        content: metaContent
-      });
+      const metaPath = path.join(subdirPath, '_meta.js');
+      
+      const dir = path.dirname(metaPath);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      fs.writeFileSync(metaPath, metaContent);
+      console.log(`✓ Generated: ${path.relative(process.cwd(), metaPath)}`);
+      
+      generatedSubdirs.push(subdir);
     }
   }
 
-  metaConfigs.forEach(({ path: metaPath, content }) => {
-    const dir = path.dirname(metaPath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
-    }
-    fs.writeFileSync(metaPath, content);
-    console.log(`✓ Generated: ${path.relative(process.cwd(), metaPath)}`);
-  });
+  // Update the main _meta.js file to include generated subdirectories
+  const mainMetaPath = path.join(API_REFERENCE_DIR, '_meta.js');
+  const mainMeta = {
+    "index": "Overview",
+    "core": "Core Package",
+    "client": "Client Package", 
+    "server": "Server Package"
+  };
+
+  // Add generated subdirectories
+  if (generatedSubdirs.includes('modules')) mainMeta.modules = "Modules";
+  if (generatedSubdirs.includes('classes')) mainMeta.classes = "Classes";
+  if (generatedSubdirs.includes('interfaces')) mainMeta.interfaces = "Interfaces";
+  if (generatedSubdirs.includes('enums')) mainMeta.enums = "Enums";
+
+  const mainMetaContent = `export default ${JSON.stringify(mainMeta, null, 2)};`;
+  fs.writeFileSync(mainMetaPath, mainMetaContent);
+  console.log(`✓ Updated: ${path.relative(process.cwd(), mainMetaPath)}`);
 }
 
 function main() {
