@@ -132,6 +132,20 @@ function generateMetaForDirectory(dirPath) {
 }
 
 function createMetaFiles() {
+  // Clean up existing meta files first
+  const subdirs = ['classes', 'interfaces', 'enums', 'modules'];
+  const metaFilesToClean = [
+    path.join(API_REFERENCE_DIR, '_meta.js'),
+    ...subdirs.map(subdir => path.join(API_REFERENCE_DIR, subdir, '_meta.js'))
+  ];
+  
+  metaFilesToClean.forEach(metaPath => {
+    if (fs.existsSync(metaPath)) {
+      fs.unlinkSync(metaPath);
+      console.log(`🗑️ Removed old: ${path.relative(process.cwd(), metaPath)}`);
+    }
+  });
+
   // Always regenerate meta files to include all current files
   const metaConfigs = [
     {
@@ -150,8 +164,6 @@ function createMetaFiles() {
   ];
 
   // Generate dynamic meta files for subdirectories
-  const subdirs = ['classes', 'interfaces', 'enums', 'modules'];
-  
   for (const subdir of subdirs) {
     const subdirPath = path.join(API_REFERENCE_DIR, subdir);
     const meta = generateMetaForDirectory(subdirPath);
@@ -177,6 +189,16 @@ function createMetaFiles() {
 
 function main() {
   console.log('🔄 Syncing TypeDoc documentation with Nextra...\n');
+  
+  // Debug: Check if source directories exist
+  console.log('📁 Checking source directories:');
+  console.log(`  DOCS_API_DIR: ${DOCS_API_DIR} (exists: ${fs.existsSync(DOCS_API_DIR)})`);
+  console.log(`  API_REFERENCE_DIR: ${API_REFERENCE_DIR} (exists: ${fs.existsSync(API_REFERENCE_DIR)})`);
+  
+  if (fs.existsSync(DOCS_API_DIR)) {
+    const apiDirContents = fs.readdirSync(DOCS_API_DIR);
+    console.log(`  Contents of docs-api: ${apiDirContents.join(', ')}`);
+  }
 
   // Sync main directories
   syncDirectory(path.join(DOCS_API_DIR, 'classes'), path.join(API_REFERENCE_DIR, 'classes'));
@@ -184,8 +206,20 @@ function main() {
   syncDirectory(path.join(DOCS_API_DIR, 'enums'), path.join(API_REFERENCE_DIR, 'enums'));
   syncDirectory(path.join(DOCS_API_DIR, 'modules'), path.join(API_REFERENCE_DIR, 'modules'));
 
-  // Create navigation meta files (only if they don't exist)
+  // Create navigation meta files
+  console.log('\n📝 Generating meta files...');
   createMetaFiles();
+  
+  // Debug: List generated files
+  console.log('\n📋 Generated files summary:');
+  const subdirs = ['classes', 'interfaces', 'enums', 'modules'];
+  for (const subdir of subdirs) {
+    const subdirPath = path.join(API_REFERENCE_DIR, subdir);
+    if (fs.existsSync(subdirPath)) {
+      const files = fs.readdirSync(subdirPath).filter(f => f.endsWith('.mdx'));
+      console.log(`  ${subdir}: ${files.length} files`);
+    }
+  }
 
   console.log('\n✅ TypeDoc documentation sync completed!');
   console.log('\nNext steps:');
