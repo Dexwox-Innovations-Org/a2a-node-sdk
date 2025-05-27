@@ -2,7 +2,7 @@
 (function initPolyfills() {
   // Initialize global scope first
   if (typeof global === 'undefined') {
-    global = globalThis;
+    global = globalThis || window || self || {};
   }
 
   // Initialize process before anything else
