@@ -1,4 +1,7 @@
 import nextra from 'nextra'
+import { createRequire } from 'module'
+
+const require = createRequire(import.meta.url)
 
 const withNextra = nextra({
   theme: 'nextra-theme-docs',
@@ -17,16 +20,41 @@ export default withNextra({
   basePath: isGithubPages ? '/a2a-node-sdk' : '',
   output: 'export',
   webpack: (config, { isServer }) => {
+    // Add polyfills entry point for client-side
     if (!isServer) {
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        events: false,
-        util: false,
-        stream: false,
-        buffer: false,
-        process: false,
+      const originalEntry = config.entry
+      config.entry = async () => {
+        const entries = await originalEntry()
+        if (entries['main.js'] && !entries['main.js'].includes('./polyfills.js')) {
+          entries['main.js'].unshift('./polyfills.js')
+        }
+        return entries
       }
     }
+
+    // Configure module resolution
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      events: require.resolve('events/'),
+      util: require.resolve('util/'),
+      stream: require.resolve('stream-browserify'),
+      buffer: require.resolve('buffer/'),
+      process: require.resolve('process/browser'),
+      fs: false,
+      net: false,
+      tls: false,
+    }
+
+    // Add webpack plugins for global polyfills
+    const webpack = require('webpack')
+    config.plugins.push(
+      new webpack.ProvidePlugin({
+        process: 'process/browser',
+        Buffer: ['buffer', 'Buffer'],
+        EventEmitter: ['events', 'EventEmitter'],
+      })
+    )
+
     return config
   },
   async redirects() {

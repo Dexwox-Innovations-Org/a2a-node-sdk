@@ -47,3 +47,30 @@ yarn.lock
 .next/
 out/
 .vercel/
+
+# TypeDoc generated documentation
+docs-api/
+
+# Generated API reference files in docs-site (created by sync script)
+docs-site/pages/api-reference/**/*.mdx
+docs-site/pages/api-reference/classes/
+docs-site/pages/api-reference/interfaces/
+docs-site/pages/api-reference/enums/
+docs-site/pages/api-reference/modules/
+
+# Keep the _meta.js files but ignore generated content
+!docs-site/pages/api-reference/classes/_meta.js
+!docs-site/pages/api-reference/interfaces/_meta.js
+!docs-site/pages/api-reference/enums/_meta.js
+!docs-site/pages/api-reference/modules/_meta.js
+!docs-site/pages/api-reference/_meta.js
+
+# Monorepo build artifacts
+packages/*/dist/
+packages/*/build/
+packages/*/.next/
+packages/*/out/
+
+# Workspace specific ignores
+a2a-node/dist/
+a2a-node/build/
