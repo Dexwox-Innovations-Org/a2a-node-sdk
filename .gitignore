@@ -42,4 +42,8 @@ coverage/
 # Package manager specific
 package-lock.json
 yarn.lock
-.next
+
+# Next.js
+.next/
+out/
+.vercel/
