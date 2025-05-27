@@ -7,4 +7,4 @@ export default {
   "classes": "Classes",
   "interfaces": "Interfaces",
   "enums": "Enums"
-}
+};
