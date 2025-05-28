@@ -1,6 +1,6 @@
 {
   "name": "@dexwox-labs/a2a-node",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Complete TypeScript implementation of Google's Agent-to-Agent (A2A) protocol - unified package with client, server and core components",
   "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",
   "repository": {
@@ -30,7 +30,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@dexwox-labs/a2a-client": "0.1.0",
+    "@dexwox-labs/a2a-client": "0.1.1",
     "@dexwox-labs/a2a-core": "0.1.0",
     "@dexwox-labs/a2a-server": "0.1.0"
   },
