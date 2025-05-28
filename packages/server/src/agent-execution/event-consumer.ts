@@ -1,6 +1,6 @@
 import { EventQueue } from './event-queue';
 import { QueueManager, QueueStats } from '../queue-system/queue-manager';
-import { A2AError } from '@dexwox/a2a-core';
+import { A2AError } from '@dexwox-labs/a2a-core';
 
 export class EventConsumer {
   private queue!: EventQueue; // Definite assignment assertion

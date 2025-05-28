@@ -19,7 +19,7 @@ You can easily integrate A2A with an existing Express application:
 
 ```javascript
 import express from 'express';
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 
 // Create Express app
 const app = express();
@@ -63,7 +63,7 @@ For integrating with Next.js, you can create API routes:
 
 ```javascript
 // pages/api/a2a/[...path].js
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 
 // Create A2A agent
 const agent = {
@@ -97,7 +97,7 @@ Create a React component for interacting with A2A agents:
 ```jsx
 // A2AChat.jsx
 import React, { useState, useEffect } from 'react';
-import { AgentClient, MessageClient } from '@dexwox/a2a-node';
+import { AgentClient, MessageClient } from '@dexwox-labs/a2a-node';
 
 const A2AChat = ({ serverUrl }) => {
   const [agents, setAgents] = useState([]);
@@ -212,7 +212,7 @@ export default A2AChat;
 Integrate A2A with large language model providers:
 
 ```javascript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 import OpenAI from 'openai';
 
 // Initialize OpenAI client
@@ -272,7 +272,7 @@ server.start(3000);
 Connect A2A with databases for persistent storage:
 
 ```javascript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 import { Pool } from 'pg';
 
 // Create database connection pool
@@ -351,7 +351,7 @@ server.start(3000);
 Integrate A2A with message queues for asynchronous processing:
 
 ```javascript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 import amqp from 'amqplib';
 
 // Connect to RabbitMQ
@@ -438,7 +438,7 @@ startServer();
 Integrate A2A with authentication systems:
 
 ```javascript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import passport from 'passport';
@@ -512,7 +512,7 @@ app.listen(PORT, () => {
 Integrate A2A with monitoring tools:
 
 ```javascript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 import prometheus from 'prom-client';
 import express from 'express';
 

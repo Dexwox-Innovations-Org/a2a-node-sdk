@@ -1,6 +1,6 @@
 # A2A Protocol Examples
 
-This directory contains examples of how to implement the Agent-to-Agent (A2A) protocol using the `@dexwox/a2a-node` package.
+This directory contains examples of how to implement the Agent-to-Agent (A2A) protocol using the `@dexwox-labs/a2a-node` package.
 
 These examples demonstrate [Dexwox Innovations Pvt Ltd](https://dexwox.com)'s implementation of the A2A protocol specification, showcasing practical applications and integration patterns for agent-based systems.
 
@@ -17,16 +17,16 @@ To run these examples, make sure you have the following packages installed:
 
 ```bash
 # For complete functionality (recommended)
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 # or
-pnpm add @dexwox/a2a-node
+pnpm add @dexwox-labs/a2a-node
 
 # For specific packages only (if needed)
-npm install @dexwox/a2a-core
+npm install @dexwox-labs/a2a-core
 # or
-npm install @dexwox/a2a-client
+npm install @dexwox-labs/a2a-client
 # or
-npm install @dexwox/a2a-server
+npm install @dexwox-labs/a2a-server
 ```
 
 ## Running the Examples

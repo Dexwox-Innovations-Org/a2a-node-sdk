@@ -8,7 +8,7 @@
  */
 
 import { Router } from 'express';
-import { JsonRpcResponse } from '@dexwox/a2a-core';
+import { JsonRpcResponse } from '@dexwox-labs/a2a-core';
 import { BaseRequestHandler } from './base-handler';
 
 /**

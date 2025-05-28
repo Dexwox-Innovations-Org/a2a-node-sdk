@@ -1,0 +1,10 @@
+# Exclude test files
+**/*.test.ts
+**/tests/
+
+# Exclude examples
+examples/
+
+# Exclude config files
+tsconfig.json
+vitest.config.ts

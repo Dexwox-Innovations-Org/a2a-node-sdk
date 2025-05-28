@@ -5,9 +5,9 @@
  */
 
 // Re-export core components for convenience
-export * from '@dexwox/a2a-core';
-export * from '@dexwox/a2a-client';
-export * from '@dexwox/a2a-server';
+export * from '@dexwox-labs/a2a-core';
+export * from '@dexwox-labs/a2a-client';
+export * from '@dexwox-labs/a2a-server';
 
 /**
  * Example metadata for documentation purposes

@@ -7,7 +7,7 @@ import { Callout } from 'nextra/components'
 
 # Server Package
 
-The `@dexwox/a2a-server` package provides a complete server implementation for hosting A2A agents with HTTP/WebSocket support.
+The `@dexwox-labs/a2a-server` package provides a complete server implementation for hosting A2A agents with HTTP/WebSocket support.
 
 ## Overview
 
@@ -21,15 +21,15 @@ The server package includes the main server class and supporting components:
 ## Installation
 
 ```bash
-npm install @dexwox/a2a-server
+npm install @dexwox-labs/a2a-server
 # or
-npm install @dexwox/a2a-node  # includes all packages
+npm install @dexwox-labs/a2a-node  # includes all packages
 ```
 
 ## Quick Start
 
 ```typescript
-import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-server';
+import { A2AServer, DefaultAgentExecutor } from '@dexwox-labs/a2a-server';
 
 // Create an agent executor
 const executor = new DefaultAgentExecutor({
@@ -119,7 +119,7 @@ Key features:
 To create a custom agent, implement the `AgentExecutor` interface:
 
 ```typescript
-import { AgentExecutor, Task, TaskResult } from '@dexwox/a2a-server';
+import { AgentExecutor, Task, TaskResult } from '@dexwox-labs/a2a-server';
 
 class MyAgentExecutor implements AgentExecutor {
   async executeTask(task: Task): Promise<TaskResult> {
@@ -331,7 +331,7 @@ import {
   A2AError, 
   TaskNotFoundError, 
   InvalidTaskStateError 
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 
 // In your executor
 class MyAgentExecutor implements AgentExecutor {

@@ -10,7 +10,7 @@ export interface TelemetryConfig {
   
   /**
    * Service name for telemetry
-   * @default '@dexwox/a2a-node'
+   * @default '@dexwox-labs/a2a-node'
    */
   serviceName: string;
   
@@ -46,7 +46,7 @@ export interface TelemetryConfig {
  */
 export const DEFAULT_TELEMETRY_CONFIG: TelemetryConfig = {
   enabled: true,
-  serviceName: '@dexwox/a2a-node',
+  serviceName: '@dexwox-labs/a2a-node',
   serviceVersion: '0.1.0',
   collectionLevel: 'basic',
   attributes: {},

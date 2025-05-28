@@ -9,7 +9,7 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@dexwox/a2a-node": "0.1.0",
+    "@dexwox-labs/a2a-node": "0.1.0",
     "axios": "^1.6.0",
     "readline": "^1.3.0"
   },

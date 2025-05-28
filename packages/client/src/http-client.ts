@@ -16,7 +16,7 @@ import {
   validateArtifact,
   TraceClass,
   Trace
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 
 /**
  * Request interface for agent discovery

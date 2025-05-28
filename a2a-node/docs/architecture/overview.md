@@ -8,7 +8,7 @@ The A2A platform consists of several key components:
 
 ![A2A Architecture Diagram](../assets/a2a-architecture.svg)
 
-### Core (@dexwox/a2a-core)
+### Core (@dexwox-labs/a2a-core)
 
 The core package provides fundamental types, protocols, and utilities that are used by both clients and servers:
 
@@ -18,7 +18,7 @@ The core package provides fundamental types, protocols, and utilities that are u
 - **Errors**: Standardized error handling across the platform
 - **Telemetry**: Tools for monitoring and debugging
 
-### Client (@dexwox/a2a-client)
+### Client (@dexwox-labs/a2a-client)
 
 The client package provides libraries for connecting to A2A servers and interacting with agents:
 
@@ -27,7 +27,7 @@ The client package provides libraries for connecting to A2A servers and interact
 - **TaskClient**: Manages task lifecycle and monitors task state
 - **HttpClient**: Low-level HTTP client for A2A API communication
 
-### Server (@dexwox/a2a-server)
+### Server (@dexwox-labs/a2a-server)
 
 The server package provides the infrastructure for hosting A2A agents:
 
@@ -36,7 +36,7 @@ The server package provides the infrastructure for hosting A2A agents:
 - **RequestHandlers**: Processes incoming requests and routes to appropriate handlers
 - **AgentExecution**: Executes agent logic and manages agent lifecycle
 
-### Node (@dexwox/a2a-node)
+### Node (@dexwox-labs/a2a-node)
 
 The node package is the main entry point that integrates all components:
 

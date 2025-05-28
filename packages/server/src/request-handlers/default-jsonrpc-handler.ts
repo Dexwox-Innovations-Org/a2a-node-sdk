@@ -10,7 +10,7 @@
 
 import { Router, Request, Response, NextFunction } from 'express';
 import { JsonRpcRequestHandler } from './jsonrpc-handler';
-import { JsonRpcResponse, A2AError } from '@dexwox/a2a-core';
+import { JsonRpcResponse, A2AError } from '@dexwox-labs/a2a-core';
 import { z } from 'zod';
 import { Middleware } from './base-handler';
 

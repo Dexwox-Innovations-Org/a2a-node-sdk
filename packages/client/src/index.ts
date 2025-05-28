@@ -8,7 +8,7 @@
  * 
  * @example
  * ```typescript
- * import { MessageClient, TaskClient, AgentClient } from '@dexwox/a2a-client';
+ * import { MessageClient, TaskClient, AgentClient } from '@dexwox-labs/a2a-client';
  * 
  * // Create clients
  * const messageClient = new MessageClient({ baseUrl: 'https://a2a-server.example.com' });

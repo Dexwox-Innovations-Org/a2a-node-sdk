@@ -81,7 +81,7 @@ importers:
 
   packages/client:
     dependencies:
-      '@dexwox/a2a-core':
+      '@dexwox-labs/a2a-core':
         specifier: workspace:*
         version: link:../core
       eventsource:
@@ -143,7 +143,7 @@ importers:
 
   packages/server:
     dependencies:
-      '@dexwox/a2a-core':
+      '@dexwox-labs/a2a-core':
         specifier: workspace:*
         version: link:../core
       '@types/ws':

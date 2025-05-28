@@ -14,7 +14,7 @@ import type {
   NextFunction,
   ErrorRequestHandler
 } from 'express';
-import { A2AError, AgentCard } from '@dexwox/a2a-core';
+import { A2AError, AgentCard } from '@dexwox-labs/a2a-core';
 import { RequestHandler } from './request-handler';
 
 /**
@@ -26,7 +26,7 @@ import { RequestHandler } from './request-handler';
  * 
  * @example
  * ```typescript
- * import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+ * import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
  * 
  * // Define an agent
  * const agent = {

@@ -1,6 +1,6 @@
 # A2A Protocol Specification
 
-This document outlines the Agent-to-Agent (A2A) communication protocol used in the @dexwox/a2a platform.
+This document outlines the Agent-to-Agent (A2A) communication protocol used in the @dexwox-labs/a2a platform.
 
 ## Overview
 
@@ -192,6 +192,6 @@ When implementing the A2A protocol:
 
 Reference implementations of the A2A protocol are available in the following packages:
 
-- `@dexwox/a2a-node`: Node.js implementation
-- `@dexwox/a2a-client`: Client library
-- `@dexwox/a2a-server`: Server implementation
+- `@dexwox-labs/a2a-node`: Node.js implementation
+- `@dexwox-labs/a2a-client`: Client library
+- `@dexwox-labs/a2a-server`: Server implementation

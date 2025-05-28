@@ -1,5 +1,5 @@
 {
-  "name": "@dexwox/a2a-server",
+  "name": "@dexwox-labs/a2a-server",
   "version": "0.1.0",
   "description": "TypeScript server implementation for Google's Agent-to-Agent (A2A) protocol - includes Express/WebSocket handlers, request validation and queue management",
   "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",
@@ -34,7 +34,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@dexwox/a2a-core": "workspace:*",
+    "@dexwox-labs/a2a-core": "workspace:*",
     "@types/ws": "^8.18.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",

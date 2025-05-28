@@ -8,7 +8,7 @@
  */
 
 import { Router, Request, Response, NextFunction } from 'express';
-import { MessagePart, Task, AgentCard, A2AError } from '@dexwox/a2a-core';
+import { MessagePart, Task, AgentCard, A2AError } from '@dexwox-labs/a2a-core';
 import { z } from 'zod';
 
 /**

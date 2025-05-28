@@ -16,8 +16,8 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@dexwox/a2a-core": ["../../packages/core/src"],
-      "@dexwox/a2a-*": ["../../packages/*/src"]
+      "@dexwox-labs/a2a-core": ["../../packages/core/src"],
+      "@dexwox-labs/a2a-*": ["../../packages/*/src"]
     },
     "lib": ["ES2015", "DOM"],
     "preserveSymlinks": true

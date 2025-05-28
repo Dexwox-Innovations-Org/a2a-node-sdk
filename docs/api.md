@@ -2,7 +2,7 @@
 
 This document provides a comprehensive reference for the A2A (Agent-to-Agent) platform APIs.
 
-## @dexwox/a2a-node
+## @dexwox-labs/a2a-node
 
 The unified package that includes all A2A components.
 
@@ -14,7 +14,7 @@ import {
   A2AServer, 
   AgentCard, 
   MessagePart 
-} from '@dexwox/a2a-node';
+} from '@dexwox-labs/a2a-node';
 ```
 
 ## Client APIs
@@ -73,7 +73,7 @@ const taskStatus = await taskClient.getTaskStatus(task.id);
 The main server class for hosting A2A agents.
 
 ```typescript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 
 // Define an agent
 const agent = {

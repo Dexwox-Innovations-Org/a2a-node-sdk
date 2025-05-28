@@ -1,6 +1,6 @@
 # A2A Server Documentation
 
-This document provides detailed information about the A2A server implementation in the `@dexwox/a2a-server` package.
+This document provides detailed information about the A2A server implementation in the `@dexwox-labs/a2a-server` package.
 
 ## Overview
 
@@ -9,9 +9,9 @@ The A2A server provides the infrastructure for hosting A2A agents, handling clie
 ## Installation
 
 ```bash
-npm install @dexwox/a2a-server
+npm install @dexwox-labs/a2a-server
 # or
-pnpm add @dexwox/a2a-server
+pnpm add @dexwox-labs/a2a-server
 ```
 
 ## Server Components
@@ -23,8 +23,8 @@ The server package includes several key components:
 The core server implementation provides HTTP and WebSocket endpoints for client communication.
 
 ```typescript
-import { createServer, ServerConfig } from '@dexwox/a2a-server';
-import { AgentCard } from '@dexwox/a2a-core';
+import { createServer, ServerConfig } from '@dexwox-labs/a2a-server';
+import { AgentCard } from '@dexwox-labs/a2a-core';
 
 // Define an agent
 const weatherAgent: AgentCard = {
@@ -58,8 +58,8 @@ await server.start();
 The task store manages task state and persistence. The package includes an in-memory implementation, but you can create custom implementations for persistent storage.
 
 ```typescript
-import { InMemoryTaskStore, TaskStore } from '@dexwox/a2a-server';
-import { Task } from '@dexwox/a2a-core';
+import { InMemoryTaskStore, TaskStore } from '@dexwox-labs/a2a-server';
+import { Task } from '@dexwox-labs/a2a-core';
 
 // Create an in-memory task store
 const taskStore = new InMemoryTaskStore();
@@ -93,8 +93,8 @@ class CustomTaskStore implements TaskStore {
 Request handlers process incoming requests and route them to appropriate handlers.
 
 ```typescript
-import { JsonRpcHandler } from '@dexwox/a2a-server';
-import { JsonRpcRequest, JsonRpcResponse } from '@dexwox/a2a-core';
+import { JsonRpcHandler } from '@dexwox-labs/a2a-server';
+import { JsonRpcRequest, JsonRpcResponse } from '@dexwox-labs/a2a-core';
 
 // Create a custom JSON-RPC handler
 class CustomJsonRpcHandler extends JsonRpcHandler {
@@ -109,8 +109,8 @@ class CustomJsonRpcHandler extends JsonRpcHandler {
 The agent execution components manage agent lifecycle and execution.
 
 ```typescript
-import { AgentExecutor } from '@dexwox/a2a-server';
-import { Task, MessagePart } from '@dexwox/a2a-core';
+import { AgentExecutor } from '@dexwox-labs/a2a-server';
+import { Task, MessagePart } from '@dexwox-labs/a2a-core';
 
 // Create a custom agent executor
 class CustomAgentExecutor implements AgentExecutor {
@@ -184,8 +184,8 @@ interface ServerConfig {
 The server manages tasks through the task store and provides APIs for creating, updating, and retrieving tasks.
 
 ```typescript
-import { createServer, InMemoryTaskStore } from '@dexwox/a2a-server';
-import { Task, TaskState } from '@dexwox/a2a-core';
+import { createServer, InMemoryTaskStore } from '@dexwox-labs/a2a-server';
+import { Task, TaskState } from '@dexwox-labs/a2a-core';
 
 // Create a task store
 const taskStore = new InMemoryTaskStore();
@@ -227,7 +227,7 @@ await taskStore.updateTask('task-123', {
 The server supports middleware for request processing, allowing you to add custom logic to the request pipeline.
 
 ```typescript
-import { createServer, Middleware } from '@dexwox/a2a-server';
+import { createServer, Middleware } from '@dexwox-labs/a2a-server';
 
 // Create a logging middleware
 const loggingMiddleware: Middleware = async (req, res, next) => {
@@ -256,7 +256,7 @@ const server = createServer({
 The server includes WebSocket support for real-time communication with clients.
 
 ```typescript
-import { createServer } from '@dexwox/a2a-server';
+import { createServer } from '@dexwox-labs/a2a-server';
 
 // Create the server with WebSocket support
 const server = createServer({
@@ -292,11 +292,11 @@ const server = createServer({
 
 ## Error Handling
 
-The server uses standardized error handling through the `A2AError` class from the `@dexwox/a2a-core` package.
+The server uses standardized error handling through the `A2AError` class from the `@dexwox-labs/a2a-core` package.
 
 ```typescript
-import { createServer } from '@dexwox/a2a-server';
-import { A2AError, ERROR_CODES } from '@dexwox/a2a-core';
+import { createServer } from '@dexwox-labs/a2a-server';
+import { A2AError, ERROR_CODES } from '@dexwox-labs/a2a-core';
 
 // Create the server with custom error handling
 const server = createServer({

@@ -7,7 +7,7 @@
  * 3. Processes tasks
  */
 
-import { A2AServer, DefaultRequestHandler, AgentCard, MessagePart } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler, AgentCard, MessagePart } from '@dexwox-labs/a2a-node';
 
 // Define a simple weather agent
 const weatherAgent: AgentCard = {

@@ -3,7 +3,7 @@
  * @description Provides functionality to resolve and cache agent cards from agent servers
  */
 
-import type { AgentCard } from '@dexwox/a2a-core';
+import type { AgentCard } from '@dexwox-labs/a2a-core';
 import { CircuitBreaker } from './utils/circuit-breaker';
 
 /**

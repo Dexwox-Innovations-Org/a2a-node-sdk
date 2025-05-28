@@ -1,4 +1,4 @@
-import type { Task, MessagePart } from '@dexwox/a2a-core';
+import type { Task, MessagePart } from '@dexwox-labs/a2a-core';
 
 export class ResultAggregator {
   private readonly task: Task;

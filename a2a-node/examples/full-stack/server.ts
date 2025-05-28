@@ -5,7 +5,7 @@
  * including agent registration and message handling.
  */
 
-import { A2AServer, DefaultRequestHandler, AgentCard, MessagePart, Task, Artifact } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler, AgentCard, MessagePart, Task, Artifact } from '@dexwox-labs/a2a-node';
 
 // Define our agents
 const calculatorAgent: AgentCard = {

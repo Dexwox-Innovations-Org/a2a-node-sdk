@@ -28,10 +28,10 @@ A comprehensive TypeScript SDK for implementing Google's Agent-to-Agent (A2A) co
 
 ```bash
 # Install the unified package (recommended)
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 
 # Or install individual packages
-npm install @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+npm install @dexwox-labs/a2a-core @dexwox-labs/a2a-client @dexwox-labs/a2a-server
 ```
 
 ## Basic Usage
@@ -39,7 +39,7 @@ npm install @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
 ### Client Example
 
 ```typescript
-import { MessageClient, AgentClient } from '@dexwox/a2a-node';
+import { MessageClient, AgentClient } from '@dexwox-labs/a2a-node';
 
 // Create clients
 const messageClient = new MessageClient({ 
@@ -63,7 +63,7 @@ console.log('Message sent with ID:', messageId);
 ### Server Example
 
 ```typescript
-import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-node';
+import { A2AServer, DefaultAgentExecutor } from '@dexwox-labs/a2a-node';
 
 // Create agent executor
 const executor = new DefaultAgentExecutor({
@@ -102,27 +102,27 @@ graph TD
     C --> D[Agent Executor]
     D --> E[External Services]
     
-    F["@dexwox/a2a-client"] --> B
-    G["@dexwox/a2a-core"] --> F
-    G --> H["@dexwox/a2a-server"]
+    F["@dexwox-labs/a2a-client"] --> B
+    G["@dexwox-labs/a2a-core"] --> F
+    G --> H["@dexwox-labs/a2a-server"]
     H --> B
 ```
 
 ## Packages Overview
 
-### Core Package (`@dexwox/a2a-core`)
+### Core Package (`@dexwox-labs/a2a-core`)
 - Protocol type definitions and interfaces
 - Validation utilities and decorators
 - Common utilities for working with A2A messages
 - Error classes for protocol-specific error handling
 
-### Client Package (`@dexwox/a2a-client`)
+### Client Package (`@dexwox-labs/a2a-client`)
 - Type-safe API client for A2A protocol
 - Agent discovery and management
 - Message streaming with retry logic
 - Circuit breaker pattern for resilience
 
-### Server Package (`@dexwox/a2a-server`)
+### Server Package (`@dexwox-labs/a2a-server`)
 - Express-based HTTP/WebSocket server
 - Task management and state tracking
 - Request handling and routing

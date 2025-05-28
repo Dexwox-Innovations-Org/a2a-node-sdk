@@ -3,7 +3,7 @@
  * @description Client for interacting with A2A agents and their capabilities
  */
 
-import { AgentCard } from '@dexwox/a2a-core';
+import { AgentCard } from '@dexwox-labs/a2a-core';
 import { DiscoverRequest, DiscoverResponse } from './types';
 import { MessageClientOptions } from './types';
 import { 

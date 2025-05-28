@@ -1,4 +1,4 @@
-# @dexwox/a2a-client
+# @dexwox-labs/a2a-client
 
 A TypeScript client library for interacting with agents implementing the Agent-to-Agent (A2A) protocol.
 
@@ -16,21 +16,21 @@ This package implements the A2A protocol specification, enabling seamless agent 
 ## Installation
 
 ```bash
-npm install @dexwox/a2a-client
+npm install @dexwox-labs/a2a-client
 # or 
-pnpm add @dexwox/a2a-client
+pnpm add @dexwox-labs/a2a-client
 # or use the unified package
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 ```
 
 ## Quick Start
 
 ```typescript
 // Import from the client package
-import { AgentClient, MessageClient, TaskClient } from '@dexwox/a2a-client';
+import { AgentClient, MessageClient, TaskClient } from '@dexwox-labs/a2a-client';
 
 // Or import from the unified package
-// import { AgentClient, MessageClient, TaskClient } from '@dexwox/a2a-node';
+// import { AgentClient, MessageClient, TaskClient } from '@dexwox-labs/a2a-node';
 
 // Initialize clients
 const agentClient = new AgentClient('http://localhost:3000');

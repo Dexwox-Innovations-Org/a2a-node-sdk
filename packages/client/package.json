@@ -1,5 +1,5 @@
 {
-  "name": "@dexwox/a2a-client",
+  "name": "@dexwox-labs/a2a-client",
   "version": "0.1.0",
   "description": "TypeScript client implementation for Google's Agent-to-Agent (A2A) protocol - includes HTTP/WebSocket communication, circuit breakers and error handling",
   "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",
@@ -35,7 +35,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@dexwox/a2a-core": "workspace:*",
+    "@dexwox-labs/a2a-core": "workspace:*",
     "eventsource": "^4.0.0",
     "reflect-metadata": "^0.2.2"
   },

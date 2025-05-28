@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { Task } from '@dexwox/a2a-core';
+import { Task } from '@dexwox-labs/a2a-core';
 import { createRequestContext, runInContext } from './request-context';
 
 export function contextMiddleware(agentId: string) {

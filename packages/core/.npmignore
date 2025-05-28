@@ -1,0 +1,8 @@
+# Exclude test files
+**/*.test.ts
+**/tests/
+**/__tests__/
+
+# Exclude config files
+tsconfig.json
+pnpm-lock.yaml

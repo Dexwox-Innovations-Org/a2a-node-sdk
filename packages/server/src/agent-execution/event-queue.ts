@@ -8,7 +8,7 @@
  */
 
 import { EventEmitter } from 'node:events';
-import type { Task, Artifact } from '@dexwox/a2a-core';
+import type { Task, Artifact } from '@dexwox-labs/a2a-core';
 
 /**
  * Type definition for events handled by the EventEmitter

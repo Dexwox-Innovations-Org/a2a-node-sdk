@@ -7,7 +7,7 @@
  * 3. Receive and process the response
  */
 
-import { AgentClient, MessageClient, TaskClient, MessagePart, AgentCard } from '@dexwox/a2a-node';
+import { AgentClient, MessageClient, TaskClient, MessagePart, AgentCard } from '@dexwox-labs/a2a-node';
 
 // Define the server URL
 const SERVER_URL = 'http://localhost:3000';

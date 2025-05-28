@@ -1,7 +1,7 @@
 import { describe, bench, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { TaskClient } from '../../src/task-client';
-import type { Task } from '@dexwox/a2a-core';
+import type { Task } from '@dexwox-labs/a2a-core';
 
 describe('Task Client Benchmarks', () => {
   const getClient = () => new TaskClient({ baseUrl: 'http://test-api' });

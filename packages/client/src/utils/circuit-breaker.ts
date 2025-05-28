@@ -3,7 +3,7 @@
  * @description Circuit breaker implementation for improving reliability in network operations
  */
 
-import { A2AError } from '@dexwox/a2a-core';
+import { A2AError } from '@dexwox-labs/a2a-core';
 
 /**
  * Configuration options for the circuit breaker

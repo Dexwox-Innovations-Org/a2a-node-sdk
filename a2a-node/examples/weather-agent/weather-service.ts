@@ -7,7 +7,7 @@
 
 // Note: This is a mock implementation that returns random weather data.
 // In a real implementation, you would use a package like axios to make HTTP requests to a weather API.
-import { TraceClass } from '@dexwox/a2a-node';
+import { TraceClass } from '@dexwox-labs/a2a-node';
 
 // Weather data interface
 export interface WeatherData {

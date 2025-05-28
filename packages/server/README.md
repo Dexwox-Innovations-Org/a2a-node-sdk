@@ -1,4 +1,4 @@
-# @dexwox/a2a-server
+# @dexwox-labs/a2a-server
 
 A TypeScript server implementation for the Agent-to-Agent (A2A) protocol, enabling agent execution and task management.
 
@@ -16,23 +16,23 @@ This package provides a robust server implementation of the A2A protocol specifi
 ## Installation
 
 ```bash
-npm install @dexwox/a2a-server
+npm install @dexwox-labs/a2a-server
 # or
-pnpm add @dexwox/a2a-server
+pnpm add @dexwox-labs/a2a-server
 # or use the unified package
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 ```
 
 ## Quick Start
 
 ```typescript
 // Import from the server package
-import { A2AServer } from '@dexwox/a2a-server';
-import { AgentCard } from '@dexwox/a2a-core';
+import { A2AServer } from '@dexwox-labs/a2a-server';
+import { AgentCard } from '@dexwox-labs/a2a-core';
 import { RequestHandler } from './request-handler';
 
 // Or import everything from the unified package
-// import { A2AServer, AgentCard } from '@dexwox/a2a-node';
+// import { A2AServer, AgentCard } from '@dexwox-labs/a2a-node';
 
 const agentCard: AgentCard = {
   id: 'my-agent',

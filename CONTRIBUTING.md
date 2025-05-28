@@ -14,10 +14,10 @@ Thank you for your interest in contributing to the Dexwox A2A Platform! We welco
 
 The A2A Platform is organized as a monorepo with the following packages:
 
-- `@dexwox/a2a-node`: Unified package that includes all A2A functionality
-- `@dexwox/a2a-core`: Core types and utilities
-- `@dexwox/a2a-client`: Client implementation for connecting to A2A servers
-- `@dexwox/a2a-server`: Server implementation for hosting A2A agents
+- `@dexwox-labs/a2a-node`: Unified package that includes all A2A functionality
+- `@dexwox-labs/a2a-core`: Core types and utilities
+- `@dexwox-labs/a2a-client`: Client implementation for connecting to A2A servers
+- `@dexwox-labs/a2a-server`: Server implementation for hosting A2A agents
 
 When contributing, make sure to update the relevant packages and their documentation.
 

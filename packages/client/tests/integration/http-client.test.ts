@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { A2AHttpClient } from '../../src/http-client';
-import type { A2AError, AgentCard, Task, PushNotificationConfig } from '@dexwox/a2a-core';
+import type { A2AError, AgentCard, Task, PushNotificationConfig } from '@dexwox-labs/a2a-core';
 
 // Mock fetch
 global.fetch = vi.fn();

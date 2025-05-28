@@ -11,9 +11,9 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "@dexwox/a2a-core": ["packages/core/src"],
-      "@dexwox/a2a-client": ["packages/client/src"],
-      "@dexwox/a2a-server": ["packages/server/src"]
+      "@dexwox-labs/a2a-core": ["packages/core/src"],
+      "@dexwox-labs/a2a-client": ["packages/client/src"],
+      "@dexwox-labs/a2a-server": ["packages/server/src"]
     }
   },
   "include": [

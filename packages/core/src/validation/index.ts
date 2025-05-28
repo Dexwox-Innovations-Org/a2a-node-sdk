@@ -8,7 +8,7 @@
  * 
  * @example
  * ```typescript
- * import { validateMessage, isTask, z } from '@dexwox/a2a-core/validation';
+ * import { validateMessage, isTask, z } from '@dexwox-labs/a2a-core/validation';
  * 
  * // Validate a message
  * const result = validateMessage({

@@ -24,7 +24,7 @@ The `AgentClient` is used to discover and interact with A2A agents.
 ### Basic Usage
 
 ```typescript
-import { AgentClient } from '@dexwox/a2a-node';
+import { AgentClient } from '@dexwox-labs/a2a-node';
 
 const agentClient = new AgentClient({
   baseUrl: 'https://your-a2a-server.com',
@@ -82,7 +82,7 @@ The `MessageClient` handles message sending and streaming communication.
 ### Sending Messages
 
 ```typescript
-import { MessageClient } from '@dexwox/a2a-node';
+import { MessageClient } from '@dexwox-labs/a2a-node';
 
 const messageClient = new MessageClient({
   baseUrl: 'https://your-a2a-server.com'
@@ -162,7 +162,7 @@ The `TaskClient` manages task lifecycle and monitoring.
 ### Creating and Managing Tasks
 
 ```typescript
-import { TaskClient } from '@dexwox/a2a-node';
+import { TaskClient } from '@dexwox-labs/a2a-node';
 
 const taskClient = new TaskClient({
   baseUrl: 'https://your-a2a-server.com'
@@ -227,7 +227,7 @@ try {
 ### Connection Pooling
 
 ```typescript
-import { AgentClient, MessageClient, TaskClient } from '@dexwox/a2a-node';
+import { AgentClient, MessageClient, TaskClient } from '@dexwox-labs/a2a-node';
 
 // Shared configuration for connection pooling
 const baseConfig = {
@@ -260,7 +260,7 @@ const messageClient = new MessageClient({
 ### Custom Error Handling
 
 ```typescript
-import { A2AError, TaskFailedError, MessageErrorCode } from '@dexwox/a2a-node';
+import { A2AError, TaskFailedError, MessageErrorCode } from '@dexwox-labs/a2a-node';
 
 try {
   await messageClient.sendMessage(parts, agentId);

@@ -7,7 +7,7 @@
  * simple deployments where persistence is not required.
  */
 
-import { Task, Artifact, TaskState } from '@dexwox/a2a-core';
+import { Task, Artifact, TaskState } from '@dexwox-labs/a2a-core';
 import { TaskStore } from './task-store';
 
 /**

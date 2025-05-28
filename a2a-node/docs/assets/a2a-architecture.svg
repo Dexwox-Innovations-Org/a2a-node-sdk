@@ -60,35 +60,35 @@
   <text x="400" y="40" class="title">A2A Platform Architecture</text>
   <text x="400" y="60" class="subtitle">Agent-to-Agent Communication Framework</text>
 
-  <!-- Core Package (@dexwox/a2a-core) -->
+  <!-- Core Package (@dexwox-labs/a2a-core) -->
   <rect x="300" y="100" width="200" height="120" class="component core-component" rx="10" ry="10" />
-  <text x="400" y="125" class="title">@dexwox/a2a-core</text>
+  <text x="400" y="125" class="title">@dexwox-labs/a2a-core</text>
   <text x="400" y="150" class="label">Types</text>
   <text x="400" y="170" class="label">Protocols</text>
   <text x="400" y="190" class="label">Validation</text>
   <text x="400" y="210" class="label">Errors</text>
 
-  <!-- Client Package (@dexwox/a2a-client) -->
+  <!-- Client Package (@dexwox-labs/a2a-client) -->
   <rect x="100" y="280" width="200" height="160" class="component client-component" rx="10" ry="10" />
-  <text x="200" y="305" class="title">@dexwox/a2a-client</text>
+  <text x="200" y="305" class="title">@dexwox-labs/a2a-client</text>
   <text x="200" y="330" class="label">AgentClient</text>
   <text x="200" y="350" class="label">MessageClient</text>
   <text x="200" y="370" class="label">TaskClient</text>
   <text x="200" y="390" class="label">HttpClient</text>
   <text x="200" y="410" class="label">WebSocketClient</text>
 
-  <!-- Server Package (@dexwox/a2a-server) -->
+  <!-- Server Package (@dexwox-labs/a2a-server) -->
   <rect x="500" y="280" width="200" height="160" class="component server-component" rx="10" ry="10" />
-  <text x="600" y="305" class="title">@dexwox/a2a-server</text>
+  <text x="600" y="305" class="title">@dexwox-labs/a2a-server</text>
   <text x="600" y="330" class="label">Server</text>
   <text x="600" y="350" class="label">TaskStore</text>
   <text x="600" y="370" class="label">RequestHandlers</text>
   <text x="600" y="390" class="label">AgentExecution</text>
   <text x="600" y="410" class="label">Middleware</text>
 
-  <!-- Node Package (@dexwox/a2a-node) -->
+  <!-- Node Package (@dexwox-labs/a2a-node) -->
   <rect x="300" y="500" width="200" height="60" class="component" rx="10" ry="10" />
-  <text x="400" y="525" class="title">@dexwox/a2a-node</text>
+  <text x="400" y="525" class="title">@dexwox-labs/a2a-node</text>
   <text x="400" y="545" class="label">Integration &amp; Examples</text>
 
   <!-- Arrows -->

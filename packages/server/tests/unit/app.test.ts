@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest'
 import type { Request, Response, ErrorRequestHandler } from 'express'
 import { A2AServer } from '../../src/app'
 import request from 'supertest'
-import { AgentCard } from '@dexwox/a2a-core'
+import { AgentCard } from '@dexwox-labs/a2a-core'
 import { RequestHandler } from '../../src/request-handler'
 
 // Mock the context middleware

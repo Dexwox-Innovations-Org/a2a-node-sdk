@@ -1,7 +1,7 @@
 import { describe, bench, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { MessageClient } from '../../src/message-client';
-import type { MessagePart } from '@dexwox/a2a-core';
+import type { MessagePart } from '@dexwox-labs/a2a-core';
 
 describe('Message Client Benchmarks', () => {
   const getClient = () => new MessageClient({ baseUrl: 'http://test-api' });

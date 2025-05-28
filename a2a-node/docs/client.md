@@ -1,6 +1,6 @@
 # A2A Client Documentation
 
-This document provides detailed information about the A2A client libraries in the `@dexwox/a2a-client` package.
+This document provides detailed information about the A2A client libraries in the `@dexwox-labs/a2a-client` package.
 
 ## Overview
 
@@ -9,9 +9,9 @@ The A2A client libraries provide a simple and intuitive way to connect to A2A se
 ## Installation
 
 ```bash
-npm install @dexwox/a2a-client
+npm install @dexwox-labs/a2a-client
 # or
-pnpm add @dexwox/a2a-client
+pnpm add @dexwox-labs/a2a-client
 ```
 
 ## Client Components
@@ -23,7 +23,7 @@ The client package includes several key components:
 The `AgentClient` is used to discover and manage agent connections.
 
 ```typescript
-import { AgentClient } from '@dexwox/a2a-client';
+import { AgentClient } from '@dexwox-labs/a2a-client';
 
 // Initialize the client
 const agentClient = new AgentClient({
@@ -42,8 +42,8 @@ const agent = await agentClient.getAgent('weather-agent');
 The `MessageClient` is used to send messages to agents and receive responses.
 
 ```typescript
-import { MessageClient } from '@dexwox/a2a-client';
-import { MessagePart } from '@dexwox/a2a-core';
+import { MessageClient } from '@dexwox-labs/a2a-client';
+import { MessagePart } from '@dexwox-labs/a2a-core';
 
 // Initialize the client
 const messageClient = new MessageClient({
@@ -70,7 +70,7 @@ const taskId = await messageClient.sendMessage({
 The `TaskClient` is used to manage task lifecycle and monitor task state.
 
 ```typescript
-import { TaskClient } from '@dexwox/a2a-client';
+import { TaskClient } from '@dexwox-labs/a2a-client';
 
 // Initialize the client
 const taskClient = new TaskClient({
@@ -94,7 +94,7 @@ await taskClient.updateTask('task-123', {
 The `HttpClient` is a low-level HTTP client for A2A API communication. It's used internally by the other clients but can also be used directly for custom API calls.
 
 ```typescript
-import { HttpClient } from '@dexwox/a2a-client';
+import { HttpClient } from '@dexwox-labs/a2a-client';
 
 // Initialize the client
 const httpClient = new HttpClient({
@@ -144,10 +144,10 @@ interface ClientConfig {
 
 ## Error Handling
 
-The client libraries use standardized error handling through the `A2AError` class from the `@dexwox/a2a-core` package.
+The client libraries use standardized error handling through the `A2AError` class from the `@dexwox-labs/a2a-core` package.
 
 ```typescript
-import { A2AError } from '@dexwox/a2a-core';
+import { A2AError } from '@dexwox-labs/a2a-core';
 
 try {
   const agents = await agentClient.listAgents();
@@ -165,8 +165,8 @@ try {
 ### Polling for Task Updates
 
 ```typescript
-import { TaskClient } from '@dexwox/a2a-client';
-import { Task } from '@dexwox/a2a-core';
+import { TaskClient } from '@dexwox-labs/a2a-client';
+import { Task } from '@dexwox-labs/a2a-core';
 
 async function pollTaskUntilComplete(taskId: string): Promise<Task> {
   const taskClient = new TaskClient({
@@ -189,7 +189,7 @@ async function pollTaskUntilComplete(taskId: string): Promise<Task> {
 The client also supports WebSocket connections for real-time updates:
 
 ```typescript
-import { WebSocketClient } from '@dexwox/a2a-client';
+import { WebSocketClient } from '@dexwox-labs/a2a-client';
 
 const wsClient = new WebSocketClient({
   baseUrl: 'ws://localhost:3000'

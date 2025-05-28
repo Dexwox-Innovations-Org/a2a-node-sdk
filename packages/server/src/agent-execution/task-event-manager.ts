@@ -14,7 +14,7 @@ import {
   Artifact,
   TaskNotFoundError,
   InvalidTaskStateError
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 
 /**
  * Manages task lifecycle events

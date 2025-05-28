@@ -7,7 +7,7 @@
  * real-time updates about task status changes and other events.
  */
 
-import type { PushNotificationConfig } from '@dexwox/a2a-core';
+import type { PushNotificationConfig } from '@dexwox-labs/a2a-core';
 
 /**
  * Service for managing and sending push notifications

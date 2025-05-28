@@ -1,5 +1,5 @@
 {
-  "name": "@dexwox/a2a-core",
+  "name": "@dexwox-labs/a2a-core",
   "version": "0.1.0",
   "description": "Core types, validation and telemetry for Google's Agent-to-Agent (A2A) protocol - shared foundation for client and server implementations",
   "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",

@@ -6,7 +6,7 @@
  */
 
 import * as readline from 'readline';
-import { AgentClient, MessageClient, TaskClient, MessagePart } from '@dexwox/a2a-node';
+import { AgentClient, MessageClient, TaskClient, MessagePart } from '@dexwox-labs/a2a-node';
 
 // Server configuration
 const SERVER_URL = 'http://localhost:3000';

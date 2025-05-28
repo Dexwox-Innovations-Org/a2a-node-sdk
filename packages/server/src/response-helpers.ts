@@ -8,7 +8,7 @@ import {
   A2AError,
   MessagePart,
   Task
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 
 /**
  * Union type of all possible success response types

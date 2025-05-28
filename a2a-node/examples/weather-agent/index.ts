@@ -5,7 +5,7 @@
  * The agent handles weather-related queries and returns formatted responses.
  */
 
-import { A2AServer, DefaultRequestHandler, AgentCard, MessagePart, Task, Artifact } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler, AgentCard, MessagePart, Task, Artifact } from '@dexwox-labs/a2a-node';
 import { WeatherService } from './weather-service';
 
 // Create the weather service

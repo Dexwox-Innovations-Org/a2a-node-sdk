@@ -8,7 +8,7 @@
  */
 
 import { EventQueue } from '../agent-execution/event-queue';
-import { A2AError, ERROR_CODES } from '@dexwox/a2a-core';
+import { A2AError, ERROR_CODES } from '@dexwox-labs/a2a-core';
 
 /**
  * Interface for managing event queue lifecycles

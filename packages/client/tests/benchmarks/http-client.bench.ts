@@ -1,7 +1,7 @@
 import { describe, bench, beforeEach } from 'vitest';
 import { vi } from 'vitest';
 import { A2AHttpClient } from '../../src/http-client';
-import type { MessagePart } from '@dexwox/a2a-core';
+import type { MessagePart } from '@dexwox-labs/a2a-core';
 
 describe('HTTP Client Benchmarks', () => {
   // Create a factory function to get a fresh client

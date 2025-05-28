@@ -37,28 +37,28 @@ Choose your preferred package manager:
 **Using pnpm (recommended):**
 ```bash
 # Install the unified package (recommended)
-pnpm add @dexwox/a2a-node
+pnpm add @dexwox-labs/a2a-node
 
 # Or install individual packages
-pnpm add @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+pnpm add @dexwox-labs/a2a-core @dexwox-labs/a2a-client @dexwox-labs/a2a-server
 ```
 
 **Using npm:**
 ```bash
 # Install the unified package (recommended)
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 
 # Or install individual packages
-npm install @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+npm install @dexwox-labs/a2a-core @dexwox-labs/a2a-client @dexwox-labs/a2a-server
 ```
 
 **Using yarn:**
 ```bash
 # Install the unified package (recommended)
-yarn add @dexwox/a2a-node
+yarn add @dexwox-labs/a2a-node
 
 # Or install individual packages
-yarn add @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
+yarn add @dexwox-labs/a2a-core @dexwox-labs/a2a-client @dexwox-labs/a2a-server
 ```
 
 ### Create Your First Client
@@ -66,7 +66,7 @@ yarn add @dexwox/a2a-core @dexwox/a2a-client @dexwox/a2a-server
 Create a simple client to connect to an A2A server:
 
 ```typescript filename="client.ts"
-import { MessageClient, AgentClient } from '@dexwox/a2a-node';
+import { MessageClient, AgentClient } from '@dexwox-labs/a2a-node';
 
 async function main() {
   // Create clients
@@ -104,7 +104,7 @@ main();
 Create a simple A2A server that can receive and process messages:
 
 ```typescript filename="server.ts"
-import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-node';
+import { A2AServer, DefaultAgentExecutor } from '@dexwox-labs/a2a-node';
 
 // Create an agent executor
 const executor = new DefaultAgentExecutor({
@@ -171,21 +171,21 @@ npx tsx client.ts
 
 The A2A Node SDK is organized into three main packages:
 
-### `@dexwox/a2a-core`
+### `@dexwox-labs/a2a-core`
 Core types, utilities, and protocol definitions:
 - Protocol type definitions and interfaces
 - Validation utilities and decorators  
 - Common utilities for working with A2A messages
 - Error classes for protocol-specific error handling
 
-### `@dexwox/a2a-client`
+### `@dexwox-labs/a2a-client`
 Client libraries for connecting to A2A servers:
 - Type-safe API client for A2A protocol
 - Agent discovery and management
 - Message streaming with retry logic
 - Circuit breaker pattern for resilience
 
-### `@dexwox/a2a-server`
+### `@dexwox-labs/a2a-server`
 Server implementation for hosting A2A agents:
 - Express-based HTTP/WebSocket server
 - Task management and state tracking

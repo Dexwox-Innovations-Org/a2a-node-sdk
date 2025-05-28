@@ -6,7 +6,7 @@
 import { 
   JsonRpcStreamResponse,
   AgentCard
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 
 /**
  * Configuration for push notifications

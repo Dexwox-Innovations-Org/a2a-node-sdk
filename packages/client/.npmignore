@@ -1,0 +1,13 @@
+# Exclude test files
+**/*.test.ts
+**/tests/
+**/benchmarks/
+
+# Exclude docs
+docs/
+
+# Exclude config files
+.eslintrc.json
+.prettierrc
+tsconfig.json
+vitest.config.ts

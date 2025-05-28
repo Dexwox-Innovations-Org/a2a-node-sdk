@@ -7,7 +7,7 @@
  * support for task artifacts and push notifications.
  */
 
-import { Task, TaskState, Artifact, TaskNotFoundError, InvalidTaskStateError } from '@dexwox/a2a-core';
+import { Task, TaskState, Artifact, TaskNotFoundError, InvalidTaskStateError } from '@dexwox-labs/a2a-core';
 import { TaskStore } from './task-store';
 import { PushNotificationService } from '../push-notifications/push-service';
 import { ResultAggregator } from '../agent-execution/result-aggregator';

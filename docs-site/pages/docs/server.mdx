@@ -27,7 +27,7 @@ The A2A Node SDK provides a complete server implementation for hosting A2A agent
 ### Basic Server Setup
 
 ```typescript
-import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-node';
+import { A2AServer, DefaultAgentExecutor } from '@dexwox-labs/a2a-node';
 
 // Create an agent executor
 const executor = new DefaultAgentExecutor({
@@ -74,7 +74,7 @@ console.log('🚀 A2A server running on http://localhost:3000');
 ### Custom Agent Executor
 
 ```typescript
-import { AgentExecutor, Task, TaskResult } from '@dexwox/a2a-node';
+import { AgentExecutor, Task, TaskResult } from '@dexwox-labs/a2a-node';
 
 class WeatherAgentExecutor implements AgentExecutor {
   async executeTask(task: Task): Promise<TaskResult> {
@@ -210,7 +210,7 @@ const agentCard = {
 ### Complete Server Setup
 
 ```typescript
-import { A2AServer, DefaultRequestHandler } from '@dexwox/a2a-node';
+import { A2AServer, DefaultRequestHandler } from '@dexwox-labs/a2a-node';
 
 const server = new A2AServer({
   agentCard,
@@ -269,7 +269,7 @@ const server = new A2AServer({
 ### Custom Middleware
 
 ```typescript
-import { RequestHandler, Request, Response, NextFunction } from '@dexwox/a2a-node';
+import { RequestHandler, Request, Response, NextFunction } from '@dexwox-labs/a2a-node';
 
 // Logging middleware
 const loggingMiddleware = (req: Request, res: Response, next: NextFunction) => {
@@ -355,7 +355,7 @@ server.use(errorHandlingMiddleware);
 ### Custom Task Manager
 
 ```typescript
-import { TaskManager, Task, TaskTransition } from '@dexwox/a2a-node';
+import { TaskManager, Task, TaskTransition } from '@dexwox-labs/a2a-node';
 
 class CustomTaskManager extends TaskManager {
   private tasks = new Map<string, Task>();

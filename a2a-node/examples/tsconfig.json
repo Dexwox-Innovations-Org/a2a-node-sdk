@@ -13,10 +13,10 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "paths": {
-      "@dexwox/a2a-core": ["../../packages/core/src"],
-      "@dexwox/a2a-client": ["../../packages/client/src"],
-      "@dexwox/a2a-server": ["../../packages/server/src"],
-      "@dexwox/a2a-node": ["../src"]
+      "@dexwox-labs/a2a-core": ["../../packages/core/src"],
+      "@dexwox-labs/a2a-client": ["../../packages/client/src"],
+      "@dexwox-labs/a2a-server": ["../../packages/server/src"],
+      "@dexwox-labs/a2a-node": ["../src"]
     }
   },
   "include": [

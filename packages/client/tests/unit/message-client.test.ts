@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { MessageClient } from '../../src/message-client';
-import { MessagePart, JsonRpcRequest } from '@dexwox/a2a-core';
+import { MessagePart, JsonRpcRequest } from '@dexwox-labs/a2a-core';
 import { 
   A2ANetworkError,
   A2AError,

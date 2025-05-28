@@ -3,7 +3,7 @@
  * @description Utility functions for HTTP communication with A2A protocol servers
  */
 
-import { JsonRpcRequest, JsonRpcResponse } from '@dexwox/a2a-core';
+import { JsonRpcRequest, JsonRpcResponse } from '@dexwox-labs/a2a-core';
 import { MessageClientOptions } from '../types';
 
 /**

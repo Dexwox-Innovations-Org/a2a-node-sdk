@@ -32,10 +32,10 @@ This guide provides instructions for developing with the A2A (Agent-to-Agent) pl
 
 The A2A platform is organized as a monorepo with the following packages:
 
-- **@dexwox/a2a-node**: Unified package that includes all components
-- **@dexwox/a2a-core**: Core types and utilities
-- **@dexwox/a2a-client**: Client libraries
-- **@dexwox/a2a-server**: Server implementation
+- **@dexwox-labs/a2a-node**: Unified package that includes all components
+- **@dexwox-labs/a2a-core**: Core types and utilities
+- **@dexwox-labs/a2a-client**: Client libraries
+- **@dexwox-labs/a2a-server**: Server implementation
 
 ## Development Workflow
 
@@ -46,7 +46,7 @@ The A2A platform is organized as a monorepo with the following packages:
 pnpm test
 
 # Run tests for a specific package
-pnpm --filter @dexwox/a2a-core test
+pnpm --filter @dexwox-labs/a2a-core test
 
 # Run tests in watch mode
 pnpm test:watch
@@ -59,7 +59,7 @@ pnpm test:watch
 pnpm build
 
 # Build a specific package
-pnpm --filter @dexwox/a2a-core build
+pnpm --filter @dexwox-labs/a2a-core build
 ```
 
 ### Linting and Formatting
@@ -90,7 +90,7 @@ Here's a step-by-step guide to creating a new agent:
 
 2. Create a request handler:
    ```typescript
-   import { DefaultRequestHandler } from '@dexwox/a2a-node';
+   import { DefaultRequestHandler } from '@dexwox-labs/a2a-node';
    
    class MyAgentHandler extends DefaultRequestHandler {
      async handleSendMessage(parts: MessagePart[], agentId: string): Promise<string> {
@@ -105,7 +105,7 @@ Here's a step-by-step guide to creating a new agent:
 
 3. Create and start the server:
    ```typescript
-   import { A2AServer } from '@dexwox/a2a-node';
+   import { A2AServer } from '@dexwox-labs/a2a-node';
    
    const server = new A2AServer(myAgent, requestHandler);
    server.start(3000);
@@ -116,7 +116,7 @@ Here's a step-by-step guide to creating a new agent:
 Here's how to create a client that interacts with agents:
 
 ```typescript
-import { AgentClient, MessageClient } from '@dexwox/a2a-node';
+import { AgentClient, MessageClient } from '@dexwox-labs/a2a-node';
 
 // Initialize clients
 const agentClient = new AgentClient({ baseUrl: 'http://localhost:3000' });
@@ -186,7 +186,7 @@ For high-performance agents, consider these tips:
 The A2A platform uses a structured logging system:
 
 ```typescript
-import { logger } from '@dexwox/a2a-core';
+import { logger } from '@dexwox-labs/a2a-core';
 
 // Set log level
 logger.setLevel('debug');
@@ -201,7 +201,7 @@ logger.error('Request failed', { error: err.message });
 For distributed tracing, use the built-in telemetry system:
 
 ```typescript
-import { Trace } from '@dexwox/a2a-core';
+import { Trace } from '@dexwox-labs/a2a-core';
 
 class MyService {
   @Trace()

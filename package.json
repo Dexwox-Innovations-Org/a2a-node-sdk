@@ -1,5 +1,5 @@
 {
-  "name": "@dexwox/a2a-node",
+  "name": "@dexwox-labs/a2a-node",
   "version": "0.1.0",
   "description": "A2A Node SDK - TypeScript Implementation of Agent-to-Agent Protocol",
   "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",

@@ -7,7 +7,7 @@
  * associated artifacts.
  */
 
-import { Task, Artifact, TaskState } from '@dexwox/a2a-core';
+import { Task, Artifact, TaskState } from '@dexwox-labs/a2a-core';
 
 /**
  * Interface for task storage backends

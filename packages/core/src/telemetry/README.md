@@ -97,7 +97,7 @@ class MyService {
 | Option | Type | Default | Description |
 |--------|------|---------|-------------|
 | `enabled` | `boolean` | `true` | Whether telemetry is enabled |
-| `serviceName` | `string` | `'@dexwox/a2a-node'` | Name of the service |
+| `serviceName` | `string` | `'@dexwox-labs/a2a-node'` | Name of the service |
 | `serviceVersion` | `string` | `'0.1.0'` | Version of the service |
 | `collectionLevel` | `'off' | 'basic' | 'detailed'` | `'basic'` | Level of detail for telemetry collection |
 | `endpoint` | `string` | `undefined` | Optional endpoint for telemetry data |

@@ -18,7 +18,7 @@ A simple example showing how to set up a client and server for basic communicati
 #### Server Implementation
 
 ```typescript filename="server.ts"
-import { A2AServer, DefaultAgentExecutor } from '@dexwox/a2a-node';
+import { A2AServer, DefaultAgentExecutor } from '@dexwox-labs/a2a-node';
 
 // Create a simple echo agent
 const executor = new DefaultAgentExecutor({
@@ -66,7 +66,7 @@ console.log('🚀 Echo agent running on http://localhost:3000');
 #### Client Implementation
 
 ```typescript filename="client.ts"
-import { AgentClient, TaskClient } from '@dexwox/a2a-node';
+import { AgentClient, TaskClient } from '@dexwox-labs/a2a-node';
 
 async function main() {
   // Create clients
@@ -121,7 +121,7 @@ This example demonstrates API integration, error handling, and structured respon
 </Callout>
 
 ```typescript filename="weather-agent.ts"
-import { A2AServer, AgentExecutor, Task, TaskResult } from '@dexwox/a2a-node';
+import { A2AServer, AgentExecutor, Task, TaskResult } from '@dexwox-labs/a2a-node';
 import axios from 'axios';
 
 interface WeatherData {
@@ -401,7 +401,7 @@ console.log('🌤️ Weather agent running on http://localhost:3001');
 An agent that processes various file types and extracts information.
 
 ```typescript filename="file-processor-agent.ts"
-import { A2AServer, AgentExecutor, Task, TaskResult } from '@dexwox/a2a-node';
+import { A2AServer, AgentExecutor, Task, TaskResult } from '@dexwox-labs/a2a-node';
 import { promises as fs } from 'fs';
 import path from 'path';
 import csv from 'csv-parser';
@@ -720,7 +720,7 @@ console.log('📁 File processor agent running on http://localhost:3002');
 An example showing how multiple agents can work together to complete complex tasks.
 
 ```typescript filename="orchestrator.ts"
-import { AgentClient, TaskClient, MessageClient } from '@dexwox/a2a-node';
+import { AgentClient, TaskClient, MessageClient } from '@dexwox-labs/a2a-node';
 
 interface AgentInfo {
   id: string;
@@ -935,7 +935,7 @@ main();
 
 ```typescript filename="weather-agent.test.ts"
 import { describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { A2AServer } from '@dexwox/a2a-node';
+import { A2AServer } from '@dexwox-labs/a2a-node';
 import { WeatherAgentExecutor } from './weather-agent';
 import request from 'supertest';
 

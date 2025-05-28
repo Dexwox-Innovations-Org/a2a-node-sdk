@@ -14,7 +14,7 @@ import {
   type A2AError,
   MessageSendConfiguration, 
   type MessagePart 
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 import { AsyncLocalStorage } from 'async_hooks';
 
 /** Storage for the current request context, accessible across async boundaries */

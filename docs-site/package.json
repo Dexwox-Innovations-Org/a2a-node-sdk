@@ -1,5 +1,5 @@
 {
-  "name": "@dexwox/a2a-docs",
+  "name": "@dexwox-labs/a2a-docs",
   "version": "1.0.0",
   "description": "Documentation site for A2A Node SDK",
   "type": "module",

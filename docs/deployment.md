@@ -103,7 +103,7 @@ For serverless deployments (AWS Lambda, Google Cloud Functions, etc.):
 
 ```javascript
 // AWS Lambda handler
-import { A2AServer } from '@dexwox/a2a-node';
+import { A2AServer } from '@dexwox-labs/a2a-node';
 import serverless from 'serverless-http';
 
 const agent = {
@@ -264,7 +264,7 @@ const jwtSecret = process.env.JWT_SECRET;
 Use monitoring tools to track application health:
 
 ```javascript
-import { metrics } from '@dexwox/a2a-core';
+import { metrics } from '@dexwox-labs/a2a-core';
 
 // Record custom metrics
 metrics.recordMetric('agent.requests', 1, { agentId: 'my-agent' });
@@ -278,7 +278,7 @@ metrics.recordTimer('api.response_time', startTime, endTime);
 Implement structured logging:
 
 ```javascript
-import { logger } from '@dexwox/a2a-core';
+import { logger } from '@dexwox-labs/a2a-core';
 
 // Configure logger
 logger.configure({

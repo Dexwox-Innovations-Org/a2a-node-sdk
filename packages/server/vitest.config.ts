@@ -20,8 +20,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@dexwox/a2a-server': resolve(__dirname, './src'),
-      '@dexwox/a2a-core': resolve(__dirname, '../core/src')
+      '@dexwox-labs/a2a-server': resolve(__dirname, './src'),
+      '@dexwox-labs/a2a-core': resolve(__dirname, '../core/src')
     }
   }
 });

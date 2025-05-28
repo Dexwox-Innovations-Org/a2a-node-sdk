@@ -1,4 +1,4 @@
-# @dexwox/a2a-core
+# @dexwox-labs/a2a-core
 
 Shared types, utilities and protocols for implementing the Agent-to-Agent (A2A) communication protocol.
 
@@ -16,11 +16,11 @@ This package provides the foundation for the A2A protocol implementation, delive
 ## Installation
 
 ```bash
-npm install @dexwox/a2a-core
+npm install @dexwox-labs/a2a-core
 # or
-pnpm add @dexwox/a2a-core
+pnpm add @dexwox-labs/a2a-core
 # or use the unified package
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 ```
 
 ## Core Components
@@ -51,7 +51,7 @@ npm install @dexwox/a2a-node
 
 ### Using Core Types
 ```typescript
-import { AgentCard } from '@dexwox/a2a-core';
+import { AgentCard } from '@dexwox-labs/a2a-core';
 
 const agent: AgentCard = {
   id: 'weather-agent',
@@ -63,7 +63,7 @@ const agent: AgentCard = {
 
 ### Validation Decorators
 ```typescript
-import { ValidateParams } from '@dexwox/a2a-core';
+import { ValidateParams } from '@dexwox-labs/a2a-core';
 
 class WeatherService {
   @ValidateParams(weatherSchema)
@@ -75,7 +75,7 @@ class WeatherService {
 
 ### Protocol Utilities
 ```typescript
-import { parseMessage, serializeMessage } from '@dexwox/a2a-core';
+import { parseMessage, serializeMessage } from '@dexwox-labs/a2a-core';
 
 const message = parseMessage(rawMessage);
 const wireFormat = serializeMessage(message);

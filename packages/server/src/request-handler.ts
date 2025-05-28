@@ -28,7 +28,7 @@ import {
   A2AError,
   TaskTransition,
   JsonRpcResponse
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 import { createRequestContext } from './agent-execution/request-context';
 
 /**

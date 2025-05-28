@@ -6,27 +6,27 @@ This SDK provides a complete implementation of the A2A protocol specification, a
 
 ## Packages
 
-### [@dexwox/a2a-node](/a2a-node)
+### [@dexwox-labs/a2a-node](/a2a-node)
 Unified package that includes all Google A2A protocol components:
 - Complete implementation of Google's A2A protocol in a single package
 - Documentation and examples
 - Simplified imports and usage
 
-### [@dexwox/a2a-server](/packages/server)
+### [@dexwox-labs/a2a-server](/packages/server)
 Google A2A protocol server implementation with:
 - HTTP/WebSocket interfaces compliant with Google's A2A specification
 - Task management for A2A agents
 - Request handling for agent communication
 - Middleware support
 
-### [@dexwox/a2a-client](/packages/client)
+### [@dexwox-labs/a2a-client](/packages/client)
 Client library for interacting with Google A2A protocol agents:
 - Type-safe API client for Google's A2A protocol
 - Circuit breaker pattern
 - Error handling
 - Message streaming
 
-### [@dexwox/a2a-core](/packages/core)
+### [@dexwox-labs/a2a-core](/packages/core)
 Shared types and utilities for Google's A2A protocol:
 - Google A2A protocol definitions and interfaces
 - Validation decorators for protocol compliance
@@ -51,12 +51,12 @@ pnpm install
 #### For Usage in Projects
 ```bash
 # Install the unified package (recommended)
-npm install @dexwox/a2a-node
+npm install @dexwox-labs/a2a-node
 
 # Or install individual packages if needed
-npm install @dexwox/a2a-core
-npm install @dexwox/a2a-client
-npm install @dexwox/a2a-server
+npm install @dexwox-labs/a2a-core
+npm install @dexwox-labs/a2a-client
+npm install @dexwox-labs/a2a-server
 ```
 
 ### Development

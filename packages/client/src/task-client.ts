@@ -3,7 +3,7 @@
  * @description Client for managing tasks in the A2A protocol
  */
 
-import { Task, TaskState, JsonRpcRequest, validateTransition, TraceClass } from '@dexwox/a2a-core';
+import { Task, TaskState, JsonRpcRequest, validateTransition, TraceClass } from '@dexwox-labs/a2a-core';
 import { MessageClientOptions, PushNotificationConfig } from './types';
 import { 
   normalizeError,

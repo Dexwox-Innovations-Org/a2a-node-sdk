@@ -8,8 +8,8 @@ import {
   MessagePart,
   JsonRpcRequest,
   TraceClass,
-} from '@dexwox/a2a-core';
-import { validateMessageParts } from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
+import { validateMessageParts } from '@dexwox-labs/a2a-core';
 import { MessageClientOptions, StreamOptions } from './types';
 import {
   normalizeError,

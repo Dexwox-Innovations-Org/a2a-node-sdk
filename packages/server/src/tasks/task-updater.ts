@@ -7,7 +7,7 @@
  * It enforces a state machine approach to task status changes.
  */
 
-import { Task, TaskState, TaskTransition, A2AError } from '@dexwox/a2a-core';
+import { Task, TaskState, TaskTransition, A2AError } from '@dexwox-labs/a2a-core';
 
 /**
  * Error thrown when an invalid task state transition is attempted

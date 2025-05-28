@@ -63,7 +63,7 @@ import {
   TaskAlreadyCompletedError,
   TaskCanceledError,
   TaskFailedError
-} from '@dexwox/a2a-core';
+} from '@dexwox-labs/a2a-core';
 
 /**
  * Default implementation of the AgentExecutor interface
