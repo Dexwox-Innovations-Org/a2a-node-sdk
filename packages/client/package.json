@@ -35,7 +35,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@dexwox-labs/a2a-core": "workspace:*",
+    "@dexwox-labs/a2a-core": "0.1.0",
     "eventsource": "^4.0.0",
     "reflect-metadata": "^0.2.2"
   },

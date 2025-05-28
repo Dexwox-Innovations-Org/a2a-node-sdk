@@ -34,7 +34,7 @@
     "format": "prettier --write ."
   },
   "dependencies": {
-    "@dexwox-labs/a2a-core": "workspace:*",
+    "@dexwox-labs/a2a-core": "0.1.0",
     "@types/ws": "^8.18.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
