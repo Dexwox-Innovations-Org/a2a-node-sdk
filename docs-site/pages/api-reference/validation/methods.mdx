@@ -1,0 +1,119 @@
+# Validation Methods
+
+This document covers the various methods available for validating data with Zod in the A2A SDK.
+
+## Core Validation Methods
+
+### `parse()`
+```typescript
+// Throws if validation fails
+try {
+  const validated = schema.parse(input);
+} catch (err) {
+  // Handle ZodError
+  console.error(err.errors);
+}
+```
+
+### `safeParse()`
+```typescript
+// Returns result object instead of throwing
+const result = schema.safeParse(input);
+if (result.success) {
+  const data = result.data;
+} else {
+  const error = result.error;
+}
+```
+
+### `parseAsync()`
+```typescript
+// For async validation/transforms
+const result = await schema.parseAsync(input);
+```
+
+### `safeParseAsync()`
+```typescript
+// Async version of safeParse
+const result = await schema.safeParseAsync(input);
+```
+
+## Validation Context
+
+### Adding Context
+```typescript
+schema.parse(input, {
+  context: {
+    userId: '123',
+    isAdmin: false
+  }
+});
+```
+
+### Using Context in Refinements
+```typescript
+const schema = z.object({
+  id: z.string()
+}).refine((data, ctx) => {
+  return ctx.isAdmin || data.id === ctx.userId;
+}, {
+  message: "Can only access your own data"
+});
+```
+
+## Error Handling
+
+### Custom Error Messages
+```typescript
+z.string({
+  required_error: "Name is required",
+  invalid_type_error: "Name must be a string"
+}).min(5, {
+  message: "Name must be at least 5 characters"
+});
+```
+
+### Error Formatting
+```typescript
+const error = result.error;
+const formatted = error.format();
+// {
+//   _errors: [],
+//   fieldName: {
+//     _errors: ["Invalid value"]
+//   }
+// }
+```
+
+## Partial Validation
+
+### `partial()`
+```typescript
+const partialSchema = schema.partial();
+// All fields become optional
+```
+
+### `deepPartial()`
+```typescript
+const deepPartial = schema.deepPartial();
+// Recursively makes all fields optional
+```
+
+## Strict Validation
+
+### `strict()`
+```typescript
+const strictSchema = schema.strict();
+// Rejects unknown fields
+```
+
+### `strip()`
+```typescript
+const stripped = schema.strip();
+// Removes unknown fields
+```
+
+## Next Steps
+- [Validation Utilities](/api-reference/validation/utilities)
+- [Schema Creation](/api-reference/validation/schemas)
+- [Validation Types](/api-reference/validation/types)

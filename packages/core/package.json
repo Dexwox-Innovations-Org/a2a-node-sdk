@@ -1,7 +1,28 @@
 {
   "name": "@dexwox/a2a-core",
   "version": "0.1.0",
-  "description": "Core types and utilities for A2A Node SDK",
+  "description": "Core types, validation and telemetry for Google's Agent-to-Agent (A2A) protocol - shared foundation for client and server implementations",
+  "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dexwox-Innovations-Org/a2a-node-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/issues"
+  },
+  "keywords": [
+    "a2a",
+    "agent-to-agent",
+    "google",
+    "protocol",
+    "typescript",
+    "core",
+    "types",
+    "validation",
+    "telemetry",
+    "zod",
+    "opentelemetry"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "private": false,

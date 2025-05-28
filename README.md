@@ -110,6 +110,7 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for development guidelines.
 - [Code of Conduct](CODE_OF_CONDUCT.md)
 - [Contributing Guidelines](CONTRIBUTING.md)
 - [Report an Issue](https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/issues)
+- [GitHub Discussions](https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/discussions)
 
 ## Legal
 

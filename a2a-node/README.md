@@ -1,8 +1,15 @@
-# @dexwox/a2a-node
+# @dexwox/a2a-node [![npm version](https://img.shields.io/npm/v/@dexwox/a2a-node.svg)](https://www.npmjs.com/package/@dexwox/a2a-node) [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
+📖 [Full Documentation](https://dexwox-innovations-org.github.io/a2a-node-sdk/) | 💬 [Report Issues](https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/issues)
 
 The unified TypeScript package for implementing the Agent-to-Agent (A2A) communication protocol, enabling seamless communication between AI agents.
 
 This package provides a complete implementation of the A2A protocol specification, allowing developers to build, connect, and deploy intelligent agents. Developed by [Dexwox Innovations Pvt Ltd](https://dexwox.com) to offer a robust TypeScript solution for agent-based systems.
+
+> **Note**: This is the unified package that combines all A2A components. You can also install individual packages separately if needed:
+> - `@dexwox/a2a-core`: Core types and utilities
+> - `@dexwox/a2a-client`: Client implementation
+> - `@dexwox/a2a-server`: Server implementation
 
 ## Overview
 
@@ -38,11 +45,16 @@ import { createServer, InMemoryTaskStore } from '@dexwox/a2a-server';
 
 ## Documentation
 
-- [API Reference](/docs/api.md) - Comprehensive reference for all A2A APIs
-- [Protocol Specification](/docs/protocol.md) - Details of the Google A2A communication protocol
-- [Development Guide](/docs/development.md) - Guide for developing with the A2A platform
-- [Deployment Guide](/docs/deployment.md) - Strategies for deploying A2A applications
-- [Integration Guide](/docs/integration.md) - Instructions for integrating A2A with other systems
+Full documentation is available at:  
+[https://dexwox-innovations-org.github.io/a2a-node-sdk/](https://dexwox-innovations-org.github.io/a2a-node-sdk/)
+
+Includes:
+- API Reference
+- Protocol Specification  
+- Development Guide
+- Deployment Guide  
+- Integration Guide
+- Examples and Tutorials
 
 ## Examples
 

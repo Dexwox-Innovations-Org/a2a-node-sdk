@@ -1,0 +1,110 @@
+# Validation Types
+
+The A2A SDK provides comprehensive validation capabilities through Zod. This page documents the available validation types and their usage.
+
+## Primitive Types
+
+### Strings
+```typescript
+z.string() // Basic string
+  .min(5) // Minimum length
+  .max(100) // Maximum length
+  .email() // Valid email format
+  .url() // Valid URL format
+  .uuid() // Valid UUID
+  .regex(/^[a-z]+$/) // Custom regex
+```
+
+### Numbers
+```typescript
+z.number() // Basic number
+  .int() // Integer only
+  .positive() // > 0
+  .nonnegative() // >= 0
+  .min(5) // Minimum value
+  .max(100) // Maximum value
+```
+
+### Booleans
+```typescript
+z.boolean() // true or false
+```
+
+### Dates
+```typescript
+z.date() // Date object
+  .min(new Date('2020-01-01')) // Minimum date
+  .max(new Date()) // Maximum date (now)
+```
+
+## Complex Types
+
+### Objects
+```typescript
+z.object({
+  name: z.string(),
+  age: z.number().int().positive(),
+  address: z.object({
+    street: z.string(),
+    city: z.string()
+  }).optional()
+})
+```
+
+### Arrays
+```typescript
+z.array(z.string()) // Array of strings
+  .min(1) // Minimum length
+  .max(10) // Maximum length
+  .nonempty() // At least one item
+```
+
+### Unions
+```typescript
+z.union([
+  z.string(),
+  z.number()
+])
+
+// Alternative syntax:
+z.string().or(z.number())
+```
+
+### Records
+```typescript
+z.record(z.string()) // { [key: string]: string }
+z.record(z.string(), z.number()) // { [key: string]: number }
+```
+
+## Special Types
+
+### Literals
+```typescript
+z.literal('success') // Exact value match
+z.literal(42)
+z.literal(true)
+```
+
+### Enums
+```typescript
+z.enum(['pending', 'completed', 'failed'])
+
+// Or from a TypeScript enum:
+enum Status {
+  Pending = 'pending',
+  Completed = 'completed'
+}
+z.nativeEnum(Status)
+```
+
+### Optionals & Nullables
+```typescript
+z.string().optional() // string | undefined
+z.string().nullable() // string | null
+z.string().nullish() // string | null | undefined
+```
+
+## Next Steps
+- [Schema Creation](/api-reference/validation/schemas)
+- [Validation Methods](/api-reference/validation/methods)
+- [Validation Utilities](/api-reference/validation/utilities)

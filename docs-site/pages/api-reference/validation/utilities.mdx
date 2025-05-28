@@ -1,0 +1,127 @@
+# Validation Utilities
+
+This document covers utility functions and patterns for working with Zod validation in the A2A SDK.
+
+## Type Inference
+
+### `z.infer`
+```typescript
+const userSchema = z.object({
+  id: z.string(),
+  name: z.string()
+});
+
+type User = z.infer<typeof userSchema>;
+// { id: string; name: string }
+```
+
+### `z.output`
+```typescript
+const ageSchema = z.string().transform(Number);
+type Age = z.output<typeof ageSchema>; // number
+```
+
+## Schema Utilities
+
+### `z.instanceof`
+```typescript
+class User {}
+const userSchema = z.instanceof(User);
+```
+
+### `z.custom`
+```typescript
+const hexColor = z.custom<string>(val => {
+  return /^#[0-9A-F]{6}$/i.test(val);
+});
+```
+
+### `z.function`
+```typescript
+const fnSchema = z.function()
+  .args(z.string(), z.number())
+  .returns(z.boolean());
+```
+
+## Common Patterns
+
+### Optional with Default
+```typescript
+const withDefault = z.object({
+  name: z.string().default('Anonymous'),
+  age: z.number().optional()
+});
+```
+
+### Discriminated Unions
+```typescript
+const eventSchema = z.discriminatedUnion('type', [
+  z.object({
+    type: z.literal('click'),
+    x: z.number(),
+    y: z.number()
+  }),
+  z.object({
+    type: z.literal('keypress'),
+    key: z.string()
+  })
+]);
+```
+
+### Lazy Schemas (Recursive Types)
+```typescript
+interface Category {
+  name: string;
+  subcategories: Category[];
+}
+
+const categorySchema: z.ZodType<Category> = z.lazy(() =>
+  z.object({
+    name: z.string(),
+    subcategories: z.array(categorySchema)
+  })
+);
+```
+
+## Validation Helpers
+
+### `z.coerce`
+```typescript
+const coerceNumber = z.coerce.number(); // Converts strings to numbers
+const coerceDate = z.coerce.date(); // Converts strings to Dates
+```
+
+### `z.preprocess`
+```typescript
+const trimmedString = z.preprocess(
+  val => typeof val === 'string' ? val.trim() : val,
+  z.string()
+);
+```
+
+### `z.catch`
+```typescript
+const safeNumber = z.number().catch(0); // Returns 0 on parse failure
+```
+
+## Schema Metadata
+
+### Adding Descriptions
+```typescript
+const describedSchema = z.object({
+  name: z.string().describe("The user's full name"),
+  age: z.number().describe("Age in years")
+});
+```
+
+### Adding Examples
+```typescript
+const exampleSchema = z.object({
+  email: z.string().email().example("user@example.com")
+});
+```
+
+## Next Steps
+- [Validation Methods](/api-reference/validation/methods)
+- [Schema Creation](/api-reference/validation/schemas)
+- [Validation Types](/api-reference/validation/types)

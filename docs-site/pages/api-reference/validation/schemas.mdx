@@ -1,0 +1,117 @@
+# Schema Creation
+
+This guide covers how to create and compose validation schemas in the A2A SDK.
+
+## Basic Schema Definition
+
+```typescript
+import { z } from '@a2a/sdk';
+
+// Simple schema
+const userSchema = z.object({
+  id: z.string().uuid(),
+  name: z.string().min(2),
+  email: z.string().email(),
+  age: z.number().int().positive().optional()
+});
+```
+
+## Schema Composition
+
+### Extending Schemas
+```typescript
+const baseSchema = z.object({
+  id: z.string().uuid(),
+  createdAt: z.date()
+});
+
+const userSchema = baseSchema.extend({
+  name: z.string(),
+  email: z.string().email()
+});
+```
+
+### Merging Schemas
+```typescript
+const schemaA = z.object({ name: z.string() });
+const schemaB = z.object({ age: z.number() });
+
+const merged = schemaA.merge(schemaB);
+// { name: string, age: number }
+```
+
+### Pick/Omit
+```typescript
+const fullSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string().email()
+});
+
+// Pick specific fields
+const minimalSchema = fullSchema.pick({ name: true });
+
+// Omit specific fields  
+const noIdSchema = fullSchema.omit({ id: true });
+```
+
+## Schema Refinement
+
+### Custom Validation
+```typescript
+const passwordSchema = z.string()
+  .min(8)
+  .refine(val => /[A-Z]/.test(val), {
+    message: "Must contain at least one uppercase letter"
+  })
+  .refine(val => /[0-9]/.test(val), {
+    message: "Must contain at least one number"
+  });
+```
+
+### Conditional Validation
+```typescript
+const conditionalSchema = z.object({
+  isMember: z.boolean(),
+  memberId: z.string().optional()
+}).refine(data => {
+  if (data.isMember) {
+    return !!data.memberId;
+  }
+  return true;
+}, {
+  message: "Member ID is required when isMember is true",
+  path: ["memberId"]
+});
+```
+
+## Schema Transformation
+
+### Preprocessing
+```typescript
+const numberString = z.string().transform(val => parseInt(val));
+```
+
+### Chained Transformations
+```typescript
+const toUpperCase = z.string().transform(val => val.toUpperCase());
+
+const trimmedString = z.string()
+  .transform(val => val.trim())
+  .transform(val => val.toLowerCase());
+```
+
+## Schema Defaults
+
+```typescript
+const withDefaults = z.object({
+  name: z.string(),
+  role: z.string().default('user'),
+  isActive: z.boolean().default(true)
+});
+```
+
+## Next Steps
+- [Validation Methods](/api-reference/validation/methods)
+- [Validation Utilities](/api-reference/validation/utilities)
+- [Validation Types](/api-reference/validation/types)

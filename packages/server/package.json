@@ -1,7 +1,27 @@
 {
   "name": "@dexwox/a2a-server",
   "version": "0.1.0",
-  "description": "A2A Node SDK - Server Implementation for Agent-to-Agent Protocol", 
+  "description": "TypeScript server implementation for Google's Agent-to-Agent (A2A) protocol - includes Express/WebSocket handlers, request validation and queue management",
+  "homepage": "https://dexwox-innovations-org.github.io/a2a-node-sdk/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dexwox-Innovations-Org/a2a-node-sdk.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Dexwox-Innovations-Org/a2a-node-sdk/issues"
+  },
+  "keywords": [
+    "a2a",
+    "agent-to-agent",
+    "google",
+    "protocol",
+    "typescript",
+    "server",
+    "express",
+    "websocket",
+    "api",
+    "rpc"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {

@@ -1,0 +1,62 @@
+# Validation Overview
+
+The A2A Node SDK uses [Zod](https://zod.dev/) for runtime validation of messages, tasks, and other protocol objects. This section documents the validation utilities available.
+
+## Basic Usage
+
+```typescript
+import { z } from '@a2a/sdk';
+
+// Create a schema
+const taskSchema = z.object({
+  id: z.string(),
+  name: z.string().min(1),
+  status: z.enum(['pending', 'running', 'completed']),
+  createdAt: z.date()
+});
+
+// Validate data
+const result = taskSchema.safeParse(input);
+if (result.success) {
+  // Type-safe access to validated data
+  const task = result.data;
+} else {
+  // Handle validation errors
+  console.error(result.error);
+}
+```
+
+## Validation Types
+
+- **Primitives**: Strings, numbers, booleans, dates
+- **Objects**: Nested structures with type checking
+- **Arrays**: Typed collections with length constraints
+- **Unions**: Alternative valid types
+- **Custom**: Extend with your own validators
+
+## Common Patterns
+
+### Message Validation
+```typescript
+const messageSchema = z.object({
+  type: z.literal('task_update'),
+  payload: z.object({
+    taskId: z.string(),
+    status: z.enum(['started', 'progress', 'completed'])
+  })
+});
+```
+
+### Task Validation
+```typescript
+const taskInputSchema = z.object({
+  name: z.string().min(3),
+  parameters: z.record(z.string(), z.unknown()),
+  timeout: z.number().positive().optional()
+});
+```
+
+## Next Steps
+- [Validation Types](/api-reference/validation/types)
+- [Schema Creation](/api-reference/validation/schemas)
+- [Validation Methods](/api-reference/validation/methods)
