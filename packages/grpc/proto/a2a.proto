@@ -1,0 +1,420 @@
+syntax = "proto3";
+
+package a2a.v1;
+
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/api/client.proto";
+
+option go_package = "google.golang.org/a2a/v1";
+option java_multiple_files = true;
+option java_outer_classname = "A2aProto";
+option java_package = "com.a2a.v1";
+
+// Task states enumeration
+enum TaskState {
+  TASK_STATE_UNSPECIFIED = 0;
+  TASK_STATE_SUBMITTED = 1;
+  TASK_STATE_WORKING = 2;
+  TASK_STATE_COMPLETED = 3;
+  TASK_STATE_FAILED = 4;
+  TASK_STATE_CANCELLED = 5;
+  TASK_STATE_INPUT_REQUIRED = 6;
+  TASK_STATE_REJECTED = 7;
+  TASK_STATE_AUTH_REQUIRED = 8;
+}
+
+// Role enumeration for messages
+enum Role {
+  ROLE_UNSPECIFIED = 0;
+  ROLE_USER = 1;
+  ROLE_AGENT = 2;
+}
+
+// Configuration for sending messages
+message SendMessageConfiguration {
+  repeated string accepted_output_modes = 1;
+  PushNotificationConfig push_notification = 2;
+  int32 history_length = 3;
+  bool blocking = 4;
+}
+
+// Task representation
+message Task {
+  string id = 1;
+  string context_id = 2;
+  TaskStatus status = 3;
+  repeated Artifact artifacts = 4;
+  repeated Message history = 5;
+  google.protobuf.Struct metadata = 6;
+}
+
+// Task status with state and update information
+message TaskStatus {
+  TaskState state = 1;
+  Message update = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+// Message part - can be text, file, or data
+message Part {
+  oneof part {
+    string text = 1;
+    FilePart file = 2;
+    DataPart data = 3;
+  }
+}
+
+// File part for binary or URI-based files
+message FilePart {
+  oneof file {
+    string file_with_uri = 1;
+    bytes file_with_bytes = 2;
+  }
+  string mime_type = 3;
+}
+
+// Data part for structured data
+message DataPart {
+  google.protobuf.Struct data = 1;
+}
+
+// Message representation
+message Message {
+  string message_id = 1;
+  string context_id = 2;
+  string task_id = 3;
+  Role role = 4;
+  repeated Part content = 5;
+  google.protobuf.Struct metadata = 6;
+  repeated string extensions = 7;
+}
+
+// Artifact produced by tasks
+message Artifact {
+  string artifact_id = 1;
+  string name = 3;
+  string description = 4;
+  repeated Part parts = 5;
+  google.protobuf.Struct metadata = 6;
+  repeated string extensions = 7;
+}
+
+// Task status update event
+message TaskStatusUpdateEvent {
+  string task_id = 1;
+  string context_id = 2;
+  TaskStatus status = 3;
+  bool final = 4;
+  google.protobuf.Struct metadata = 5;
+}
+
+// Task artifact update event
+message TaskArtifactUpdateEvent {
+  string task_id = 1;
+  string context_id = 2;
+  Artifact artifact = 3;
+  bool append = 4;
+  bool last_chunk = 5;
+  google.protobuf.Struct metadata = 6;
+}
+
+// Push notification configuration
+message PushNotificationConfig {
+  string id = 1;
+  string url = 2;
+  string token = 3;
+  AuthenticationInfo authentication = 4;
+}
+
+// Authentication information
+message AuthenticationInfo {
+  repeated string schemes = 1;
+  string credentials = 2;
+}
+
+// Agent card representation
+message AgentCard {
+  string name = 1;
+  string description = 2;
+  string url = 3;
+  AgentProvider provider = 4;
+  string version = 5;
+  string documentation_url = 6;
+  AgentCapabilities capabilities = 7;
+  map<string, SecurityScheme> security_schemes = 8;
+  repeated Security security = 9;
+  repeated string default_input_modes = 10;
+  repeated string default_output_modes = 11;
+  repeated AgentSkill skills = 12;
+  bool supports_authenticated_extended_card = 13;
+}
+
+// Agent provider information
+message AgentProvider {
+  string url = 1;
+  string organization = 2;
+}
+
+// Agent capabilities
+message AgentCapabilities {
+  bool streaming = 1;
+  bool push_notifications = 2;
+  repeated AgentExtension extensions = 3;
+}
+
+// Agent extension
+message AgentExtension {
+  string uri = 1;
+  string description = 2;
+  bool required = 3;
+  google.protobuf.Struct params = 4;
+}
+
+// Agent skill
+message AgentSkill {
+  string id = 1;
+  string name = 2;
+  string description = 3;
+  repeated string tags = 4;
+  repeated string examples = 5;
+  repeated string input_modes = 6;
+  repeated string output_modes = 7;
+}
+
+// Task push notification configuration
+message TaskPushNotificationConfig {
+  string name = 1;
+  PushNotificationConfig push_notification_config = 2;
+}
+
+// String list utility
+message StringList {
+  repeated string list = 1;
+}
+
+// Security configuration
+message Security {
+  map<string, StringList> schemes = 1;
+}
+
+// Security scheme definitions
+message SecurityScheme {
+  oneof scheme {
+    APIKeySecurityScheme api_key_security_scheme = 1;
+    HTTPAuthSecurityScheme http_auth_security_scheme = 2;
+    OAuth2SecurityScheme oauth2_security_scheme = 3;
+    OpenIdConnectSecurityScheme open_id_connect_security_scheme = 4;
+  }
+}
+
+// API Key security scheme
+message APIKeySecurityScheme {
+  string description = 1;
+  string location = 2;
+  string name = 3;
+}
+
+// HTTP Auth security scheme
+message HTTPAuthSecurityScheme {
+  string description = 1;
+  string scheme = 2;
+  string bearer_format = 3;
+}
+
+// OAuth2 security scheme
+message OAuth2SecurityScheme {
+  string description = 1;
+  OAuthFlows flows = 2;
+}
+
+// OpenID Connect security scheme
+message OpenIdConnectSecurityScheme {
+  string description = 1;
+  string open_id_connect_url = 2;
+}
+
+// OAuth flows
+message OAuthFlows {
+  oneof flow {
+    AuthorizationCodeOAuthFlow authorization_code = 1;
+    ClientCredentialsOAuthFlow client_credentials = 2;
+    ImplicitOAuthFlow implicit = 3;
+    PasswordOAuthFlow password = 4;
+  }
+}
+
+// Authorization code OAuth flow
+message AuthorizationCodeOAuthFlow {
+  string authorization_url = 1;
+  string token_url = 2;
+  string refresh_url = 3;
+  map<string, string> scopes = 4;
+}
+
+// Client credentials OAuth flow
+message ClientCredentialsOAuthFlow {
+  string token_url = 1;
+  string refresh_url = 2;
+  map<string, string> scopes = 3;
+}
+
+// Implicit OAuth flow
+message ImplicitOAuthFlow {
+  string authorization_url = 1;
+  string refresh_url = 2;
+  map<string, string> scopes = 3;
+}
+
+// Password OAuth flow
+message PasswordOAuthFlow {
+  string token_url = 1;
+  string refresh_url = 2;
+  map<string, string> scopes = 3;
+}
+
+// Request messages
+message SendMessageRequest {
+  Message request = 1 [(google.api.field_behavior) = REQUIRED];
+  SendMessageConfiguration configuration = 2;
+  google.protobuf.Struct metadata = 3;
+}
+
+message GetTaskRequest {
+  string name = 1 [(google.api.field_behavior) = REQUIRED];
+  int32 history_length = 2;
+}
+
+message CancelTaskRequest {
+  string name = 1;
+}
+
+message GetTaskPushNotificationRequest {
+  string name = 1;
+}
+
+message CreateTaskPushNotificationRequest {
+  string parent = 1 [(google.api.field_behavior) = REQUIRED];
+  string config_id = 2 [(google.api.field_behavior) = REQUIRED];
+  TaskPushNotificationConfig config = 3 [(google.api.field_behavior) = REQUIRED];
+}
+
+message TaskSubscriptionRequest {
+  string name = 1;
+}
+
+message ListTaskPushNotificationRequest {
+  string parent = 1;
+  int32 page_size = 2;
+  string page_token = 3;
+}
+
+message GetAgentCardRequest {
+  // Empty request for getting agent card
+}
+
+// Response messages
+message SendMessageResponse {
+  oneof payload {
+    Task task = 1;
+    Message msg = 2;
+  }
+}
+
+message StreamResponse {
+  oneof payload {
+    Task task = 1;
+    Message msg = 2;
+    TaskStatusUpdateEvent status_update = 3;
+    TaskArtifactUpdateEvent artifact_update = 4;
+  }
+}
+
+message ListTaskPushNotificationResponse {
+  repeated TaskPushNotificationConfig configs = 1;
+  string next_page_token = 2;
+}
+
+// A2A Service definition
+service A2AService {
+  option (google.api.default_host) = "a2a.googleapis.com";
+
+  // Send a message to the agent. This is a blocking call that will return the
+  // task once it is completed, or a LRO if requested.
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {
+    option (google.api.http) = {
+      post: "/v1//message:send"
+      body: "*"
+    };
+  }
+
+  // SendStreamingMessage is a streaming call that will return a stream of
+  // task update events until the Task is in an interrupted or terminal state.
+  rpc SendStreamingMessage(SendMessageRequest) returns (stream StreamResponse) {
+    option (google.api.http) = {
+      post: "/v1/message:stream"
+      body: "*"
+    };
+  }
+
+  // Get the current state of a task from the agent.
+  rpc GetTask(GetTaskRequest) returns (Task) {
+    option (google.api.http) = {
+      get: "/v1/{name=tasks/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Cancel a task from the agent. If supported one should expect no
+  // more task updates for the task.
+  rpc CancelTask(CancelTaskRequest) returns (Task) {
+    option (google.api.http) = {
+      post: "/v1/tasks/{id}:cancel"
+      body: "*"
+    };
+  }
+
+  // TaskSubscription is a streaming call that will return a stream of task
+  // update events. This attaches the stream to an existing in process task.
+  // If the task is complete the stream will return the completed task (like
+  // GetTask) and close the stream.
+  rpc TaskSubscription(TaskSubscriptionRequest) returns (stream StreamResponse) {
+    option (google.api.http) = {
+      get: "/v1/{name=tasks/*}:subscribe"
+    };
+  }
+
+  // Set a push notification config for a task.
+  rpc CreateTaskPushNotification(CreateTaskPushNotificationRequest) returns (TaskPushNotificationConfig) {
+    option (google.api.http) = {
+      post: "/v1/{parent=task/*/pushNotifications}"
+      body: "config"
+    };
+    option (google.api.method_signature) = "parent,config";
+  }
+
+  // Get a push notification config for a task.
+  rpc GetTaskPushNotification(GetTaskPushNotificationRequest) returns (TaskPushNotificationConfig) {
+    option (google.api.http) = {
+      get: "/v1/{name=tasks/*/pushNotifications/*}"
+    };
+    option (google.api.method_signature) = "name";
+  }
+
+  // Get a list of push notifications configured for a task.
+  rpc ListTaskPushNotification(ListTaskPushNotificationRequest) returns (ListTaskPushNotificationResponse) {
+    option (google.api.http) = {
+      get: "/v1/{parent=tasks/*}/pushNotifications"
+    };
+    option (google.api.method_signature) = "parent";
+  }
+
+  // GetAgentCard returns the agent card for the agent.
+  rpc GetAgentCard(GetAgentCardRequest) returns (AgentCard) {
+    option (google.api.http) = {
+      get: "/v1/card"
+    };
+  }
+}
