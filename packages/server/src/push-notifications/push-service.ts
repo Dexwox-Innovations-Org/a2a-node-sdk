@@ -7,7 +7,7 @@
  * real-time updates about task status changes and other events.
  */
 
-import type { PushNotificationConfig } from '@dexwox-labs/a2a-core';
+import type { PushNotificationConfig, TaskState } from '@dexwox-labs/a2a-core';
 
 /**
  * Service for managing and sending push notifications
@@ -54,7 +54,7 @@ export class PushNotificationService {
    * await pushService.notifyStatusChange('task-123', 'completed');
    * ```
    */
-  async notifyStatusChange(taskId: string, status: string): Promise<void> {
+  async notifyStatusChange(taskId: string, status: TaskState): Promise<void> {
     // Implementation goes here
   }
   

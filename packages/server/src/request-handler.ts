@@ -455,7 +455,7 @@ export class DefaultRequestHandler extends DefaultJsonRpcRequestHandler implemen
     let lastActivity = Date.now();
     
     // Then continue streaming new updates (mock implementation)
-    while (task.status === 'working') {
+    while (task.status.state === 'working') {
       await new Promise(resolve => setTimeout(resolve, 1000));
         const update: MessagePart = {
           type: 'text',

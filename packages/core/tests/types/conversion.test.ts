@@ -63,7 +63,10 @@ describe('Type Conversion Utilities', () => {
       id: 'task1',
       name: 'Test Task',
       description: 'Test Description',
-      status: 'submitted',
+      status: {
+        state: 'submitted',
+        timestamp: '2025-05-14T20:29:07.727Z'
+      },
       createdAt: '2025-05-14T20:29:07.727Z',
       updatedAt: '2025-05-14T20:29:07.727Z',
       inputSchema: { type: 'object' },

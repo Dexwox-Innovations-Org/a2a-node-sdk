@@ -3,7 +3,7 @@
  * @description Client for managing tasks in the A2A protocol
  */
 
-import { Task, TaskState, JsonRpcRequest, validateTransition, TraceClass } from '@dexwox-labs/a2a-core';
+import { Task, TaskState, TaskStatus, JsonRpcRequest, validateTransition, TraceClass } from '@dexwox-labs/a2a-core';
 import { MessageClientOptions, PushNotificationConfig } from './types';
 import { 
   normalizeError,
@@ -63,11 +63,11 @@ export class TaskClient extends EventEmitter {
    * ```typescript
    * try {
    *   const task = await taskClient.getTaskStatus('task-123');
-   *   console.log(`Task status: ${task.status}`);
-   *   
-   *   if (task.status === 'completed') {
+   *   console.log(`Task status: ${task.status.state}`);
+   *
+   *   if (task.status.state === 'completed') {
    *     console.log('Task output:', task.output);
-   *   } else if (task.status === 'failed') {
+   *   } else if (task.status.state === 'failed') {
    *     console.error('Task failed:', task.error);
    *   }
    * } catch (error) {
@@ -347,11 +347,11 @@ export class TaskClient extends EventEmitter {
    * ```typescript
    * // Monitor a specific task
    * taskClient.onTaskUpdate('task-123', (task) => {
-   *   console.log(`Task ${task.id} updated:`, task.status);
-   *   
-   *   if (task.status === 'completed') {
+   *   console.log(`Task ${task.id} updated:`, task.status.state);
+   *
+   *   if (task.status.state === 'completed') {
    *     console.log('Task completed with result:', task.output);
-   *   } else if (task.status === 'failed') {
+   *   } else if (task.status.state === 'failed') {
    *     console.error('Task failed with error:', task.error);
    *   }
    * });
@@ -386,10 +386,10 @@ export class TaskClient extends EventEmitter {
     // Emit appropriate event based on task state
     this.emit(TASK_UPDATED, task);
     
-    if (task.status === 'completed') {
+    if (task.status.state === 'completed') {
       this.emit(TASK_COMPLETED, task);
       this.taskCallbacks.delete(task.id);
-    } else if (task.status === 'failed' || task.status === 'canceled') {
+    } else if (task.status.state === 'failed' || task.status.state === 'canceled') {
       this.emit(TASK_FAILED, task);
       this.taskCallbacks.delete(task.id);
     }

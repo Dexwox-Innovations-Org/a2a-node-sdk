@@ -3,10 +3,14 @@
  * @description Type definitions for the A2A client package
  */
 
-import { 
+import {
   JsonRpcStreamResponse,
   AgentCard
 } from '@dexwox-labs/a2a-core';
+import type {
+  AuthConfig,
+  AuthSchemeType
+} from '@dexwox-labs/a2a-auth';
 
 /**
  * Configuration for push notifications
@@ -109,31 +113,13 @@ export interface MessageClientOptions {
   /** Request timeout in milliseconds (default: 5000) */
   timeout?: number;
   
-  /** Authentication configuration */
+  /** Authentication configuration using comprehensive auth framework */
   auth?: {
-    /** Authentication type */
-    type: 'basic' | 'bearer' | 'apiKey' | 'custom';
+    /** Authentication scheme type */
+    scheme: AuthSchemeType;
     
-    /** Authentication credentials based on the selected type */
-    credentials: {
-      /** Username for basic authentication */
-      username?: string;
-      
-      /** Password for basic authentication */
-      password?: string;
-      
-      /** Token for bearer authentication */
-      token?: string;
-      
-      /** API key for apiKey authentication */
-      apiKey?: string;
-      
-      /** Custom header name for custom authentication */
-      headerName?: string;
-      
-      /** Custom header value for custom authentication */
-      headerValue?: string;
-    };
+    /** Authentication configuration for the selected scheme */
+    config: AuthConfig;
   };
 }
 

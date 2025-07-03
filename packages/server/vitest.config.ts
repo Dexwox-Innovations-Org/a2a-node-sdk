@@ -21,7 +21,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@dexwox-labs/a2a-server': resolve(__dirname, './src'),
-      '@dexwox-labs/a2a-core': resolve(__dirname, '../core/src')
+      '@dexwox-labs/a2a-core': resolve(__dirname, '../core/src'),
+      '@dexwox-labs/a2a-auth': resolve(__dirname, '../auth/src')
     }
   }
 });

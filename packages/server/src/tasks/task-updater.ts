@@ -137,7 +137,7 @@ export class TaskUpdater {
     const currentTask = await this.taskManager.getTask(taskId);
     
     // Validate state transition
-    if (!this.isValidTransition(currentTask.status, newState)) {
+    if (!this.isValidTransition(currentTask.status.state, newState)) {
       throw new InvalidTaskStateError(
         `Invalid transition from ${currentTask.status} to ${newState}`
       );
@@ -145,14 +145,18 @@ export class TaskUpdater {
 
     // Create transition record
     const transition: TaskTransition = {
-      from: currentTask.status,
+      from: currentTask.status.state,
       to: newState,
       timestamp: new Date().toISOString()
     };
 
     // Update task with new state and history
     return this.taskManager.updateTask(taskId, {
-      status: newState,
+      status: {
+        state: newState,
+        timestamp: new Date().toISOString(),
+        metadata: {}
+      },
       transitions: [...(currentTask.transitions || []), transition]
     });
   }

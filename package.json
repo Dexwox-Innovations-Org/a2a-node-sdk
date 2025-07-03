@@ -6,7 +6,7 @@
   "private": false,
   "packageManager": "pnpm@10.9.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "pnpm -r run test",
     "build": "pnpm run build:core && pnpm run build:client && pnpm run build:server",
     "build:core": "cd packages/core && pnpm run clean && pnpm run build",
     "build:client": "cd packages/client && pnpm run clean && pnpm run build",

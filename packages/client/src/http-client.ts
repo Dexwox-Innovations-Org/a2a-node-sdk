@@ -291,11 +291,11 @@ export class A2AHttpClient {
    * ```typescript
    * try {
    *   const task = await httpClient.getTask('task-123');
-   *   console.log(`Task status: ${task.status}`);
-   *   
-   *   if (task.status === 'completed') {
+   *   console.log(`Task status: ${task.status.state}`);
+   *
+   *   if (task.status.state === 'completed') {
    *     console.log('Task output:', task.output);
-   *   } else if (task.status === 'failed') {
+   *   } else if (task.status.state === 'failed') {
    *     console.error('Task failed:', task.error);
    *   }
    * } catch (error) {
@@ -340,7 +340,7 @@ export class A2AHttpClient {
    * 
    * const submittedTask = await httpClient.sendTask(task);
    * console.log(`Task submitted with ID: ${submittedTask.id}`);
-   * console.log(`Initial status: ${submittedTask.status}`);
+   * console.log(`Initial status: ${submittedTask.status.state}`);
    * ```
    */
   async sendTask(task: Task): Promise<Task> {

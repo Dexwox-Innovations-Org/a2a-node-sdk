@@ -23,6 +23,11 @@ export * from './request-handler';
 export * from './response-helpers';
 
 /**
+ * Authentication middleware and utilities
+ */
+export * from './middleware/auth-middleware';
+
+/**
  * Agent execution and lifecycle management
  */
 export * from './agent-execution/agent-executor';

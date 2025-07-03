@@ -197,7 +197,11 @@ export function jsonToTask(json: Record<string, any>): Task {
     id: json.id,
     name: json.name,
     description: json.description,
-    status: 'submitted',
+    status: {
+      state: json.status?.state || 'submitted',
+      timestamp: json.status?.timestamp || new Date().toISOString(),
+      metadata: json.status?.metadata
+    },
     inputSchema: json.inputSchema,
     outputSchema: json.outputSchema,
     createdAt: json.createdAt || new Date().toISOString(),
