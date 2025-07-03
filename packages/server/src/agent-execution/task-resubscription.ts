@@ -28,7 +28,7 @@ export class TaskResubscriptionHandler {
     }
 
     // Use the queue's built-in dequeue method
-    while (task.status === 'working') {
+    while (task.status.state === 'working') {
       const event = await queue.dequeue();
       if (event) {
         yield event;

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { TaskClient } from '../../src/task-client';
-import { Task, TaskState } from '@dexwox-labs/a2a-core';
-import { 
+import { Task, TaskState, TaskStatus } from '@dexwox-labs/a2a-core';
+import {
   A2ANetworkError,
   A2ATimeoutError
 } from '../../src/utils/error-handler';
@@ -20,10 +20,13 @@ describe('TaskClient', () => {
 
   describe('getTaskStatus', () => {
     it('should return task status', async () => {
-      const mockTask = { 
+      const mockTask = {
         id: '1',
         name: 'Test Task',
-        status: 'working',
+        status: {
+          state: 'working',
+          timestamp: new Date().toISOString()
+        } as TaskStatus,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       } as Task;
@@ -82,10 +85,13 @@ describe('TaskClient', () => {
 
   describe('task updates', () => {
     it('should handle task updates', () => {
-      const mockTask = { 
+      const mockTask = {
         id: '1',
         name: 'Test Task',
-        status: 'completed',
+        status: {
+          state: 'completed',
+          timestamp: new Date().toISOString()
+        } as TaskStatus,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       } as Task;
@@ -98,7 +104,13 @@ describe('TaskClient', () => {
     });
 
     it('should emit completion events', () => {
-      const mockTask = { id: '1', status: 'completed' } as Task;
+      const mockTask = {
+        id: '1',
+        status: {
+          state: 'completed',
+          timestamp: new Date().toISOString()
+        } as TaskStatus
+      } as Task;
       const listener = vi.fn();
       
       client.on('TASK_COMPLETED', listener);

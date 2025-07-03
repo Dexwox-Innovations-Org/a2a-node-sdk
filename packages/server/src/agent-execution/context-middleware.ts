@@ -1,16 +1,28 @@
 import { Request, Response, NextFunction } from 'express';
-import { Task } from '@dexwox-labs/a2a-core';
+import { Task, TaskStatus } from '@dexwox-labs/a2a-core';
 import { createRequestContext, runInContext } from './request-context';
+import { randomUUID } from 'crypto';
 
 export function contextMiddleware(agentId: string) {
   return (req: Request, res: Response, next: NextFunction) => {
-    // Create a basic task for the request
+    const timestamp = new Date().toISOString();
+    
+    // Create a basic task for the request with proper TaskStatus structure
+    const taskStatus: TaskStatus = {
+      state: 'submitted',
+      timestamp,
+      metadata: {
+        method: req.method,
+        path: req.path
+      }
+    };
+
     const task: Task = {
-      id: crypto.randomUUID(),
+      id: randomUUID(),
       name: `${req.method} ${req.path}`,
-      status: 'submitted',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      status: taskStatus,
+      createdAt: timestamp,
+      updatedAt: timestamp
     };
 
     // Create and run the request in context

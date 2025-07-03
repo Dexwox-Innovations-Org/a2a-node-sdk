@@ -1,6 +1,7 @@
 import type {
   Task,
   TaskState,
+  TaskStatus,
   Message,
   MessagePart,
   Artifact,
@@ -43,7 +44,10 @@ export function taskStateToGrpc(state: TaskState): GrpcTaskState {
     'input_required': 'TASK_STATE_INPUT_REQUIRED',
     'completed': 'TASK_STATE_COMPLETED',
     'failed': 'TASK_STATE_FAILED',
-    'canceled': 'TASK_STATE_CANCELLED'
+    'canceled': 'TASK_STATE_CANCELLED',
+    'rejected': 'TASK_STATE_REJECTED',
+    'auth_required': 'TASK_STATE_AUTH_REQUIRED',
+    'unknown': 'TASK_STATE_UNSPECIFIED'
   };
   
   return stateMap[state] || 'TASK_STATE_UNSPECIFIED';
@@ -54,18 +58,18 @@ export function taskStateToGrpc(state: TaskState): GrpcTaskState {
  */
 export function taskStateFromGrpc(state: GrpcTaskState): TaskState {
   const stateMap: Record<GrpcTaskState, TaskState> = {
-    'TASK_STATE_UNSPECIFIED': 'submitted',
+    'TASK_STATE_UNSPECIFIED': 'unknown',
     'TASK_STATE_SUBMITTED': 'submitted',
     'TASK_STATE_WORKING': 'working',
     'TASK_STATE_INPUT_REQUIRED': 'input_required',
     'TASK_STATE_COMPLETED': 'completed',
     'TASK_STATE_FAILED': 'failed',
     'TASK_STATE_CANCELLED': 'canceled',
-    'TASK_STATE_REJECTED': 'failed', // Map to closest equivalent
-    'TASK_STATE_AUTH_REQUIRED': 'input_required' // Map to closest equivalent
+    'TASK_STATE_REJECTED': 'rejected', // Fixed: Map to proper enhanced state
+    'TASK_STATE_AUTH_REQUIRED': 'auth_required' // Fixed: Map to proper enhanced state
   };
   
-  return stateMap[state] || 'submitted';
+  return stateMap[state] || 'unknown';
 }
 
 /**
@@ -166,9 +170,10 @@ export function messageFromGrpc(grpcMessage: GrpcMessage): Message {
  * Converts JSON-RPC Task to gRPC Task
  */
 export function taskToGrpc(task: Task): GrpcTask {
+  // Enhanced TaskStatus interface is now required - no backward compatibility for string format
   const grpcStatus: GrpcTaskStatus = {
-    state: taskStateToGrpc(task.status),
-    timestamp: new Date(task.updatedAt)
+    state: taskStateToGrpc(task.status.state),
+    timestamp: new Date(task.status.timestamp)
   };
 
   return {
@@ -185,10 +190,16 @@ export function taskToGrpc(task: Task): GrpcTask {
  * Converts gRPC Task to JSON-RPC Task
  */
 export function taskFromGrpc(grpcTask: GrpcTask): Task {
+  const taskStatus: TaskStatus = {
+    state: taskStateFromGrpc(grpcTask.status.state),
+    timestamp: grpcTask.status.timestamp?.toISOString() || new Date().toISOString(),
+    metadata: grpcTask.metadata || {}
+  };
+
   return {
     id: grpcTask.id,
     name: grpcTask.id, // Use ID as name if not available
-    status: taskStateFromGrpc(grpcTask.status.state),
+    status: taskStatus,
     contextId: grpcTask.context_id || undefined,
     artifacts: grpcTask.artifacts?.map(artifactFromGrpc) || [],
     createdAt: new Date().toISOString(), // Default to current time

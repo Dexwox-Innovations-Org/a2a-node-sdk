@@ -81,11 +81,14 @@ export class A2AError extends Error {
 export class InvalidTaskStateError extends A2AError {
   /**
    * Creates a new invalid task state error
-   * 
+   *
    * @param message - Description of the invalid state transition
    */
   constructor(message: string) {
     super(message, ERROR_CODES.INVALID_TASK_STATE);
+    this.name = 'InvalidTaskStateError';
+    // Fix prototype chain for proper instanceof checks
+    Object.setPrototypeOf(this, InvalidTaskStateError.prototype);
   }
 }
 
@@ -103,11 +106,14 @@ export class InvalidTaskStateError extends A2AError {
 export class TaskNotFoundError extends A2AError {
   /**
    * Creates a new task not found error
-   * 
+   *
    * @param taskId - ID of the task that couldn't be found
    */
   constructor(taskId: string) {
     super(`Task ${taskId} not found`, ERROR_CODES.TASK_NOT_FOUND);
+    this.name = 'TaskNotFoundError';
+    // Fix prototype chain for proper instanceof checks
+    Object.setPrototypeOf(this, TaskNotFoundError.prototype);
   }
 }
 
@@ -125,11 +131,14 @@ export class TaskNotFoundError extends A2AError {
 export class TaskAlreadyCompletedError extends A2AError {
   /**
    * Creates a new task already completed error
-   * 
+   *
    * @param taskId - ID of the completed task
    */
   constructor(taskId: string) {
     super(`Task ${taskId} is already completed`, ERROR_CODES.TASK_ALREADY_COMPLETED);
+    this.name = 'TaskAlreadyCompletedError';
+    // Fix prototype chain for proper instanceof checks
+    Object.setPrototypeOf(this, TaskAlreadyCompletedError.prototype);
   }
 }
 
@@ -147,11 +156,14 @@ export class TaskAlreadyCompletedError extends A2AError {
 export class TaskCanceledError extends A2AError {
   /**
    * Creates a new task canceled error
-   * 
+   *
    * @param taskId - ID of the canceled task
    */
   constructor(taskId: string) {
     super(`Task ${taskId} was canceled`, ERROR_CODES.TASK_CANCELED);
+    this.name = 'TaskCanceledError';
+    // Fix prototype chain for proper instanceof checks
+    Object.setPrototypeOf(this, TaskCanceledError.prototype);
   }
 }
 
@@ -169,12 +181,15 @@ export class TaskCanceledError extends A2AError {
 export class TaskFailedError extends A2AError {
   /**
    * Creates a new task failed error
-   * 
+   *
    * @param taskId - ID of the failed task
    * @param reason - Reason for the failure
    */
   constructor(taskId: string, reason: string) {
     super(`Task ${taskId} failed: ${reason}`, ERROR_CODES.TASK_FAILED);
+    this.name = 'TaskFailedError';
+    // Fix prototype chain for proper instanceof checks
+    Object.setPrototypeOf(this, TaskFailedError.prototype);
   }
 }
 

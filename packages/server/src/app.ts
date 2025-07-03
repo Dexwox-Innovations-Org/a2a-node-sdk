@@ -16,6 +16,13 @@ import type {
 } from 'express';
 import { A2AError, AgentCard } from '@dexwox-labs/a2a-core';
 import { RequestHandler } from './request-handler';
+import {
+  createAuthMiddleware,
+  AuthMiddlewareConfig,
+  AuthenticatedRequest
+} from './middleware/auth-middleware';
+import { AuthConfig } from '@dexwox-labs/a2a-auth';
+import { contextMiddleware } from './agent-execution/context-middleware';
 
 /**
  * Server implementation for hosting A2A protocol agents
@@ -45,6 +52,22 @@ import { RequestHandler } from './request-handler';
  * server.start(3000);
  * ```
  */
+/**
+ * Configuration options for the A2A server
+ */
+export interface A2AServerConfig {
+  /** Authentication configuration */
+  auth?: AuthMiddlewareConfig;
+  /** Custom context middleware */
+  contextMiddleware?: (req: Request, res: Response, next: NextFunction) => void;
+  /** CORS configuration */
+  cors?: {
+    origin?: string | string[];
+    methods?: string[];
+    allowedHeaders?: string[];
+  };
+}
+
 export class A2AServer {
   /** Express application instance */
   private readonly app: ReturnType<typeof express>;
@@ -54,22 +77,25 @@ export class A2AServer {
   private readonly agentCard: AgentCard;
   /** Handler for processing incoming requests */
   private readonly requestHandler: RequestHandler;
+  /** Server configuration */
+  private readonly config: A2AServerConfig;
 
   /**
    * Creates a new A2AServer instance
-   * 
+   *
    * @param agentCard - The agent card describing this server's capabilities
    * @param requestHandler - Handler for processing incoming requests
-   * @param contextMiddleware - Optional custom middleware for request context
+   * @param config - Optional server configuration
    */
   constructor(
-    agentCard: AgentCard, 
+    agentCard: AgentCard,
     requestHandler: RequestHandler,
-    private readonly contextMiddleware?: (req: Request, res: Response, next: NextFunction) => void
+    config: A2AServerConfig = {}
   ) {
     this.app = express();
     this.agentCard = agentCard;
     this.requestHandler = requestHandler;
+    this.config = config;
     
     this.configureMiddleware();
     this.configureRoutes();
@@ -84,17 +110,26 @@ export class A2AServer {
    */
   private configureMiddleware(): void {
     this.app.use(json() as express.RequestHandler);
-    this.app.use(cors({
+    
+    // Configure CORS
+    const corsConfig = this.config.cors || {
       origin: process.env.CORS_ORIGIN || '*',
       methods: ['GET', 'POST', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization']
-    }) as express.RequestHandler);
+    };
+    this.app.use(cors(corsConfig) as express.RequestHandler);
+    
+    // Add authentication middleware if configured
+    if (this.config.auth) {
+      const authMiddleware = createAuthMiddleware(this.config.auth);
+      this.app.use(authMiddleware);
+    }
     
     // Add context middleware if provided, otherwise use default
-    if (this.contextMiddleware) {
-      this.app.use(this.contextMiddleware);
+    if (this.config.contextMiddleware) {
+      this.app.use(this.config.contextMiddleware);
     } else {
-      this.app.use(require('./agent-execution/context-middleware').contextMiddleware(this.agentCard.id));
+      this.app.use(contextMiddleware(this.agentCard.id));
     }
   }
 

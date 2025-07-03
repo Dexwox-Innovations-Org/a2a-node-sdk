@@ -31,19 +31,26 @@ describe('CircuitBreaker', () => {
   });
 
   it('should transition to HALF_OPEN after timeout', async () => {
-    // Force OPEN state
-    vi.spyOn(cb as any, 'onFailure').mockImplementation(() => {
-      (cb as any).state = 'OPEN';
-      (cb as any).lastFailureTime = Date.now();
-    });
-    cb.execute(() => Promise.reject(new Error('Test error')));
+    // Force OPEN state by triggering failures
+    const failingFn = () => Promise.reject(new Error('Test error'));
+    
+    // First failure
+    await expect(cb.execute(failingFn)).rejects.toThrow('Test error');
+    
+    // Second failure (reaches threshold, should open circuit)
+    await expect(cb.execute(failingFn)).rejects.toThrow('Test error');
+    
+    // Verify circuit is OPEN
+    expect(cb.getState()).toBe('OPEN');
 
-    // Fast-forward timeout
+    // Fast-forward timeout using fake timers
     vi.useFakeTimers();
-    vi.advanceTimersByTime(options.timeout + 1);
-    vi.useRealTimers();
-
+    vi.advanceTimersByTime(options.timeout + 100); // Add buffer for timing
+    
+    // Check state after timeout
     expect(cb.getState()).toBe('HALF_OPEN');
+    
+    vi.useRealTimers();
   });
 
   it('should transition to CLOSED after success in HALF_OPEN', async () => {

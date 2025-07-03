@@ -34,8 +34,10 @@
     "format": "prettier --write ."
   },
   "dependencies": {
+    "@dexwox-labs/a2a-auth": "0.1.0",
     "@dexwox-labs/a2a-core": "0.1.0",
     "@types/ws": "^8.18.1",
+    "async-lock": "^1.4.1",
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "express": "^4.18.2",
@@ -44,6 +46,7 @@
     "zod": "^3.22.4"
   },
   "devDependencies": {
+    "@types/async-lock": "^1.4.2",
     "@types/body-parser": "^1.19.5",
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.1",

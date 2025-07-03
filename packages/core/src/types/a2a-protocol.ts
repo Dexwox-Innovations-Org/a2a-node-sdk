@@ -18,12 +18,15 @@ import { z } from 'zod';
  * @remarks This is used for validation with Zod
  */
 export const TaskStateSchema = z.enum([
-  'submitted',  // Task has been submitted but processing hasn't started
-  'working',    // Task is currently being processed
+  'submitted',      // Task has been submitted but processing hasn't started
+  'working',        // Task is currently being processed
   'input_required', // Task requires additional input to continue
-  'completed',  // Task has been successfully completed
-  'failed',     // Task has failed to complete
-  'canceled'    // Task was canceled before completion
+  'completed',      // Task has been successfully completed
+  'failed',         // Task has failed to complete
+  'canceled',       // Task was canceled before completion
+  'rejected',       // Task was rejected by the agent (e.g., invalid request, unsupported operation)
+  'auth_required',  // Task requires authentication before proceeding
+  'unknown'         // Default/fallback state for unrecognized states
 ]);
 
 /**
@@ -68,6 +71,29 @@ export const MessagePartSchema = z.discriminatedUnion('type', [
 ]);
 
 /**
+ * Individual message part schemas for direct use in tests and validation
+ */
+export const TextPartSchema = z.object({
+  type: z.literal('text'),
+  content: z.string(),
+  format: z.enum(['plain', 'markdown']).default('plain')
+});
+
+export const FilePartSchema = z.object({
+  type: z.literal('file'),
+  content: z.union([z.string(), z.instanceof(Uint8Array)]),
+  mimeType: z.string(),
+  name: z.string(),
+  size: z.number().optional()
+});
+
+export const DataPartSchema = z.object({
+  type: z.literal('data'),
+  content: z.record(z.any()),
+  schema: z.string().optional()
+});
+
+/**
  * Schema defining artifacts produced during task execution
  * @remarks Artifacts are persistent outputs from tasks that can be referenced later
  */
@@ -75,7 +101,7 @@ export const ArtifactSchema = z.object({
   /** Unique identifier for the artifact */
   id: z.string(),
   /** The type of content this artifact contains */
-  type: z.enum(['text', 'file', 'data']),
+  type: z.enum(['text', 'file', 'data', 'log']),
   /** The actual content of the artifact */
   content: z.record(z.any()),
   /** ISO timestamp when the artifact was created */
@@ -112,6 +138,23 @@ export interface TaskTransition {
   timestamp: string;
   /** Optional explanation for why the transition occurred */
   reason?: string;
+  /** Optional identifier of who/what triggered the transition */
+  triggeredBy?: 'system' | 'agent' | 'user';
+}
+
+/**
+ * Enhanced task status with comprehensive metadata
+ * @remarks Provides detailed status information including timestamps and metadata
+ */
+export interface TaskStatus {
+  /** Current state of the task */
+  state: z.infer<typeof TaskStateSchema>;
+  /** Optional message associated with the current status */
+  message?: Message;
+  /** ISO timestamp when this status was set */
+  timestamp: string;
+  /** Optional additional metadata for the status */
+  metadata?: Record<string, unknown>;
 }
 
 /**
@@ -151,8 +194,8 @@ export interface Task {
   name: string;
   /** Optional detailed description of the task */
   description?: string;
-  /** Current state of the task */
-  status: z.infer<typeof TaskStateSchema>;
+  /** Current status of the task with enhanced metadata */
+  status: TaskStatus;
   /** Optional ID of the agent assigned to this task */
   agentId?: string;
   /** Optional message parts associated with this task */

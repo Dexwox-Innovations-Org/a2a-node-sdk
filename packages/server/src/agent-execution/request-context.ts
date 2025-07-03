@@ -7,77 +7,25 @@
  * context across asynchronous operations.
  */
 
-import { 
+import {
   type TaskState,
-  type Artifact, 
+  type TaskStatus,
+  type Artifact,
   type TaskTransition,
   type A2AError,
-  MessageSendConfiguration, 
-  type MessagePart 
+  MessageSendConfiguration,
+  type MessagePart,
+  type Task as CoreTask,
+  type Message as CoreMessage
 } from '@dexwox-labs/a2a-core';
 import { AsyncLocalStorage } from 'async_hooks';
 
 /** Storage for the current request context, accessible across async boundaries */
 const contextStorage = new AsyncLocalStorage<RequestContext>();
 
-/**
- * Represents a message in the A2A protocol
- * 
- * This interface defines the structure of messages exchanged between agents
- * in the A2A protocol. Messages consist of one or more parts and can be
- * associated with a task and context.
- */
-export interface Message {
-  /** The parts that make up the message (text, file, data, etc.) */
-  parts: MessagePart[];
-  /** Optional ID of the task associated with this message */
-  taskId?: string;
-  /** Optional ID of the context this message belongs to */
-  contextId?: string;
-}
-
-/**
- * Represents a task in the A2A protocol
- * 
- * This interface defines the structure of tasks in the A2A protocol.
- * Tasks represent units of work that agents can perform, and they
- * have a lifecycle represented by their status.
- */
-export interface Task {
-  /** Unique identifier for the task */
-  id: string;
-  /** Human-readable name of the task */
-  name: string;
-  /** Current state of the task (submitted, working, completed, etc.) */
-  status: TaskState;
-  /** Optional ID of the agent assigned to this task */
-  agentId?: string;
-  /** Optional message parts associated with this task */
-  parts?: MessagePart[];
-  /** Optional expected number of parts for this task */
-  expectedParts?: number;
-  /** Optional artifacts produced by or associated with this task */
-  artifacts?: Artifact[];
-  /** Optional history of state transitions for this task */
-  transitions?: TaskTransition[];
-  /** ISO timestamp when the task was created */
-  createdAt: string;
-  /** ISO timestamp when the task was last updated */
-  updatedAt: string;
-  /** Optional error information if the task failed */
-  error?: {
-    /** Error code */
-    code: number;
-    /** Error message */
-    message: string;
-    /** Optional additional error data */
-    data?: Record<string, any>;
-  };
-  /** Optional additional metadata for the task */
-  metadata?: Record<string, unknown>;
-  /** Optional ID of the context this task belongs to */
-  contextId?: string;
-}
+// Use the enhanced types from the core package
+export type Message = CoreMessage;
+export type Task = CoreTask;
 
 /**
  * Context for an A2A protocol request

@@ -121,7 +121,7 @@ export class DefaultAgentExecutor implements AgentExecutor {
     const workingTask = await this.taskManager.updateTaskStatus(task.id, 'working');
     
     // Publish task update event
-    this.taskEventManager.taskUpdated(workingTask, task.status);
+    this.taskEventManager.taskUpdated(workingTask, task.status.state);
 
     try {
       // TODO: Implement actual agent execution logic
@@ -143,9 +143,9 @@ export class DefaultAgentExecutor implements AgentExecutor {
   async cancel(context: RequestContext, eventQueue: EventQueue): Promise<void> {
     const task = await this.taskManager.getTask(context.task.id);
     
-    if (['completed', 'failed', 'canceled'].includes(task.status)) {
+    if (['completed', 'failed', 'canceled'].includes(task.status.state)) {
       throw new InvalidTaskStateError(
-        `Task ${task.id} is already in terminal state: ${task.status}`
+        `Task ${task.id} is already in terminal state: ${task.status.state}`
       );
     }
 

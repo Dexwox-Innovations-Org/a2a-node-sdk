@@ -4,6 +4,7 @@
  */
 
 import { JsonRpcRequest, JsonRpcResponse } from '@dexwox-labs/a2a-core';
+import { AuthFactory, createAuthFactory } from '@dexwox-labs/a2a-auth';
 import { MessageClientOptions } from '../types';
 
 /**
@@ -33,6 +34,7 @@ import { MessageClientOptions } from '../types';
  * };
  * ```
  */
+// Legacy AuthOptions interface for backward compatibility
 export interface AuthOptions {
   /** Authentication type to use */
   type: 'basic' | 'bearer' | 'apiKey' | 'custom';
@@ -95,7 +97,7 @@ export interface AuthOptions {
  * ```
  */
 export async function sendRequest<T = unknown>(
-  options: MessageClientOptions & { auth?: AuthOptions },
+  options: MessageClientOptions,
   request: JsonRpcRequest
 ): Promise<JsonRpcResponse<T>> {
   // Set up default headers and add any custom headers
@@ -104,36 +106,51 @@ export async function sendRequest<T = unknown>(
     ...options.headers
   };
 
-  // Handle authentication based on the specified type
+  // Handle authentication - support both new comprehensive auth and legacy auth
   if (options.auth) {
-    switch (options.auth.type) {
-      case 'basic':
-        // Basic authentication (username:password encoded in base64)
-        if (options.auth.credentials.username && options.auth.credentials.password) {
-          const encoded = Buffer.from(
-            `${options.auth.credentials.username}:${options.auth.credentials.password}`
-          ).toString('base64');
-          headers['Authorization'] = `Basic ${encoded}`;
-        }
-        break;
-      case 'bearer':
-        // Bearer token authentication (typically JWT)
-        if (options.auth.credentials.token) {
-          headers['Authorization'] = `Bearer ${options.auth.credentials.token}`;
-        }
-        break;
-      case 'apiKey':
-        // API key authentication
-        if (options.auth.credentials.apiKey) {
-          headers['X-API-Key'] = options.auth.credentials.apiKey;
-        }
-        break;
-      case 'custom':
-        // Custom header-based authentication
-        if (options.auth.credentials.headerName && options.auth.credentials.headerValue) {
-          headers[options.auth.credentials.headerName] = options.auth.credentials.headerValue;
-        }
-        break;
+    // Check if using new comprehensive auth system
+    if ('scheme' in options.auth && 'config' in options.auth) {
+      try {
+        const authFactory = createAuthFactory();
+        const scheme = authFactory.getScheme(options.auth.scheme);
+        const authHeaders = await scheme.generateHeaders();
+        Object.assign(headers, authHeaders);
+      } catch (error) {
+        console.warn('Authentication failed:', error);
+        // Continue without auth headers if authentication fails
+      }
+    } else {
+      // Legacy authentication support for backward compatibility
+      const legacyAuth = options.auth as AuthOptions;
+      switch (legacyAuth.type) {
+        case 'basic':
+          // Basic authentication (username:password encoded in base64)
+          if (legacyAuth.credentials.username && legacyAuth.credentials.password) {
+            const encoded = Buffer.from(
+              `${legacyAuth.credentials.username}:${legacyAuth.credentials.password}`
+            ).toString('base64');
+            headers['Authorization'] = `Basic ${encoded}`;
+          }
+          break;
+        case 'bearer':
+          // Bearer token authentication (typically JWT)
+          if (legacyAuth.credentials.token) {
+            headers['Authorization'] = `Bearer ${legacyAuth.credentials.token}`;
+          }
+          break;
+        case 'apiKey':
+          // API key authentication
+          if (legacyAuth.credentials.apiKey) {
+            headers['X-API-Key'] = legacyAuth.credentials.apiKey;
+          }
+          break;
+        case 'custom':
+          // Custom header-based authentication
+          if (legacyAuth.credentials.headerName && legacyAuth.credentials.headerValue) {
+            headers[legacyAuth.credentials.headerName] = legacyAuth.credentials.headerValue;
+          }
+          break;
+      }
     }
   }
 

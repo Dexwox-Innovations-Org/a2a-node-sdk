@@ -46,6 +46,8 @@ export {
   validateDiscoverRequest,
   /** Validates a discover response against the protocol schema */
   validateDiscoverResponse,
+  /** Validates a task transition object against the protocol schema */
+  validateTaskTransition,
   /** Type guard for Message objects */
   isMessage,
   /** Type guard for Task objects */
@@ -54,8 +56,12 @@ export {
   isAgentCard,
   /** Type guard for PushNotificationConfig objects */
   isPushNotificationConfig,
+  /** Type guard for TaskTransition objects */
+  isTaskTransition,
   /** Formats validation errors into human-readable messages */
   formatValidationError,
+  /** Enhanced validation function for state machine rules */
+  validateStateTransitionRules,
   /** Raw Zod schemas for all protocol objects */
   schemas,
 } from './validation/validators';
@@ -84,13 +90,17 @@ export * from './utils/artifact';
  * 
  * These are the main types used throughout the A2A protocol implementation.
  */
-export type { 
+export type {
   /** Task representation in the A2A protocol */
-  Task, 
+  Task,
   /** Message part (text, image, etc.) in the A2A protocol */
   MessagePart,
   /** Task state enumeration (pending, completed, failed, etc.) */
   TaskState,
+  /** Task transition record for state changes */
+  TaskTransition,
+  /** Task status with enhanced metadata */
+  TaskStatus,
   /** Artifact representation (files, data) in the A2A protocol */
   Artifact,
   /** Agent card containing metadata and capabilities */
